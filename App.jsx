@@ -14,7 +14,7 @@ const DICT = [
 { geo:“ისინი”,   meg:“თინეფი”,   ru:“они”,          en:“they”,         topic:“pronouns” },
 
 // ── ПРИВЕТСТВИЯ ─────────────────────────────────────────────────────────
-{ geo:“გამარჯობა”,  meg:“გომორძგუა”,  ru:“здравствуй”,  en:“hello”,       topic:“greetings” },
+{ geo:“გამარჯობა”,  meg:“გომორდგუა”,  ru:“здравствуй”,  en:“hello”,       topic:“greetings” },
 { geo:“მადლობა”,    meg:“მარდობა”,    ru:“спасибо”,      en:“thank you”,   topic:“greetings” },
 { geo:“ბოდიში”,     meg:“ბოდიში”,     ru:“извините”,     en:“excuse me”,   topic:“greetings” },
 
