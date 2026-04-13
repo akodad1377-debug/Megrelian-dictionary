@@ -35,7 +35,7 @@ const DICT = [
 { geo:“მამიდა”,      meg:“მამიდა”,     ru:“тётя (сестра отца)”, en:“aunt (father’s sister)”,   topic:“family” },
 { geo:“ბიძაშვილი”,   meg:“ბიძისკუა”,  ru:“двоюродный брат/сестра”, en:“cousin”,              topic:“family” },
 { geo:“ქმარი”,       meg:“ქომონჯი”,     ru:“муж”,                en:“husband”,                  topic:“family” },
-{ geo:“ცოლი”,        meg:“ოსური/ჩილი ”,      ru:“жена”,               en:“wife”,                     topic:“family” },
+{ geo:“ცოლი”,        meg:“ოსური / ჩილი”,      ru:“жена”,               en:“wife”,                     topic:“family” },
 { geo:“დედამთილი”,   meg:“დიანთილი”,   ru:“свекровь”,           en:“mother-in-law”,            topic:“family” },
 { geo:“მამამთილი”,   meg:“მუანთილი”,   ru:“свёкор”,             en:“father-in-law”,            topic:“family” },
 { geo:“ნათესავი”,    meg:“ნათესე”,     ru:“родственник”,        en:“relative”,                 topic:“family” },
@@ -58,11 +58,11 @@ const DICT = [
 
 // ── ГОРОД И ОБЩЕСТВО ────────────────────────────────────────────────────
 { geo:“ადამიანი”, meg:“ადამიანი”,  ru:“человек”,      en:“human”,        topic:“society” },
-{ geo:“ხალხი”,    meg:“ხარხი/კათა”,     ru:“народ, люди”,  en:“people”,       topic:“society” },
+{ geo:“ხალხი”,    meg:“ხარხი / კათა”,     ru:“народ, люди”,  en:“people”,       topic:“society” },
 { geo:“ქალაქი”,   meg:“ნოღა”,      ru:“город”,        en:“city”,         topic:“society” },
 { geo:“სოფელი”,   meg:“სოფელი”,    ru:“село”,         en:“village”,      topic:“society” },
 { geo:“ქვეყანა”,  meg:“ქიანა”,     ru:“страна”,       en:“country”,      topic:“society” },
-{ geo:“სახლი”,    meg:“ჸუდე”,       ru:“дом”,          en:“house”,        topic:“society” },
+{ geo:“სახლი”,    meg:“უდე”,       ru:“дом”,          en:“house”,        topic:“society” },
 
 // ── ВРЕМЯ И МЕСТО ───────────────────────────────────────────────────────
 { geo:“ადგილი”,  meg:“არდგილი”,   ru:“место”,           en:“place”,        topic:“time_place” },
