@@ -24,32 +24,32 @@ const DICT = [
 { geo:“მამა”,        meg:“მუმა”,       ru:“отец”,               en:“father”,                   topic:“family” },
 { geo:“ძმა”,         meg:“ჯიმა”,       ru:“брат”,               en:“brother”,                  topic:“family” },
 { geo:“და”,          meg:“და”,         ru:“сестра”,             en:“sister”,                   topic:“family” },
-{ geo:“შვილი”,       meg:“სკუა”,       ru:“ребёнок, дитя”,      en:“child”,                    topic:“family” },
+{ geo:“შვილი”,       meg:“სქუა”,       ru:“ребёнок, дитя”,      en:“child”,                    topic:“family” },
 { geo:“ვაჟი”,        meg:“ბოში”,       ru:“сын”,                en:“son”,                      topic:“family” },
-{ geo:“ქალიშვილი”,   meg:“ოსურსკუა”,  ru:“дочь”,               en:“daughter”,                 topic:“family” },
+{ geo:“ქალიშვილი”,   meg:“ოსურსქუა”,  ru:“дочь”,               en:“daughter”,                 topic:“family” },
 { geo:“შვილიშვილი”,  meg:“მოთა”,       ru:“внук / внучка”,      en:“grandchild”,               topic:“family” },
 { geo:“ბაბუა”,       meg:“ბაბუ”,       ru:“дедушка”,            en:“grandfather”,              topic:“family” },
 { geo:“ბებია”,       meg:“ბები”,       ru:“бабушка”,            en:“grandmother”,              topic:“family” },
 { geo:“ბიძა”,        meg:“ჯიმადი”,     ru:“дядя”,               en:“uncle”,                    topic:“family” },
 { geo:“დეიდა”,       meg:“დეიდა”,      ru:“тётя (сестра матери)”, en:“aunt (mother’s sister)”, topic:“family” },
 { geo:“მამიდა”,      meg:“მამიდა”,     ru:“тётя (сестра отца)”, en:“aunt (father’s sister)”,   topic:“family” },
-{ geo:“ბიძაშვილი”,   meg:“ბიძისკუა”,  ru:“двоюродный брат/сестра”, en:“cousin”,              topic:“family” },
-{ geo:“ქმარი”,       meg:“ქომონჯი”,     ru:“муж”,                en:“husband”,                  topic:“family” },
-{ geo:“ცოლი”,        meg:“ოსური / ჩილი”,      ru:“жена”,               en:“wife”,                     topic:“family” },
+{ geo:“ბიძაშვილი”,   meg:“ბიძისქუა”,  ru:“двоюродный брат/сестра”, en:“cousin”,              topic:“family” },
+{ geo:“ქმარი”,       meg:“ქომოჯი”,     ru:“муж”,                en:“husband”,                  topic:“family” },
+{ geo:“ცოლი”,        meg:“ოსური”,      ru:“жена”,               en:“wife”,                     topic:“family” },
 { geo:“დედამთილი”,   meg:“დიანთილი”,   ru:“свекровь”,           en:“mother-in-law”,            topic:“family” },
 { geo:“მამამთილი”,   meg:“მუანთილი”,   ru:“свёкор”,             en:“father-in-law”,            topic:“family” },
 { geo:“ნათესავი”,    meg:“ნათესე”,     ru:“родственник”,        en:“relative”,                 topic:“family” },
 
 // ── ПРИРОДА ─────────────────────────────────────────────────────────────
 { geo:“ბალახი”,  meg:“ოდიარე”,    ru:“трава”,        en:“grass”,        topic:“nature” },
-{ geo:“ქარი”,    meg:“ბორია”,    ru:“ветер”,        en:“wind”,         topic:“nature” },
-{ geo:“ხანძარი”, meg:“დაჩხირი”,   ru:“огонь, пожар”, en:“fire”,         topic:“nature” },
+{ geo:“ქარი”,    meg:“ბორნია”,    ru:“ветер”,        en:“wind”,         topic:“nature” },
+{ geo:“ხანძარი”, meg:“დაჰხირი”,   ru:“огонь, пожар”, en:“fire”,         topic:“nature” },
 { geo:“ქვა”,     meg:“ქუა”,       ru:“камень”,       en:“stone”,        topic:“nature” },
 { geo:“ბალი”,    meg:“ბული”,      ru:“вишня”,        en:“cherry”,       topic:“nature” },
 
 // ── ЖИВОТНЫЕ ────────────────────────────────────────────────────────────
 { geo:“ქათამი”,  meg:“ქოთომი”,    ru:“курица”,       en:“hen”,          topic:“animals” },
-{ geo:“ხარი”,    meg:“ხოჯი”,      ru:“бык”,          en:“bull”,         topic:“animals” },
+{ geo:“ხარი”,    meg:“ბოჯო”,      ru:“бык”,          en:“bull”,         topic:“animals” },
 { geo:“ვირი”,    meg:“გირინი”,    ru:“осёл”,         en:“donkey”,       topic:“animals” },
 
 // ── ЕДА ─────────────────────────────────────────────────────────────────
@@ -58,11 +58,11 @@ const DICT = [
 
 // ── ГОРОД И ОБЩЕСТВО ────────────────────────────────────────────────────
 { geo:“ადამიანი”, meg:“ადამიანი”,  ru:“человек”,      en:“human”,        topic:“society” },
-{ geo:“ხალხი”,    meg:“ხარხი / კათა”,     ru:“народ, люди”,  en:“people”,       topic:“society” },
+{ geo:“ხალხი”,    meg:“ხარხი”,     ru:“народ, люди”,  en:“people”,       topic:“society” },
 { geo:“ქალაქი”,   meg:“ნოღა”,      ru:“город”,        en:“city”,         topic:“society” },
 { geo:“სოფელი”,   meg:“სოფელი”,    ru:“село”,         en:“village”,      topic:“society” },
 { geo:“ქვეყანა”,  meg:“ქიანა”,     ru:“страна”,       en:“country”,      topic:“society” },
-{ geo:“სახლი”,    meg:“უდე”,       ru:“дом”,          en:“house”,        topic:“society” },
+{ geo:“სახლი”,    meg:“ოდა”,       ru:“дом”,          en:“house”,        topic:“society” },
 
 // ── ВРЕМЯ И МЕСТО ───────────────────────────────────────────────────────
 { geo:“ადგილი”,  meg:“არდგილი”,   ru:“место”,           en:“place”,        topic:“time_place” },
