@@ -50,7 +50,7 @@ const DICT = [
 
   // ── ЖИВОТНЫЕ ────────────────────────────────────────────────────────────
   { geo:"ქათამი",  meg:"ქოთომი",    tr:"kotomi",    ru:"курица",       en:"hen",          topic:"animals" },
-  { geo:"ხარი",    meg:"ხოჯი",      tr:"koji",        ru:"бык",          en:"bull",         topic:"animals" },
+  { geo:"ხარი",    meg:"ხოჯი",      tr:"khoji",        ru:"бык",          en:"bull",         topic:"animals" },
   { geo:"ვირი",    meg:"გირინი",    tr:"girini",       ru:"осёл",         en:"donkey",       topic:"animals" },
 
   // ── ЕДА ─────────────────────────────────────────────────────────────────
@@ -87,6 +87,21 @@ const DICT = [
   { geo:"სავარძელი", meg:"კრესლო",    tr:"kreslo",    ru:"кресло",     en:"armchair",     topic:"home" },
   { geo:"საძინებელი",meg:"ონჯირალი",  tr:"onjirali",  ru:"спальня",    en:"bedroom",      topic:"home" },
   { geo:"ღობე",      meg:"ღობერი",    tr:"ghoberi",   ru:"забор",      en:"fence",        topic:"home" },
+  // ── ЧИСЛА ───────────────────────────────────────────────────────────────
+  { geo:"ერთი",    meg:"ართი",      tr:"arti",       ru:"один",      en:"one",      topic:"numbers" },
+  { geo:"ორი",     meg:"ჯირი",      tr:"jiri",       ru:"два",       en:"two",      topic:"numbers" },
+  { geo:"სამი",    meg:"სუმი",      tr:"sumi",       ru:"три",       en:"three",    topic:"numbers" },
+  { geo:"ოთხი",    meg:"ოთხი",      tr:"otxi",       ru:"четыре",    en:"four",     topic:"numbers" },
+  { geo:"ხუთი",    meg:"ხუთი",      tr:"khuti",      ru:"пять",      en:"five",     topic:"numbers" },
+  { geo:"ექვსი",   meg:"ამშვი",     tr:"amshvi",     ru:"шесть",     en:"six",      topic:"numbers" },
+  { geo:"შვიდი",   meg:"შქვიტი",    tr:"shkviti",    ru:"семь",      en:"seven",    topic:"numbers" },
+  { geo:"რვა",     meg:"რვა",       tr:"rva",        ru:"восемь",    en:"eight",    topic:"numbers" },
+  { geo:"ცხრა",    meg:"ცხორო",     tr:"tskhoro",    ru:"девять",    en:"nine",     topic:"numbers" },
+  { geo:"ათი",     meg:"ვიტი",      tr:"viti",       ru:"десять",    en:"ten",      topic:"numbers" },
+  { geo:"ოცი",     meg:"ეჩი",       tr:"echi",       ru:"двадцать",  en:"twenty",   topic:"numbers" },
+  { geo:"ოცდაათი", meg:"ეჩდოვიტი",  tr:"echdoviti",  ru:"тридцать",  en:"thirty",   topic:"numbers" },
+  { geo:"ასი",     meg:"ოში",       tr:"oshi",       ru:"сто",       en:"hundred",  topic:"numbers" },
+  { geo:"ათასი",   meg:"ანთასი",    tr:"antasi",     ru:"тысяча",    en:"thousand", topic:"numbers" },
 ];
 
 // ─── ТЕМЫ ───────────────────────────────────────────────────────────────────
@@ -102,6 +117,7 @@ const TOPICS = [
   { key:"time_place", ru:"Время и место", ge:"დრო/ადგილი",  en:"Time & Place", icon:"🕐" },
   { key:"language",   ru:"Язык",          ge:"ენა",         en:"Language",     icon:"💬" },
   { key:"home",       ru:"Дом",           ge:"სახლი",       en:"Home",         icon:"🏠" },
+  { key:"numbers",    ru:"Числа",         ge:"რიცხვები",    en:"Numbers",      icon:"🔢" },
 ];
 
 function highlight(text, query) {
