@@ -35,7 +35,7 @@ const DICT = [
   { geo:"დეიდა",       meg:"დეიდა",      tr:"deida",        ru:"тётя (сестра матери)",     en:"aunt (mother's sister)",   topic:"family" },
   { geo:"მამიდა",      meg:"მამიდა",     tr:"mamida",       ru:"тётя (сестра отца)",       en:"aunt (father's sister)",   topic:"family" },
   { geo:"ბიძაშვილი",   meg:"ბიძისკუა",  tr:"bidziskua",    ru:"двоюродный брат/сестра",   en:"cousin",                   topic:"family" },
-  { geo:"ქმარი",       meg:"ქომონჯი",     tr:"khomonji",    ru:"муж",                      en:"husband",                  topic:"family" },
+  { geo:"ქმარი",       meg:"ქომონჯი",     tr:"komonji",    ru:"муж",                      en:"husband",                  topic:"family" },
   { geo:"ცოლი",        meg:"ოსური",      tr:"osuri",        ru:"жена",                     en:"wife",                     topic:"family" },
   { geo:"დედამთილი",   meg:"დიანთილი",   tr:"diantili",   ru:"свекровь",                 en:"mother-in-law",            topic:"family" },
   { geo:"მამამთილი",   meg:"მუანთილი",   tr:"muantili",   ru:"свёкор",                   en:"father-in-law",            topic:"family" },
@@ -45,24 +45,24 @@ const DICT = [
   { geo:"ბალახი",  meg:"ოდიარე",    tr:"odiare",       ru:"трава",        en:"grass",        topic:"nature" },
   { geo:"ქარი",    meg:"ბორია",    tr:"boria",       ru:"ветер",        en:"wind",         topic:"nature" },
   { geo:"ხანძარი", meg:"დაჩხირი",   tr:"dachkhiri",      ru:"огонь, пожар", en:"fire",         topic:"nature" },
-  { geo:"ქვა",     meg:"ქუა",       tr:"khua",         ru:"камень",       en:"stone",        topic:"nature" },
+  { geo:"ქვა",     meg:"ქუა",       tr:"kua",         ru:"камень",       en:"stone",        topic:"nature" },
   { geo:"ბალი",    meg:"ბული",      tr:"buli",         ru:"черешня",        en:"cherry",       topic:"nature" },
 
   // ── ЖИВОТНЫЕ ────────────────────────────────────────────────────────────
-  { geo:"ქათამი",  meg:"ქოთომი",    tr:"khotomi",    ru:"курица",       en:"hen",          topic:"animals" },
-  { geo:"ხარი",    meg:"ხოჯი",      tr:"khoji",        ru:"бык",          en:"bull",         topic:"animals" },
+  { geo:"ქათამი",  meg:"ქოთომი",    tr:"kotomi",    ru:"курица",       en:"hen",          topic:"animals" },
+  { geo:"ხარი",    meg:"ხოჯი",      tr:"koji",        ru:"бык",          en:"bull",         topic:"animals" },
   { geo:"ვირი",    meg:"გირინი",    tr:"girini",       ru:"осёл",         en:"donkey",       topic:"animals" },
 
   // ── ЕДА ─────────────────────────────────────────────────────────────────
-  { geo:"პური",    meg:"ქობალი",    tr:"khobali",      ru:"хлеб",         en:"bread",        topic:"food" },
+  { geo:"პური",    meg:"ქობალი",    tr:"kobali",      ru:"хлеб",         en:"bread",        topic:"food" },
   { geo:"სადილი",  meg:"სადილი",    tr:"sadili",       ru:"обед",         en:"dinner",       topic:"food" },
 
   // ── ГОРОД И ОБЩЕСТВО ────────────────────────────────────────────────────
   { geo:"ადამიანი", meg:"კოჩი",  tr:"kochi",    ru:"человек",      en:"human",        topic:"society" },
-  { geo:"ხალხი",    meg:"ხარხი",     tr:"kharkhi",       ru:"народ, люди",  en:"people",       topic:"society" },
+  { geo:"ხალხი",    meg:"ხარხი",     tr:"karkhi",       ru:"народ, люди",  en:"people",       topic:"society" },
   { geo:"ქალაქი",   meg:"ნოღა",      tr:"nogha",        ru:"город",        en:"city",         topic:"society" },
   { geo:"სოფელი",   meg:"სოფელი",    tr:"sopeli",      ru:"село",         en:"village",      topic:"society" },
-  { geo:"ქვეყანა",  meg:"ქიანა",     tr:"khiana",      ru:"страна",       en:"country",      topic:"society" },
+  { geo:"ქვეყანა",  meg:"ქიანა",     tr:"kiana",      ru:"страна",       en:"country",      topic:"society" },
   { geo:"სახლი",    meg:"ჸუდე",       tr:"'ude",         ru:"дом",          en:"house",        topic:"society" },
 
   // ── ВРЕМЯ И МЕСТО ───────────────────────────────────────────────────────
@@ -76,6 +76,17 @@ const DICT = [
   { geo:"სახელი",   meg:"სახელი",   tr:"sakheli",      ru:"имя",          en:"name",         topic:"language" },
   { geo:"გვარი",    meg:"გვარი",    tr:"gvari",       ru:"фамилия",      en:"surname",      topic:"language" },
   { geo:"სწავლა",   meg:"გურაფა",   tr:"gurapa",     ru:"учёба",        en:"study",        topic:"language" },
+  // ── ДОМ ─────────────────────────────────────────────────────────────────
+  { geo:"კარი",      meg:"კარი",      tr:"kari",      ru:"дверь",      en:"door",         topic:"home" },
+  { geo:"ფანჯარა",   meg:"აქოშქა",    tr:"akoška",    ru:"окно",       en:"window",       topic:"home" },
+  { geo:"კედელი",    meg:"კიდალა",    tr:"kidala",    ru:"стена",      en:"wall",         topic:"home" },
+  { geo:"იატაკი",    meg:"პროლი",     tr:"proli",     ru:"пол",        en:"floor",        topic:"home" },
+  { geo:"სახურავი",  meg:"ორთვალი",   tr:"ortvali",   ru:"крыша",      en:"roof",         topic:"home" },
+  { geo:"კიბე",      meg:"ტყვა",      tr:"tkva",      ru:"лестница",   en:"staircase",    topic:"home" },
+  { geo:"მაგიდა",    meg:"სტოლი",     tr:"stoli",     ru:"стол",       en:"table",        topic:"home" },
+  { geo:"სავარძელი", meg:"კრესლო",    tr:"kreslo",    ru:"кресло",     en:"armchair",     topic:"home" },
+  { geo:"საძინებელი",meg:"ონჯირალი",  tr:"onjirali",  ru:"спальня",    en:"bedroom",      topic:"home" },
+  { geo:"ღობე",      meg:"ღობერი",    tr:"ghoberi",   ru:"забор",      en:"fence",        topic:"home" },
 ];
 
 // ─── ТЕМЫ ───────────────────────────────────────────────────────────────────
@@ -90,6 +101,7 @@ const TOPICS = [
   { key:"society",    ru:"Общество",      ge:"საზოგადოება", en:"Society",      icon:"🏙️" },
   { key:"time_place", ru:"Время и место", ge:"დრო/ადგილი",  en:"Time & Place", icon:"🕐" },
   { key:"language",   ru:"Язык",          ge:"ენა",         en:"Language",     icon:"💬" },
+  { key:"home",       ru:"Дом",           ge:"სახლი",       en:"Home",         icon:"🏠" },
 ];
 
 function highlight(text, query) {
