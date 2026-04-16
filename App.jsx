@@ -1,353 +1,555 @@
 import { useState, useMemo } from "react";
 
-// ─── СЛОВАРЬ ────────────────────────────────────────────────────────────────
-// Источник: Georgian-Megrelian-Laz-Svan-English Dictionary, 2015
-// Структура: { geo, meg, tr, ru, en, topic }
-// tr = транскрипция МФА мегрельского слова
+const GEO_ALPHA = ["ა","ბ","გ","დ","ე","ვ","ზ","თ","ი","კ","ლ","მ","ნ","ო","პ","ჟ","რ","ს","ტ","უ","ფ","ქ","ღ","ყ","შ","ჩ","ც","ძ","წ","ჭ","ხ","ჯ","ჰ","ჸ"];
 
-const DICT = [
-  // ── МЕСТОИМЕНИЯ ─────────────────────────────────────────────────────────
-  { geo:"მე",      meg:"მა",       tr:"ma",               ru:"я",            en:"I",            topic:"pronouns" },
-  { geo:"შენ",     meg:"სი",       tr:"si",               ru:"ты",           en:"you",          topic:"pronouns" },
-  { geo:"ის",      meg:"თინა",     tr:"tina",            ru:"он / она",     en:"he / she",     topic:"pronouns" },
-  { geo:"ჩვენ",    meg:"ჩქი",      tr:"chki",            ru:"мы",           en:"we",           topic:"pronouns" },
-  { geo:"თქვენ",   meg:"თქვა",     tr:"tkva",            ru:"вы",           en:"you (pl.)",    topic:"pronouns" },
-  { geo:"ისინი",   meg:"თინეფი",   tr:"tinepi",          ru:"они",          en:"they",         topic:"pronouns" },
-
-  // ── ПРИВЕТСТВИЯ ─────────────────────────────────────────────────────────
-  { geo:"გამარჯობა",  meg:"გომორძგუა",  tr:"gomordzgua",   ru:"здравствуй",  en:"hello",       topic:"greetings" },
-  { geo:"მადლობა",    meg:"მარდობა",    tr:"mardoba",      ru:"спасибо",     en:"thank you",   topic:"greetings" },
-  { geo:"ბოდიში",     meg:"ბოდიში",     tr:"bodishi",       ru:"извините",    en:"excuse me",   topic:"greetings" },
-
-  // ── СЕМЬЯ ───────────────────────────────────────────────────────────────
-  { geo:"ოჯახი",       meg:"მახორობა",   tr:"makhoroba",     ru:"семья",                    en:"family",                   topic:"family" },
-  { geo:"დედა",        meg:"დიდა",       tr:"dida",         ru:"мать",                     en:"mother",                   topic:"family" },
-  { geo:"მამა",        meg:"მუმა",       tr:"muma",         ru:"отец",                     en:"father",                   topic:"family" },
-  { geo:"ძმა",         meg:"ჯიმა",       tr:"jima",        ru:"брат",                     en:"brother",                  topic:"family" },
-  { geo:"და",          meg:"და",         tr:"da",           ru:"сестра",                   en:"sister",                   topic:"family" },
-  { geo:"შვილი",       meg:"სკუა",       tr:"skua",         ru:"ребёнок, дитя",            en:"child",                    topic:"family" },
-  { geo:"ვაჟი",        meg:"ბოში",       tr:"boshi",         ru:"сын",                      en:"son",                      topic:"family" },
-  { geo:"ქალიშვილი",   meg:"ოსურსკუა",  tr:"osurskua",     ru:"дочь",                     en:"daughter",                 topic:"family" },
-  { geo:"შვილიშვილი",  meg:"მოთა",       tr:"mota",        ru:"внук / внучка",            en:"grandchild",               topic:"family" },
-  { geo:"ბაბუა",       meg:"ბაბუ",       tr:"babu",         ru:"дедушка",                  en:"grandfather",              topic:"family" },
-  { geo:"ბებია",       meg:"ბები",       tr:"bebi",         ru:"бабушка",                  en:"grandmother",              topic:"family" },
-  { geo:"ბიძა",        meg:"ჯიმადი",     tr:"jimadi",      ru:"дядя",                     en:"uncle",                    topic:"family" },
-  { geo:"დეიდა",       meg:"დეიდა",      tr:"deida",        ru:"тётя (сестра матери)",     en:"aunt (mother's sister)",   topic:"family" },
-  { geo:"მამიდა",      meg:"მამიდა",     tr:"mamida",       ru:"тётя (сестра отца)",       en:"aunt (father's sister)",   topic:"family" },
-  { geo:"ბიძაშვილი",   meg:"ბიძისკუა",  tr:"bidziskua",    ru:"двоюродный брат/сестра",   en:"cousin",                   topic:"family" },
-  { geo:"ქმარი",       meg:"ქომონჯი",     tr:"komonji",    ru:"муж",                      en:"husband",                  topic:"family" },
-  { geo:"ცოლი",        meg:"ოსური",      tr:"osuri",        ru:"жена",                     en:"wife",                     topic:"family" },
-  { geo:"დედამთილი",   meg:"დიანთილი",   tr:"diantili",   ru:"свекровь",                 en:"mother-in-law",            topic:"family" },
-  { geo:"მამამთილი",   meg:"მუანთილი",   tr:"muantili",   ru:"свёкор",                   en:"father-in-law",            topic:"family" },
-  { geo:"ნათესავი",    meg:"ნათესე",     tr:"natese",      ru:"родственник",              en:"relative",                 topic:"family" },
-
-  // ── ПРИРОДА ─────────────────────────────────────────────────────────────
-  { geo:"ბალახი",  meg:"ოდიარე",    tr:"odiare",       ru:"трава",        en:"grass",        topic:"nature" },
-  { geo:"ქარი",    meg:"ბორია",    tr:"boria",       ru:"ветер",        en:"wind",         topic:"nature" },
-  { geo:"ხანძარი", meg:"დაჩხირი",   tr:"dachkhiri",      ru:"огонь, пожар", en:"fire",         topic:"nature" },
-  { geo:"ქვა",     meg:"ქუა",       tr:"kua",         ru:"камень",       en:"stone",        topic:"nature" },
-  { geo:"ბალი",    meg:"ბული",      tr:"buli",         ru:"черешня",        en:"cherry",       topic:"nature" },
-
-  // ── ЖИВОТНЫЕ ────────────────────────────────────────────────────────────
-  { geo:"ქათამი",  meg:"ქოთომი",    tr:"kotomi",    ru:"курица",       en:"hen",          topic:"animals" },
-  { geo:"ხარი",    meg:"ხოჯი",      tr:"khoji",        ru:"бык",          en:"bull",         topic:"animals" },
-  { geo:"ვირი",    meg:"გირინი",    tr:"girini",       ru:"осёл",         en:"donkey",       topic:"animals" },
-
-  // ── ЕДА ─────────────────────────────────────────────────────────────────
-  { geo:"პური",    meg:"ქობალი",    tr:"kobali",      ru:"хлеб",         en:"bread",        topic:"food" },
-  { geo:"სადილი",  meg:"სადილი",    tr:"sadili",       ru:"обед",         en:"dinner",       topic:"food" },
-
-  // ── ГОРОД И ОБЩЕСТВО ────────────────────────────────────────────────────
-  { geo:"ადამიანი", meg:"კოჩი",  tr:"kochi",    ru:"человек",      en:"human",        topic:"society" },
-  { geo:"ხალხი",    meg:"ხარხი",     tr:"karkhi",       ru:"народ, люди",  en:"people",       topic:"society" },
-  { geo:"ქალაქი",   meg:"ნოღა",      tr:"nogha",        ru:"город",        en:"city",         topic:"society" },
-  { geo:"სოფელი",   meg:"სოფელი",    tr:"sopeli",      ru:"село",         en:"village",      topic:"society" },
-  { geo:"ქვეყანა",  meg:"ქიანა",     tr:"kiana",      ru:"страна",       en:"country",      topic:"society" },
-  { geo:"სახლი",    meg:"ჸუდე",       tr:"'ude",         ru:"дом",          en:"house",        topic:"society" },
-
-  // ── ВРЕМЯ И МЕСТО ───────────────────────────────────────────────────────
-  { geo:"ადგილი",  meg:"არდგილი",   tr:"ardgili",     ru:"место",        en:"place",        topic:"time_place" },
-  { geo:"სად",     meg:"სო",        tr:"so",          ru:"где",          en:"where",        topic:"time_place" },
-  { geo:"საათი",   meg:"სათი",      tr:"sati",       ru:"час, часы",    en:"hour, clock",  topic:"time_place" },
-  { geo:"ადრე",    meg:"ადრე",      tr:"adre",        ru:"рано",         en:"early",        topic:"time_place" },
-
-  // ── ЯЗЫК И ОБЩЕНИЕ ──────────────────────────────────────────────────────
-  { geo:"ენა",      meg:"ნინა",     tr:"nina",        ru:"язык",         en:"language",     topic:"language" },
-  { geo:"სახელი",   meg:"სახელი",   tr:"sakheli",      ru:"имя",          en:"name",         topic:"language" },
-  { geo:"გვარი",    meg:"გვარი",    tr:"gvari",       ru:"фамилия",      en:"surname",      topic:"language" },
-  { geo:"სწავლა",   meg:"გურაფა",   tr:"gurapa",     ru:"учёба",        en:"study",        topic:"language" },
-  // ── ДОМ ─────────────────────────────────────────────────────────────────
-  { geo:"კარი",      meg:"კარი",      tr:"kari",      ru:"дверь",      en:"door",         topic:"home" },
-  { geo:"ფანჯარა",   meg:"აქოშქა",    tr:"akoška",    ru:"окно",       en:"window",       topic:"home" },
-  { geo:"კედელი",    meg:"კიდალა",    tr:"kidala",    ru:"стена",      en:"wall",         topic:"home" },
-  { geo:"იატაკი",    meg:"პროლი",     tr:"proli",     ru:"пол",        en:"floor",        topic:"home" },
-  { geo:"სახურავი",  meg:"ორთვალი",   tr:"ortvali",   ru:"крыша",      en:"roof",         topic:"home" },
-  { geo:"კიბე",      meg:"ტყვა",      tr:"tkva",      ru:"лестница",   en:"staircase",    topic:"home" },
-  { geo:"მაგიდა",    meg:"სტოლი",     tr:"stoli",     ru:"стол",       en:"table",        topic:"home" },
-  { geo:"სავარძელი", meg:"კრესლო",    tr:"kreslo",    ru:"кресло",     en:"armchair",     topic:"home" },
-  { geo:"საძინებელი",meg:"ონჯირალი",  tr:"onjirali",  ru:"спальня",    en:"bedroom",      topic:"home" },
-  { geo:"ღობე",      meg:"ღობერი",    tr:"ghoberi",   ru:"забор",      en:"fence",        topic:"home" },
-  // ── ЧИСЛА ───────────────────────────────────────────────────────────────
-  { geo:"ერთი",    meg:"ართი",      tr:"arti",       ru:"один",      en:"one",      topic:"numbers" },
-  { geo:"ორი",     meg:"ჯირი",      tr:"jiri",       ru:"два",       en:"two",      topic:"numbers" },
-  { geo:"სამი",    meg:"სუმი",      tr:"sumi",       ru:"три",       en:"three",    topic:"numbers" },
-  { geo:"ოთხი",    meg:"ოთხი",      tr:"otxi",       ru:"четыре",    en:"four",     topic:"numbers" },
-  { geo:"ხუთი",    meg:"ხუთი",      tr:"khuti",      ru:"пять",      en:"five",     topic:"numbers" },
-  { geo:"ექვსი",   meg:"ამშვი",     tr:"amshvi",     ru:"шесть",     en:"six",      topic:"numbers" },
-  { geo:"შვიდი",   meg:"შქვიტი",    tr:"shkviti",    ru:"семь",      en:"seven",    topic:"numbers" },
-  { geo:"რვა",     meg:"რვა",       tr:"rva",        ru:"восемь",    en:"eight",    topic:"numbers" },
-  { geo:"ცხრა",    meg:"ცხორო",     tr:"tskhoro",    ru:"девять",    en:"nine",     topic:"numbers" },
-  { geo:"ათი",     meg:"ვიტი",      tr:"viti",       ru:"десять",    en:"ten",      topic:"numbers" },
-  { geo:"ოცი",     meg:"ეჩი",       tr:"echi",       ru:"двадцать",  en:"twenty",   topic:"numbers" },
-  { geo:"ოცდაათი", meg:"ეჩდოვიტი",  tr:"echdoviti",  ru:"тридцать",  en:"thirty",   topic:"numbers" },
-  { geo:"ასი",     meg:"ოში",       tr:"oshi",       ru:"сто",       en:"hundred",  topic:"numbers" },
-  { geo:"ათასი",   meg:"ანთასი",    tr:"antasi",     ru:"тысяча",    en:"thousand", topic:"numbers" },
-];
-
-// ─── ТЕМЫ ───────────────────────────────────────────────────────────────────
-const TOPICS = [
-  { key:"all",        ru:"Все",           ge:"ყველა",       en:"All",          icon:"📖" },
-  { key:"family",     ru:"Семья",         ge:"ოჯახი",       en:"Family",       icon:"👨‍👩‍👧" },
-  { key:"greetings",  ru:"Приветствия",   ge:"მისალმება",   en:"Greetings",    icon:"👋" },
-  { key:"pronouns",   ru:"Местоимения",   ge:"ნაცვალსახ.",  en:"Pronouns",     icon:"🗣️" },
-  { key:"nature",     ru:"Природа",       ge:"ბუნება",      en:"Nature",       icon:"🌿" },
-  { key:"animals",    ru:"Животные",      ge:"ცხოველები",   en:"Animals",      icon:"🐾" },
-  { key:"food",       ru:"Еда",           ge:"საჭმელი",     en:"Food",         icon:"🍞" },
-  { key:"society",    ru:"Общество",      ge:"საზოგადოება", en:"Society",      icon:"🏙️" },
-  { key:"time_place", ru:"Время и место", ge:"დრო/ადგილი",  en:"Time & Place", icon:"🕐" },
-  { key:"language",   ru:"Язык",          ge:"ენა",         en:"Language",     icon:"💬" },
-  { key:"home",       ru:"Дом",           ge:"სახლი",       en:"Home",         icon:"🏠" },
-  { key:"numbers",    ru:"Числа",         ge:"რიცხვები",    en:"Numbers",      icon:"🔢" },
-];
-
-function highlight(text, query) {
-  if (!query) return text;
-  const idx = text.toLowerCase().indexOf(query.toLowerCase());
-  if (idx === -1) return text;
-  return (
-    <>
-      {text.slice(0, idx)}
-      <mark style={{ background:"rgba(244,160,35,0.45)", borderRadius:3, color:"inherit" }}>
-        {text.slice(idx, idx + query.length)}
-      </mark>
-      {text.slice(idx + query.length)}
-    </>
-  );
+function firstLetter(meg) {
+  for (const ch of meg) if (GEO_ALPHA.includes(ch)) return ch;
+  return "";
 }
 
+function HL({ text, q }) {
+  if (!q || !text) return text;
+  const idx = text.toLowerCase().indexOf(q.toLowerCase());
+  if (idx === -1) return text;
+  return <>{text.slice(0,idx)}<mark style={{background:"rgba(244,160,35,0.45)",borderRadius:3,color:"inherit"}}>{text.slice(idx,idx+q.length)}</mark>{text.slice(idx+q.length)}</>;
+}
+
+// ─── СЛОВАРЬ ─────────────────────────────────────────────────────────────────
+// Транслитерация из квадратных скобок: Климов Г.А., Каджаиа О.М.
+// Мегрельско-русско-грузинский словарь. М.: Говорун, 2023.
+// tag — помета: диалект, заимствование, область.
+
+const DICT = [
+  // ── МЕСТОИМЕНИЯ ─────────────────────────────────────────────────
+  {topic:"pronouns",    tag:null,
+    meg:"მა",         tr:"ma",         geo:"მე",                ru:"я",                            en:"I"},
+  {topic:"pronouns",    tag:null,
+    meg:"სი",         tr:"si",         geo:"შენ",               ru:"ты",                           en:"you"},
+  {topic:"pronouns",    tag:null,
+    meg:"თინა",       tr:"tina",       geo:"ის",                ru:"он / она",                     en:"he / she"},
+  {topic:"pronouns",    tag:null,
+    meg:"ჩქი",        tr:"čki",        geo:"ჩვენ",              ru:"мы",                           en:"we"},
+  {topic:"pronouns",    tag:null,
+    meg:"თქვა",       tr:"tkva",       geo:"თქვენ",             ru:"вы",                           en:"you (pl.)"},
+  {topic:"pronouns",    tag:null,
+    meg:"თინეფი",     tr:"tinepi",     geo:"ისინი",             ru:"они",                          en:"they"},
+  {topic:"pronouns",    tag:null,
+    meg:"ათე",        tr:"ate",        geo:"ეს",                ru:"этот",                         en:"this"},
+  {topic:"pronouns",    tag:null,
+    meg:"ათეგვარი",   tr:"ategvari",   geo:"ამგვარი, ამნაირი",  ru:"такой",                        en:"such, that kind"},
+
+  // ── ПРИВЕТСТВИЯ ──────────────────────────────────────────────────
+  {topic:"greetings",   tag:null,
+    meg:"გომორძგუა",   tr:"gomorʒgua",  geo:"გამარჯობა",         ru:"здравствуй",                   en:"hello"},
+  {topic:"greetings",   tag:null,
+    meg:"მარდობა",     tr:"mardoba",    geo:"მადლობა",           ru:"спасибо",                      en:"thank you"},
+  {topic:"greetings",   tag:"груз.",
+    meg:"ბოდიში",      tr:"bodiši",     geo:"ბოდიში",            ru:"извините",                     en:"excuse me"},
+
+  // ── СЕМЬЯ ────────────────────────────────────────────────────────
+  {topic:"family",      tag:null,
+    meg:"მახორობა",  tr:"maxoroba",   geo:"ოჯახი",             ru:"семья",                        en:"family"},
+  {topic:"family",      tag:null,
+    meg:"დიდა",      tr:"dida",       geo:"დედა",              ru:"мать",                         en:"mother"},
+  {topic:"family",      tag:null,
+    meg:"მუმა",      tr:"muma",       geo:"მამა",              ru:"отец",                         en:"father"},
+  {topic:"family",      tag:null,
+    meg:"ბაბა",      tr:"baba",       geo:"მამა",              ru:"папаша; обращение отца к сыну",en:"papa; daddy"},
+  {topic:"family",      tag:null,
+    meg:"ჯიმა",      tr:"ǯima",       geo:"ძმა",               ru:"брат",                         en:"brother"},
+  {topic:"family",      tag:null,
+    meg:"და",        tr:"da",         geo:"და",                ru:"сестра",                       en:"sister"},
+  {topic:"family",      tag:null,
+    meg:"სკუა",      tr:"skua",       geo:"შვილი",             ru:"ребёнок, дитя",                en:"child"},
+  {topic:"family",      tag:null,
+    meg:"ბოში",      tr:"boši",       geo:"ბიჭი, ვაჟი",       ru:"мальчик, юноша, парень; сын",  en:"boy, young man; son"},
+  {topic:"family",      tag:null,
+    meg:"ოსურსკუა",  tr:"osurskua",   geo:"ქალიშვილი",         ru:"дочь",                         en:"daughter"},
+  {topic:"family",      tag:null,
+    meg:"მოთა",      tr:"mota",       geo:"შვილიშვილი",        ru:"внук / внучка",                en:"grandchild"},
+  {topic:"family",      tag:null,
+    meg:"ბაბუ",      tr:"babu",       geo:"ბაბუა, პაპა",       ru:"дедушка; предок",              en:"grandfather; ancestor"},
+  {topic:"family",      tag:null,
+    meg:"ბები",      tr:"bebi",       geo:"ბებია",             ru:"бабушка",                      en:"grandmother"},
+  {topic:"family",      tag:null,
+    meg:"ჯიმადი",    tr:"ǯimadi",     geo:"ბიძა",              ru:"дядя",                         en:"uncle"},
+  {topic:"family",      tag:"груз.",
+    meg:"დეიდა",     tr:"deida",      geo:"დეიდა",             ru:"тётя (сестра матери)",         en:"aunt (mother's sister)"},
+  {topic:"family",      tag:"груз.",
+    meg:"მამიდა",    tr:"mamida",     geo:"მამიდა",            ru:"тётя (сестра отца)",           en:"aunt (father's sister)"},
+  {topic:"family",      tag:null,
+    meg:"ბიძისკუა",  tr:"biʒiskua",   geo:"ბიძაშვილი",         ru:"двоюродный брат/сестра",       en:"cousin"},
+  {topic:"family",      tag:null,
+    meg:"ქომონჯი",   tr:"ḳomonǯi",   geo:"ქმარი",             ru:"муж",                          en:"husband"},
+  {topic:"family",      tag:null,
+    meg:"ოსური",     tr:"osuri",      geo:"ცოლი",              ru:"жена",                         en:"wife"},
+  {topic:"family",      tag:null,
+    meg:"დიანთილი",  tr:"diantili",   geo:"დედამთილი",         ru:"свекровь",                     en:"mother-in-law"},
+  {topic:"family",      tag:null,
+    meg:"მუანთილი",  tr:"muantili",   geo:"მამამთილი",         ru:"свёкор",                       en:"father-in-law"},
+  {topic:"family",      tag:null,
+    meg:"ნათესე",    tr:"natese",     geo:"ნათესავი",          ru:"родственник",                  en:"relative"},
+  {topic:"family",      tag:null,
+    meg:"ბაიანა",    tr:"bayana",     geo:"ბავშვი, ბალღი",    ru:"ребёнок",                      en:"child, infant"},
+  {topic:"family",      tag:null,
+    meg:"ბაიანობა",  tr:"bayanoba",   geo:"ბავშვობა",          ru:"детство",                      en:"childhood"},
+
+  // ── ПРИРОДА ──────────────────────────────────────────────────────
+  {topic:"nature",      tag:null,
+    meg:"ოდიარე",    tr:"odiare",    geo:"ბალახი",             ru:"трава",                        en:"grass"},
+  {topic:"nature",      tag:null,
+    meg:"ბორია",     tr:"boria",     geo:"ქარი; ქარიშხალი",   ru:"ветер; буря",                  en:"wind; storm"},
+  {topic:"nature",      tag:null,
+    meg:"დაჩხირი",   tr:"dačxiri",   geo:"ცეცხლი; ხანძარი",   ru:"огонь, пожар",                 en:"fire"},
+  {topic:"nature",      tag:null,
+    meg:"ქუა",       tr:"ḳua",       geo:"ქვა",                ru:"камень",                       en:"stone"},
+  {topic:"nature",      tag:"бот.",
+    meg:"ბული",      tr:"buli",      geo:"ბალი",               ru:"черешня",                      en:"cherry"},
+  {topic:"nature",      tag:"груз.",
+    meg:"ბუნება",    tr:"buneba",    geo:"ბუნება",             ru:"природа",                      en:"nature"},
+  {topic:"nature",      tag:"бот.",
+    meg:"ასკილი",    tr:"askili",    geo:"ასკილი",             ru:"шиповник, дикая роза",         en:"wild rose, briar"},
+  {topic:"nature",      tag:"бот.",
+    meg:"ბინეხი",    tr:"binexi",    geo:"ვენახი, ვაზი",       ru:"виноградник, виноградная лоза",en:"vineyard; grapevine"},
+  {topic:"nature",      tag:null,
+    meg:"ბჟალამი",   tr:"bžalami",   geo:"მზიანი",             ru:"солнечный (день); молочный",   en:"sunny (day)"},
+  {topic:"nature",      tag:null,
+    meg:"ბჟალარა",   tr:"bžalara",   geo:"მზის სხივი",         ru:"солнечный луч; солнечная сторона",en:"sunbeam; sunny side"},
+  {topic:"nature",      tag:"бот.",
+    meg:"ბია",       tr:"bia",       geo:"კომში",              ru:"айва",                         en:"quince"},
+  {topic:"nature",      tag:"бот.",
+    meg:"ბამბე",     tr:"bambe",     geo:"ბამბა",              ru:"хлопчатник; хлопок, вата",     en:"cotton plant; cotton, wadding"},
+  {topic:"nature",      tag:null,
+    meg:"ბალა",      tr:"bala",      geo:"ბორცვი",             ru:"холм",                         en:"hill"},
+
+  // ── ЖИВОТНЫЕ ─────────────────────────────────────────────────────
+  {topic:"animals",     tag:null,
+    meg:"ქოთომი",    tr:"ḳotomi",   geo:"ქათამი",             ru:"курица",                       en:"hen"},
+  {topic:"animals",     tag:null,
+    meg:"ხოჯი",      tr:"xoǯi",     geo:"ხარი",               ru:"бык",                          en:"bull"},
+  {topic:"animals",     tag:null,
+    meg:"გირინი",    tr:"girini",   geo:"ვირი",               ru:"осёл",                         en:"donkey"},
+  {topic:"animals",     tag:"зоол.",
+    meg:"გერი",      tr:"geri",     geo:"მგელი",              ru:"волк",                         en:"wolf"},
+  {topic:"animals",     tag:"зоол., сам.",
+    meg:"გენი",      tr:"geni",     geo:"ხბო",                ru:"телёнок",                      en:"calf"},
+
+  // ── ЕДА ──────────────────────────────────────────────────────────
+  {topic:"food",        tag:null,
+    meg:"ქობალი",    tr:"ḳobali",   geo:"პური",               ru:"хлеб",                         en:"bread"},
+  {topic:"food",        tag:"груз.",
+    meg:"სადილი",    tr:"sadili",   geo:"სადილი",             ru:"обед",                         en:"lunch, dinner"},
+  {topic:"food",        tag:null,
+    meg:"ბჟა",       tr:"bža",      geo:"რძე",                ru:"молоко",                       en:"milk"},
+  {topic:"food",        tag:"груз.",
+    meg:"გემო",      tr:"gemo",     geo:"გემო",               ru:"вкус",                         en:"taste, flavour"},
+  {topic:"food",        tag:null,
+    meg:"გემუანი",   tr:"gemuani",  geo:"გემრიელი",           ru:"вкусный",                      en:"tasty, delicious"},
+  {topic:"food",        tag:"бот.",
+    meg:"ატამა",     tr:"atama",    geo:"ატამი",              ru:"персик",                       en:"peach"},
+  {topic:"food",        tag:null,
+    meg:"ბურახი",    tr:"buraxi",   geo:"კვასი",              ru:"квас",                         en:"kvass"},
+
+  // ── ОБЩЕСТВО ─────────────────────────────────────────────────────
+  {topic:"society",     tag:null,
+    meg:"კოჩი",      tr:"ḳoči",     geo:"ადამიანი",           ru:"человек",                      en:"person"},
+  {topic:"society",     tag:"груз.",
+    meg:"ადამიანი",  tr:"adamiani", geo:"ადამიანი",           ru:"человек; нормальный, порядочный",en:"person; decent person"},
+  {topic:"society",     tag:null,
+    meg:"ხარხი",     tr:"xarxi",    geo:"ხალხი",              ru:"народ, люди",                  en:"people, folk"},
+  {topic:"society",     tag:null,
+    meg:"ნოღა",      tr:"noγa",     geo:"ქალაქი",             ru:"город",                        en:"city"},
+  {topic:"society",     tag:"груз.",
+    meg:"სოფელი",    tr:"sopeli",   geo:"სოფელი",             ru:"село",                         en:"village"},
+  {topic:"society",     tag:null,
+    meg:"ქიანა",     tr:"ḳiana",    geo:"ქვეყანა",            ru:"страна",                       en:"country"},
+  {topic:"society",     tag:"перс.",
+    meg:"ბაზარი",    tr:"bazari",   geo:"ბაზარი",             ru:"базар",                        en:"market, bazaar"},
+  {topic:"society",     tag:"груз.",
+    meg:"გემი",      tr:"gemi",     geo:"გემი",               ru:"корабль",                      en:"ship"},
+  {topic:"society",     tag:null,
+    meg:"ბოშოქათა",  tr:"bošoḳata", geo:"ახალგაზრდობა",       ru:"молодёжь",                     en:"youth (collective)"},
+  {topic:"society",     tag:null,
+    meg:"ბობოხი",    tr:"boboxi",   geo:"ხმამაღალი ლაპარაკი", ru:"громкий разговор; хвастун",    en:"loud talk; boaster"},
+  {topic:"society",     tag:null,
+    meg:"ბერი",      tr:"beri",     geo:"ბერი",               ru:"монах",                        en:"monk"},
+
+  // ── ВРЕМЯ И МЕСТО ────────────────────────────────────────────────
+  {topic:"time_place",  tag:null,
+    meg:"ართდგილი",  tr:"artdgili", geo:"ადგილი",             ru:"место",                        en:"place"},
+  {topic:"time_place",  tag:null,
+    meg:"სო",        tr:"so",       geo:"სად",                ru:"где",                          en:"where"},
+  {topic:"time_place",  tag:"груз.",
+    meg:"სათი",      tr:"sati",     geo:"საათი",              ru:"час, часы",                    en:"hour, clock"},
+  {topic:"time_place",  tag:"груз.",
+    meg:"ადრე",      tr:"adre",     geo:"ადრე",               ru:"рано",                         en:"early"},
+  {topic:"time_place",  tag:"груз.",
+    meg:"გაზაფხული", tr:"gazapxuli",geo:"გაზაფხული",          ru:"весна",                        en:"spring"},
+  {topic:"time_place",  tag:null,
+    meg:"ასე",       tr:"ase",      geo:"ახლა",               ru:"теперь, ныне",                 en:"now"},
+  {topic:"time_place",  tag:null,
+    meg:"ამდია",     tr:"amdya",    geo:"დღეს",               ru:"сегодня",                      en:"today"},
+  {topic:"time_place",  tag:null,
+    meg:"ართო",      tr:"arto",     geo:"ერთად",              ru:"вместе",                       en:"together"},
+  {topic:"time_place",  tag:null,
+    meg:"ბჟადალი",   tr:"bžadali",  geo:"დასავლეთი",          ru:"запад (букв. закат солнца)",   en:"west"},
+  {topic:"time_place",  tag:null,
+    meg:"ბჟაიოლო",   tr:"bžaiolu",  geo:"აღმოსავლეთი",        ru:"восток",                       en:"east"},
+  {topic:"time_place",  tag:null,
+    meg:"ამნიჟი",    tr:"amniži",   geo:"ამ საღამოს",         ru:"этим вечером",                 en:"this evening"},
+  {topic:"time_place",  tag:null,
+    meg:"ართიშა",    tr:"artiša",   geo:"ერთხელ",             ru:"однажды, один раз",            en:"once, one time"},
+  {topic:"time_place",  tag:null,
+    meg:"ართიალამო", tr:"artialamo",geo:"ერთბაშად",           ru:"сразу",                        en:"at once, immediately"},
+  {topic:"time_place",  tag:"заимств.",
+    meg:"არგუსო",    tr:"arguso",   geo:"აგვისტო",            ru:"август",                       en:"August"},
+  {topic:"time_place",  tag:"заимств.",
+    meg:"აპრილი",    tr:"aprili",   geo:"აპრილი",             ru:"апрель",                       en:"April"},
+
+  // ── ЯЗЫК И ОБЩЕНИЕ ───────────────────────────────────────────────
+  {topic:"language",    tag:null,
+    meg:"ნინა",      tr:"nina",     geo:"ენა",                ru:"язык",                         en:"language"},
+  {topic:"language",    tag:"груз.",
+    meg:"სახელი",    tr:"saxeli",   geo:"სახელი",             ru:"имя",                          en:"name"},
+  {topic:"language",    tag:"груз.",
+    meg:"გვარი",     tr:"gvari",    geo:"გვარი",              ru:"фамилия",                      en:"surname"},
+  {topic:"language",    tag:null,
+    meg:"გურაფა",    tr:"gurapa",   geo:"სწავლა",             ru:"учёба",                        en:"study"},
+  {topic:"language",    tag:null,
+    meg:"არიკო",     tr:"ariko",    geo:"ზღაპარი",            ru:"сказка",                       en:"fairy tale"},
+  {topic:"language",    tag:"греч.",
+    meg:"ანგელოზი",  tr:"angelozi", geo:"ანგელოზი",           ru:"ангел",                        en:"angel"},
+  {topic:"language",    tag:null,
+    meg:"ამბე",      tr:"ambe",     geo:"ამბავი",             ru:"весть, история, известие",     en:"news, tidings"},
+
+  // ── ОПИСАНИЯ ─────────────────────────────────────────────────────
+  {topic:"descriptions",tag:null,
+    meg:"ამო",       tr:"amo",      geo:"სასიამოვნო, ტკბილი", ru:"приятный, сладкий",            en:"pleasant, sweet"},
+  {topic:"descriptions",tag:null,
+    meg:"ამუნათი",   tr:"amunati",  geo:"ლამაზი, საუკეთესო",  ru:"прекрасный",                   en:"beautiful, wonderful"},
+  {topic:"descriptions",tag:null,
+    meg:"ადვილო",    tr:"advilo",   geo:"ადვილად",            ru:"легко (нареч.)",               en:"easily"},
+  {topic:"descriptions",tag:"груз.",
+    meg:"ბედნიერი",  tr:"bednieri", geo:"ბედნიერი",           ru:"счастливый",                   en:"happy, fortunate"},
+  {topic:"descriptions",tag:"груз.",
+    meg:"ბედნიერება",tr:"bedniereba",geo:"ბედნიერება",        ru:"счастье",                      en:"happiness"},
+  {topic:"descriptions",tag:null,
+    meg:"ბედი",      tr:"bedi",     geo:"ბედი",               ru:"судьба, счастье, участь",      en:"fate, destiny"},
+  {topic:"descriptions",tag:null,
+    meg:"ბრელი",     tr:"breli",    geo:"ბევრი",              ru:"много",                        en:"many, much"},
+  {topic:"descriptions",tag:"груз.",
+    meg:"ბოლო",      tr:"bolo",     geo:"ბოლო",               ru:"конец",                        en:"end"},
+  {topic:"descriptions",tag:null,
+    meg:"ბეჟიტი",    tr:"bežiti",   geo:"ბეჯითი, მუყაითი",   ru:"прилежный",                    en:"diligent, assiduous"},
+  {topic:"descriptions",tag:null,
+    meg:"ბეხვერია",  tr:"bexveria", geo:"ფუმფულა, ფუნჩულა",  ru:"пухлый, пышный",               en:"chubby, plump"},
+  {topic:"descriptions",tag:null,
+    meg:"ბონი",      tr:"boni",     geo:"პირდაპირი, სწორი",   ru:"прямой (о дороге); ровный",    en:"straight; level, even"},
+
+  // ── ДОМ ──────────────────────────────────────────────────────────
+  {topic:"home",        tag:null,
+    meg:"ჸუდე",      tr:"ʔude",     geo:"სახლი",              ru:"дом",                          en:"house"},
+  {topic:"home",        tag:"груз.",
+    meg:"კარი",      tr:"kari",     geo:"კარი",               ru:"дверь",                        en:"door"},
+  {topic:"home",        tag:null,
+    meg:"აქოშქა",    tr:"aḳošḳa",  geo:"ფანჯარა",            ru:"окно",                         en:"window"},
+  {topic:"home",        tag:null,
+    meg:"კიდალა",    tr:"kidala",   geo:"კედელი",             ru:"стена",                        en:"wall"},
+  {topic:"home",        tag:null,
+    meg:"პროლი",     tr:"proli",    geo:"იატაკი",             ru:"пол",                          en:"floor"},
+  {topic:"home",        tag:null,
+    meg:"ორთვალი",   tr:"ortvali",  geo:"სახურავი",           ru:"крыша",                        en:"roof"},
+  {topic:"home",        tag:null,
+    meg:"ტყვა",      tr:"ṭq̇va",    geo:"კიბე",               ru:"лестница",                     en:"staircase"},
+  {topic:"home",        tag:"рус.",
+    meg:"სტოლი",     tr:"stoli",    geo:"მაგიდა",             ru:"стол",                         en:"table"},
+  {topic:"home",        tag:"рус.",
+    meg:"კრესლო",    tr:"kreslo",   geo:"სავარძელი",          ru:"кресло",                       en:"armchair"},
+  {topic:"home",        tag:null,
+    meg:"ონჯირალი",  tr:"onǯirali", geo:"საძინებელი",         ru:"спальня",                      en:"bedroom"},
+  {topic:"home",        tag:null,
+    meg:"ღობერი",    tr:"γoberi",   geo:"ღობე",               ru:"забор",                        en:"fence"},
+  {topic:"home",        tag:"груз.",
+    meg:"ბალიში",    tr:"bališi",   geo:"ბალიში",             ru:"подушка",                      en:"pillow"},
+  {topic:"home",        tag:null,
+    meg:"ბოთოლი",    tr:"botoli",   geo:"ბოთლი",              ru:"бутылка",                      en:"bottle"},
+  {topic:"home",        tag:"тур.",
+    meg:"ბუხარი",    tr:"buxari",   geo:"ბუხარი",             ru:"камин",                        en:"fireplace"},
+  {topic:"home",        tag:"груз.",
+    meg:"ბურთი",     tr:"burti",    geo:"ბურთი",              ru:"мяч, шарик",                   en:"ball"},
+  {topic:"home",        tag:"груз.",
+    meg:"ბუმბული",   tr:"bumbuli",  geo:"ბუმბული",            ru:"перина, пуховик",              en:"feather duvet"},
+  {topic:"home",        tag:null,
+    meg:"ბარგი",     tr:"bargi",    geo:"სამოსი, ბარგი",      ru:"одежда; вещи, багаж",          en:"clothes; belongings"},
+  {topic:"home",        tag:null,
+    meg:"ბიგა",      tr:"biga",     geo:"ჯოხი",               ru:"палка",                        en:"stick, rod"},
+  {topic:"home",        tag:null,
+    meg:"ბარბალი",   tr:"barbali",  geo:"ბორბალი",            ru:"колесо",                       en:"wheel"},
+
+  // ── ЧИСЛА ────────────────────────────────────────────────────────
+  {topic:"numbers",     tag:null,
+    meg:"ართი",      tr:"arti",     geo:"ერთი",               ru:"один",                         en:"one"},
+  {topic:"numbers",     tag:null,
+    meg:"ჯირი",      tr:"ǯiri",     geo:"ორი",                ru:"два",                          en:"two"},
+  {topic:"numbers",     tag:null,
+    meg:"სუმი",      tr:"sumi",     geo:"სამი",               ru:"три",                          en:"three"},
+  {topic:"numbers",     tag:null,
+    meg:"ოთხი",      tr:"otxi",     geo:"ოთხი",               ru:"четыре",                       en:"four"},
+  {topic:"numbers",     tag:null,
+    meg:"ხუთი",      tr:"xuti",     geo:"ხუთი",               ru:"пять",                         en:"five"},
+  {topic:"numbers",     tag:null,
+    meg:"ამშვი",     tr:"amšvi",    geo:"ექვსი",              ru:"шесть",                        en:"six"},
+  {topic:"numbers",     tag:null,
+    meg:"შქვიტი",    tr:"škviti",   geo:"შვიდი",              ru:"семь",                         en:"seven"},
+  {topic:"numbers",     tag:null,
+    meg:"რვა",       tr:"rva",      geo:"რვა",                ru:"восемь",                       en:"eight"},
+  {topic:"numbers",     tag:null,
+    meg:"ცხორო",     tr:"cxoro",    geo:"ცხრა",               ru:"девять",                       en:"nine"},
+  {topic:"numbers",     tag:null,
+    meg:"ვიტი",      tr:"viti",     geo:"ათი",                ru:"десять",                       en:"ten"},
+  {topic:"numbers",     tag:null,
+    meg:"ეჩი",       tr:"eči",      geo:"ოცი",                ru:"двадцать",                     en:"twenty"},
+  {topic:"numbers",     tag:null,
+    meg:"ეჩდოვიტი",  tr:"ečdoviti", geo:"ოცდაათი",            ru:"тридцать",                     en:"thirty"},
+  {topic:"numbers",     tag:null,
+    meg:"ოში",       tr:"oši",      geo:"ასი",                ru:"сто",                          en:"hundred"},
+  {topic:"numbers",     tag:null,
+    meg:"ანთასი",    tr:"antasi",   geo:"ათასი",              ru:"тысяча",                       en:"thousand"},
+];
+
+// ─── ТЕМЫ ────────────────────────────────────────────────────────────────────
+const TOPICS = [
+  {key:"all",          ru:"Все",           ge:"ყველა",        en:"All",           icon:"📖"},
+  {key:"family",       ru:"Семья",         ge:"ოჯახი",        en:"Family",        icon:"👨‍👩‍👧"},
+  {key:"greetings",    ru:"Приветствия",   ge:"მისალმება",    en:"Greetings",     icon:"👋"},
+  {key:"pronouns",     ru:"Местоимения",   ge:"ნაცვალსახ.",   en:"Pronouns",      icon:"🗣️"},
+  {key:"nature",       ru:"Природа",       ge:"ბუნება",       en:"Nature",        icon:"🌿"},
+  {key:"animals",      ru:"Животные",      ge:"ცხოველები",    en:"Animals",       icon:"🐾"},
+  {key:"food",         ru:"Еда",           ge:"საჭმელი",      en:"Food",          icon:"🍞"},
+  {key:"society",      ru:"Общество",      ge:"საზოგადოება",  en:"Society",       icon:"🏙️"},
+  {key:"time_place",   ru:"Время/место",   ge:"დრო/ადგილი",   en:"Time & Place",  icon:"🕐"},
+  {key:"language",     ru:"Язык",          ge:"ენა",          en:"Language",      icon:"💬"},
+  {key:"descriptions", ru:"Описания",      ge:"აღწერა",       en:"Descriptions",  icon:"✨"},
+  {key:"home",         ru:"Дом",           ge:"სახლი",        en:"Home",          icon:"🏠"},
+  {key:"numbers",      ru:"Числа",         ge:"რიცხვები",     en:"Numbers",       icon:"🔢"},
+];
+
+// цвета меток
+const TAG_COLORS = {
+  "рус.":       {bg:"rgba(70,100,220,0.22)",  color:"#a8bfff"},
+  "груз.":      {bg:"rgba(210,70,70,0.22)",   color:"#ffaaaa"},
+  "перс.":      {bg:"rgba(200,140,30,0.22)",  color:"#ffd080"},
+  "тур.":       {bg:"rgba(200,140,30,0.22)",  color:"#ffd080"},
+  "греч.":      {bg:"rgba(100,200,120,0.22)", color:"#aaffcc"},
+  "заимств.":   {bg:"rgba(160,160,160,0.2)",  color:"#cccccc"},
+  "бот.":       {bg:"rgba(50,180,50,0.22)",   color:"#80ff80"},
+  "зоол.":      {bg:"rgba(50,170,210,0.22)",  color:"#80dfff"},
+  "зоол., сам.":{bg:"rgba(50,170,210,0.22)",  color:"#80dfff"},
+  "сам.":       {bg:"rgba(180,70,210,0.22)",  color:"#ffaaff"},
+  "сен.":       {bg:"rgba(180,70,210,0.22)",  color:"#ffaaff"},
+};
+
 export default function App() {
-  const [uiLang, setUiLang]    = useState("ru");
+  const [uiLang, setUiLang]     = useState("ru");
   const [query, setQuery]       = useState("");
   const [searchIn, setSearchIn] = useState("all");
   const [topic, setTopic]       = useState("all");
+  const [alpha, setAlpha]       = useState("all");
 
-  const UI = {
-    ru: { title:"Мегрельский словарь", sub:"Перевод на мегрельский язык", ph:"Поиск слова...",
-          all:"Все языки", noResult:"Ничего не найдено", total:"слов в базе", searchIn:"Искать в:" },
-    en: { title:"Mingrelian Dictionary", sub:"Translation into Mingrelian", ph:"Search a word...",
-          all:"All languages", noResult:"Nothing found", total:"words in database", searchIn:"Search in:" },
-    ge: { title:"მეგრული ლექსიკონი", sub:"მეგრულ ენაზე თარგმანი", ph:"სიტყვის ძიება...",
-          all:"ყველა ენა", noResult:"არაფერი არ მოიძებნა", total:"სიტყვა ბაზაში", searchIn:"ძებნა:" },
-  };
-  const t = UI[uiLang] || UI.ru;
-  const FLAG = { ru:"🇷🇺", en:"🇬🇧", ge:"🇬🇪" };
-
-  const topicLabel = (tp) => tp[uiLang === "ge" ? "ge" : uiLang === "en" ? "en" : "ru"];
+  const alphaList = useMemo(() => {
+    const s = new Set();
+    DICT.forEach(e => { const ch = firstLetter(e.meg); if (ch) s.add(ch); });
+    return ["all", ...GEO_ALPHA.filter(l => s.has(l))];
+  }, []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return DICT.filter(entry => {
-      const matchTopic = topic === "all" || entry.topic === topic;
-      if (!matchTopic) return false;
+    return DICT.filter(e => {
+      if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
+      if (topic !== "all" && e.topic !== topic) return false;
       if (!q) return true;
-      if (searchIn === "all") {
-        return (
-          entry.meg.toLowerCase().includes(q) ||
-          entry.geo.toLowerCase().includes(q) ||
-          entry.ru.toLowerCase().includes(q) ||
-          entry.en.toLowerCase().includes(q)
-        );
-      }
-      return entry[searchIn]?.toLowerCase().includes(q);
+      if (searchIn === "all") return (
+        e.meg.toLowerCase().includes(q) ||
+        e.geo.toLowerCase().includes(q) ||
+        e.ru.toLowerCase().includes(q) ||
+        e.en.toLowerCase().includes(q)
+      );
+      return e[searchIn]?.toLowerCase().includes(q);
     });
-  }, [query, searchIn, topic]);
+  }, [query, searchIn, topic, alpha]);
+
+  const UI = {
+    ru:{title:"Мегрельский словарь",   sub:"Климов & Каджаиа, 2023",  ph:"Поиск слова…",    noR:"Ничего не найдено", tot:"слов в базе", sin:"Искать в:"},
+    en:{title:"Mingrelian Dictionary", sub:"Klimov & Kadjaia, 2023",   ph:"Search a word…",  noR:"Nothing found",     tot:"words",       sin:"Search in:"},
+    ge:{title:"მეგრული ლექსიკონი",    sub:"კლიმოვი & კაჯაია, 2023",  ph:"სიტყვის ძიება…", noR:"ვერ მოიძებნა",      tot:"სიტყვა",      sin:"ძებნა:"},
+  };
+  const t = UI[uiLang];
+  const FLAG = {ru:"🇷🇺", en:"🇬🇧", ge:"🇬🇪"};
+  const topLabel = tp => uiLang==="ge" ? tp.ge : uiLang==="en" ? tp.en : tp.ru;
+  const allLabel = uiLang==="ge" ? "ყველა" : uiLang==="en" ? "All" : "Все";
+  const q = query.trim();
 
   return (
-    <div style={{
-      minHeight:"100vh",
-      background:"#0f1a12",
-      fontFamily:"'Georgia','Noto Serif Georgian',serif",
-      color:"#e8e0cc",
-    }}>
-      <div style={{ position:"fixed", inset:0, pointerEvents:"none",
-        background:"radial-gradient(ellipse 80% 50% at 50% 0%, rgba(60,140,60,0.1) 0%, transparent 65%)" }} />
-
+    <div style={{minHeight:"100vh",background:"#0f1a12",fontFamily:"'Georgia','Noto Serif Georgian',serif",color:"#e8e0cc"}}>
+      <div style={{position:"fixed",inset:0,pointerEvents:"none",background:"radial-gradient(ellipse 80% 50% at 50% 0%,rgba(60,140,60,0.1) 0%,transparent 65%)"}}/>
       <style>{`
-        @keyframes up { from{transform:translateY(18px);opacity:0} to{transform:translateY(0);opacity:1} }
-        .up { animation: up 0.3s ease-out; }
-        input:focus { outline:none; }
-        .pill { border:none; border-radius:20px; padding:5px 13px; font-size:12px;
-          font-family:Georgia,serif; cursor:pointer; transition:all 0.15s; }
-        .pill:hover { transform:scale(1.04); }
-        .card { transition: transform 0.15s, box-shadow 0.15s; }
-        .card:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(0,0,0,0.4); }
-        .search-pill { border:none; border-radius:14px; padding:4px 11px; font-size:12px;
-          font-family:Georgia,serif; cursor:pointer; transition:background 0.15s; }
-        .topic-scroll::-webkit-scrollbar { display:none; }
-        .topic-scroll { -ms-overflow-style:none; scrollbar-width:none; }
+        @keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+        .fu{animation:fadeUp 0.25s ease-out}
+        input:focus{outline:none}
+        .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s}
+        .pill:hover{transform:scale(1.04)}
+        .card{transition:transform 0.15s,box-shadow 0.15s;position:relative}
+        .card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.45)}
+        .sc::-webkit-scrollbar{display:none}
+        .sc{-ms-overflow-style:none;scrollbar-width:none}
       `}</style>
 
-      <header style={{
-        position:"sticky", top:0, zIndex:100,
-        background:"rgba(8,14,9,0.92)", backdropFilter:"blur(14px)",
-        borderBottom:"1px solid rgba(80,160,80,0.2)",
-        padding:"12px 18px",
-        display:"flex", alignItems:"center", justifyContent:"space-between",
-      }}>
-        <div style={{ display:"flex", alignItems:"center", gap:9 }}>
-          <span style={{ fontSize:24 }}>📖</span>
+      {/* ШАПКА */}
+      <header style={{position:"sticky",top:0,zIndex:100,background:"rgba(8,14,9,0.93)",backdropFilter:"blur(14px)",borderBottom:"1px solid rgba(80,160,80,0.18)",padding:"11px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{display:"flex",alignItems:"center",gap:9}}>
+          <span style={{fontSize:22}}>📖</span>
           <div>
-            <div style={{ fontWeight:"bold", fontSize:17, color:"#7dcf7d", letterSpacing:1 }}>
-              {t.title}
-            </div>
-            <div style={{ fontSize:11, color:"rgba(232,224,204,0.45)" }}>{t.sub}</div>
+            <div style={{fontWeight:"bold",fontSize:16,color:"#7dcf7d",letterSpacing:.8}}>{t.title}</div>
+            <div style={{fontSize:10,color:"rgba(232,224,204,0.38)"}}>{t.sub}</div>
           </div>
         </div>
-        <div style={{ display:"flex", gap:5 }}>
-          {[["ru","Рус"],["en","Eng"],["ge","ქარ"]].map(([l,lb]) => (
-            <button key={l} className="pill" onClick={() => setUiLang(l)}
-              style={{
-                background: uiLang===l ? "#7dcf7d" : "rgba(80,160,80,0.12)",
-                color: uiLang===l ? "#0f1a12" : "#e8e0cc",
-                fontWeight: uiLang===l ? "bold" : "normal",
-                border: "1px solid rgba(80,160,80,0.25)",
-              }}>
-              {FLAG[l] || "🇬🇪"} {lb}
+        <div style={{display:"flex",gap:4}}>
+          {[["ru","Рус"],["en","Eng"],["ge","ქარ"]].map(([l,lb])=>(
+            <button key={l} className="pill" onClick={()=>setUiLang(l)} style={{padding:"5px 11px",fontSize:12,background:uiLang===l?"#7dcf7d":"rgba(80,160,80,0.12)",color:uiLang===l?"#0f1a12":"#e8e0cc",fontWeight:uiLang===l?"bold":"normal",border:"1px solid rgba(80,160,80,0.24)"}}>
+              {FLAG[l]} {lb}
             </button>
           ))}
         </div>
       </header>
 
-      <div style={{ maxWidth:680, margin:"0 auto", padding:"24px 16px 60px" }}>
+      <div style={{maxWidth:700,margin:"0 auto",padding:"16px 14px 60px"}}>
 
-        <div className="topic-scroll" style={{
-          display:"flex", gap:8, overflowX:"auto",
-          paddingBottom:4, marginBottom:16,
-        }}>
-          {TOPICS.map(tp => (
-            <button key={tp.key} className="pill"
-              onClick={() => setTopic(tp.key)}
-              style={{
-                whiteSpace:"nowrap",
-                background: topic===tp.key ? "#7dcf7d" : "rgba(80,160,80,0.1)",
-                color: topic===tp.key ? "#0f1a12" : "#e8e0cc",
-                fontWeight: topic===tp.key ? "bold" : "normal",
-                border: "1px solid rgba(80,160,80,0.25)",
-                padding:"7px 14px", fontSize:13,
-              }}>
-              {tp.icon} {topicLabel(tp)}
+        {/* АЛФАВИТ */}
+        <div style={{marginBottom:10}}>
+          <div style={{fontSize:10,color:"rgba(232,224,204,0.32)",marginBottom:5,letterSpacing:1.5,textTransform:"uppercase"}}>
+            {uiLang==="ru"?"Алфавит":uiLang==="en"?"Alphabet":"ანბანი"}
+          </div>
+          <div className="sc" style={{display:"flex",gap:3,overflowX:"auto",paddingBottom:3}}>
+            {alphaList.map(l=>{
+              const isAll = l==="all";
+              const active = alpha===l;
+              return (
+                <button key={l} className="pill" onClick={()=>setAlpha(l)} style={{
+                  whiteSpace:"nowrap",
+                  minWidth: isAll ? "auto" : 34,
+                  padding: isAll ? "5px 11px" : "3px 5px",
+                  fontSize: isAll ? 12 : 20,
+                  fontFamily:"'Noto Serif Georgian',Georgia,serif",
+                  background: active ? "#7dcf7d" : "rgba(80,160,80,0.1)",
+                  color: active ? "#0f1a12" : "#b8d8b8",
+                  fontWeight: active ? "bold" : "normal",
+                  border:"1px solid rgba(80,160,80,0.2)",
+                  lineHeight:1.2, textAlign:"center",
+                }}>
+                  {isAll ? allLabel : l}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ТЕМЫ */}
+        <div className="sc" style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:3,marginBottom:13}}>
+          {TOPICS.map(tp=>(
+            <button key={tp.key} className="pill" onClick={()=>setTopic(tp.key)} style={{
+              whiteSpace:"nowrap",padding:"5px 11px",fontSize:12,
+              background:topic===tp.key?"#7dcf7d":"rgba(80,160,80,0.1)",
+              color:topic===tp.key?"#0f1a12":"#e8e0cc",
+              fontWeight:topic===tp.key?"bold":"normal",
+              border:"1px solid rgba(80,160,80,0.2)",
+            }}>
+              {tp.icon} {topLabel(tp)}
             </button>
           ))}
         </div>
 
-        <div className="up" style={{
-          background:"rgba(80,160,80,0.08)",
-          border:"1px solid rgba(80,160,80,0.3)",
-          borderRadius:18, padding:"16px 18px", marginBottom:16,
-        }}>
-          <div style={{ position:"relative" }}>
-            <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)", fontSize:18, opacity:0.5 }}>🔍</span>
-            <input
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              placeholder={t.ph}
-              style={{
-                width:"100%", boxSizing:"border-box",
-                background:"rgba(255,255,255,0.06)",
-                border:"1px solid rgba(80,160,80,0.3)",
-                borderRadius:12, padding:"12px 14px 12px 40px",
-                fontSize:17, color:"#e8e0cc",
-                fontFamily:"Georgia,'Noto Serif Georgian',serif",
-              }}
-            />
-            {query && (
-              <button onClick={() => setQuery("")}
-                style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)",
-                  background:"none", border:"none", color:"rgba(232,224,204,0.5)",
-                  cursor:"pointer", fontSize:18 }}>✕</button>
-            )}
+        {/* ПОИСК */}
+        <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
+          <div style={{position:"relative"}}>
+            <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
+            <input value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.ph}
+              style={{width:"100%",boxSizing:"border-box",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:10,padding:"10px 34px 10px 37px",fontSize:16,color:"#e8e0cc",fontFamily:"Georgia,'Noto Serif Georgian',serif"}}/>
+            {query && <button onClick={()=>setQuery("")} style={{position:"absolute",right:9,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"rgba(232,224,204,0.4)",cursor:"pointer",fontSize:18}}>✕</button>}
           </div>
-          <div style={{ display:"flex", gap:6, marginTop:10, flexWrap:"wrap", alignItems:"center" }}>
-            <span style={{ fontSize:11, color:"rgba(232,224,204,0.45)", marginRight:2 }}>{t.searchIn}</span>
-            {[["all",t.all],["meg","მეგრული"],["geo","ქართული"],["ru","Русский"],["en","English"]].map(([k,lb]) => (
-              <button key={k} className="search-pill" onClick={() => setSearchIn(k)}
-                style={{
-                  background: searchIn===k ? "#7dcf7d" : "rgba(80,160,80,0.1)",
-                  color: searchIn===k ? "#0f1a12" : "#e8e0cc",
-                  fontWeight: searchIn===k ? "bold" : "normal",
-                  border:"1px solid rgba(80,160,80,0.25)",
-                }}>
-                {lb}
-              </button>
+          <div style={{display:"flex",gap:4,marginTop:8,flexWrap:"wrap",alignItems:"center"}}>
+            <span style={{fontSize:10,color:"rgba(232,224,204,0.35)"}}>{t.sin}</span>
+            {[["all",allLabel],["meg","მეგრ."],["ru","Рус."],["en","Eng."],["geo","ქარ."]].map(([k,lb])=>(
+              <button key={k} onClick={()=>setSearchIn(k)} style={{
+                border:"1px solid rgba(80,160,80,0.2)",borderRadius:12,padding:"2px 8px",fontSize:11,
+                fontFamily:"Georgia,serif",cursor:"pointer",
+                background:searchIn===k?"#7dcf7d":"rgba(80,160,80,0.1)",
+                color:searchIn===k?"#0f1a12":"#e8e0cc",
+                fontWeight:searchIn===k?"bold":"normal",
+              }}>{lb}</button>
             ))}
           </div>
         </div>
 
-        <div style={{ marginBottom:14 }}>
-          <span style={{ fontSize:12, color:"rgba(232,224,204,0.4)" }}>
-            {results.length} / {DICT.length} {t.total}
-          </span>
+        {/* СЧЁТЧИК */}
+        <div style={{marginBottom:10,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+          <span style={{fontSize:11,color:"rgba(232,224,204,0.35)"}}>{results.length} / {DICT.length} {t.tot}</span>
+          {alpha!=="all" && <span style={{fontSize:20,color:"#7dcf7d",fontFamily:"'Noto Serif Georgian',Georgia,serif",background:"rgba(80,160,80,0.12)",borderRadius:6,padding:"0 8px",border:"1px solid rgba(80,160,80,0.18)"}}>{alpha}</span>}
+          {topic!=="all" && <span style={{fontSize:11,color:"rgba(180,220,180,0.5)",background:"rgba(80,160,80,0.07)",borderRadius:6,padding:"1px 7px",border:"1px solid rgba(80,160,80,0.13)"}}>{TOPICS.find(tp=>tp.key===topic)?.icon} {topLabel(TOPICS.find(tp=>tp.key===topic))}</span>}
         </div>
 
-        {results.length === 0 ? (
-          <div style={{ textAlign:"center", padding:"60px 0", color:"rgba(232,224,204,0.35)", fontSize:15 }}>
-            <div style={{ fontSize:40, marginBottom:12 }}>🔎</div>
-            {t.noResult}
+        {/* КАРТОЧКИ */}
+        {results.length===0 ? (
+          <div style={{textAlign:"center",padding:"55px 0",color:"rgba(232,224,204,0.3)",fontSize:15}}>
+            <div style={{fontSize:36,marginBottom:10}}>🔎</div>{t.noR}
           </div>
         ) : (
-          <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            {results.map((entry, i) => (
-              <div key={i} className="card" style={{
-                background:"rgba(255,255,255,0.04)",
-                border:"1px solid rgba(80,160,80,0.18)",
-                borderRadius:15, padding:"16px 18px",
-              }}>
-                <div style={{ marginBottom:10 }}>
-                  <div style={{ fontSize:30, fontWeight:"bold", color:"#7dcf7d",
-                    letterSpacing:1.5, fontFamily:"'Noto Serif Georgian',Georgia,serif" }}>
-                    {highlight(entry.meg, query)}
-                  </div>
-                  <div style={{ fontSize:13, color:"rgba(180,220,180,0.5)",
-                    fontStyle:"italic", letterSpacing:0.5, marginTop:2 }}>
-                    {entry.tr}
-                  </div>
-                </div>
-                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"8px 14px" }}>
-                  {[
-                    { lang:"ქართ.", val:entry.geo, color:"rgba(180,200,255,0.85)" },
-                    { lang:"Рус",   val:entry.ru,  color:"rgba(232,224,204,0.85)" },
-                    { lang:"Eng",   val:entry.en,  color:"rgba(200,220,200,0.85)" },
-                  ].map(({ lang, val, color }) => (
-                    <div key={lang}>
-                      <div style={{ fontSize:10, color:"rgba(232,224,204,0.35)",
-                        letterSpacing:1, textTransform:"uppercase", marginBottom:2 }}>
-                        {lang}
-                      </div>
-                      <div style={{ fontSize:15, color, fontFamily:"'Noto Serif Georgian',Georgia,serif" }}>
-                        {highlight(val, query)}
-                      </div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {results.map((entry,i)=>{
+              const ts = entry.tag ? (TAG_COLORS[entry.tag] || {bg:"rgba(150,150,150,0.18)",color:"#ccc"}) : null;
+              return (
+                <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px"}}>
+
+                  {/* МЕТКА — сверху справа */}
+                  {entry.tag && (
+                    <span style={{position:"absolute",top:9,right:11,fontSize:10,fontFamily:"Georgia,sans-serif",background:ts.bg,color:ts.color,border:`1px solid ${ts.color}55`,borderRadius:5,padding:"1px 6px",letterSpacing:.5,whiteSpace:"nowrap"}}>
+                      {entry.tag}
+                    </span>
+                  )}
+
+                  {/* МЕГРЕЛЬСКОЕ + ТРАНСЛИТЕРАЦИЯ */}
+                  <div style={{marginBottom:9,paddingRight:entry.tag?72:0}}>
+                    <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
+                      <HL text={entry.meg} q={q}/>
                     </div>
-                  ))}
+                    <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{entry.tr}]</div>
+                  </div>
+
+                  {/* 3 КОЛОНКИ: ქართ. / Рус. / Eng. */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
+                    {[
+                      {lbl:"ქართ.", val:entry.geo, col:"rgba(180,200,255,0.85)"},
+                      {lbl:"Рус.",  val:entry.ru,  col:"rgba(232,224,204,0.85)"},
+                      {lbl:"Eng.",  val:entry.en,  col:"rgba(200,222,200,0.85)"},
+                    ].map(({lbl,val,col})=>(
+                      <div key={lbl}>
+                        <div style={{fontSize:9,color:"rgba(232,224,204,0.27)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{lbl}</div>
+                        <div style={{fontSize:13,color:col,fontFamily:lbl==="ქართ."?"'Noto Serif Georgian',Georgia,serif":"inherit",lineHeight:1.35}}>
+                          <HL text={val} q={q}/>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
-        <div style={{ textAlign:"center", marginTop:40,
-          color:"rgba(232,224,204,0.2)", fontSize:12, lineHeight:1.8 }}>
+        <div style={{textAlign:"center",marginTop:40,color:"rgba(232,224,204,0.15)",fontSize:11,lineHeight:2}}>
           <div>✦</div>
-          <div>Georgian-Megrelian-Laz-Svan-English Dictionary, 2015</div>
+          <div>Климов Г.А., Каджаиа О.М.</div>
+          <div>Мегрельско-русско-грузинский словарь. М.: Говорун, 2023.</div>
         </div>
       </div>
     </div>
