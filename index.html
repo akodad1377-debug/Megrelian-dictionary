@@ -32,6 +32,30 @@
 <!-- Canonical URL -->
 <link rel="canonical" href="https://megrelian-dictionary.vercel.app/" />
 
+<!-- ══════════════════════════════════════════════
+     PWA / ИКОНКА НА ЭКРАНЕ ДОМОЙ
+     Положи megrelian-icon.svg в папку /public/
+     ══════════════════════════════════════════════ -->
+
+<!-- iOS: иконка при сохранении на экран домой -->
+<link rel="apple-touch-icon" href="/megrelian-icon.svg" />
+
+<!-- iOS: название под иконкой -->
+<meta name="apple-mobile-web-app-title" content="მარგალური" />
+
+<!-- iOS: полноэкранный режим (без адресной строки Safari) -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!-- Android / Chrome: цвет строки браузера -->
+<meta name="theme-color" content="#0f1a12" />
+
+<!-- Универсальная иконка (браузерная вкладка и Android) -->
+<link rel="icon" type="image/svg+xml" href="/megrelian-icon.svg" />
+
+<!-- PWA манифест (Android «Добавить на главный экран») -->
+<link rel="manifest" href="/manifest.json" />
+
 <!-- Шрифт -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400;700&display=swap" rel="stylesheet" />
