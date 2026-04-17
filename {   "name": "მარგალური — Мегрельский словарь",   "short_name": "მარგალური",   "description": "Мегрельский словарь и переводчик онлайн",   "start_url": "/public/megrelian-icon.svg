@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Main background gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1a0c"/>
+      <stop offset="50%" style="stop-color:#0f2214"/>
+      <stop offset="100%" style="stop-color:#071209"/>
+    </linearGradient>
+
+```
+<!-- Green glow gradient -->
+<radialGradient id="glow" cx="50%" cy="38%" r="55%">
+  <stop offset="0%" style="stop-color:#2d7a3a;stop-opacity:0.6"/>
+  <stop offset="100%" style="stop-color:#0a1a0c;stop-opacity:0"/>
+</radialGradient>
+
+<!-- Gold shimmer on letters -->
+<linearGradient id="letterGold" x1="0%" y1="0%" x2="0%" y2="100%">
+  <stop offset="0%" style="stop-color:#f0d060"/>
+  <stop offset="45%" style="stop-color:#e8c840"/>
+  <stop offset="100%" style="stop-color:#b89020"/>
+</linearGradient>
+
+<!-- Green accent gradient -->
+<linearGradient id="greenAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" style="stop-color:#7dcf7d"/>
+  <stop offset="100%" style="stop-color:#4ab04a"/>
+</linearGradient>
+
+<!-- Border gradient -->
+<linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" style="stop-color:#4a9a4a;stop-opacity:0.9"/>
+  <stop offset="50%" style="stop-color:#7dcf7d;stop-opacity:0.5"/>
+  <stop offset="100%" style="stop-color:#2d6a2d;stop-opacity:0.9"/>
+</linearGradient>
+
+<!-- Clip for rounded rect -->
+<clipPath id="roundClip">
+  <rect width="512" height="512" rx="112" ry="112"/>
+</clipPath>
+
+<filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+  <feGaussianBlur stdDeviation="8" result="blur"/>
+  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+</filter>
+
+<filter id="letterGlow" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="4" result="blur"/>
+  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+```
+
+  </defs>
+
+  <!-- ── BACKGROUND ── -->
+
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#glow)"/>
+
+  <!-- ── SUBTLE GEOMETRIC BORDER PATTERN (Caucasian) ── -->
+
+  <!-- Outer ring border -->
+
+<rect x="18" y="18" width="476" height="476" rx="98" ry="98"
+fill="none" stroke="url(#borderGrad)" stroke-width="1.5" opacity="0.7"/>
+<rect x="26" y="26" width="460" height="460" rx="92" ry="92"
+fill="none" stroke="rgba(125,207,125,0.15)" stroke-width="1"/>
+
+  <!-- Corner ornament dots -->
+
+  <g opacity="0.5">
+    <circle cx="80"  cy="80"  r="3" fill="#7dcf7d"/>
+    <circle cx="432" cy="80"  r="3" fill="#7dcf7d"/>
+    <circle cx="80"  cy="432" r="3" fill="#7dcf7d"/>
+    <circle cx="432" cy="432" r="3" fill="#7dcf7d"/>
+
+```
+<circle cx="80"  cy="80"  r="7" fill="none" stroke="#7dcf7d" stroke-width="1" opacity="0.4"/>
+<circle cx="432" cy="80"  r="7" fill="none" stroke="#7dcf7d" stroke-width="1" opacity="0.4"/>
+<circle cx="80"  cy="432" r="7" fill="none" stroke="#7dcf7d" stroke-width="1" opacity="0.4"/>
+<circle cx="432" cy="432" r="7" fill="none" stroke="#7dcf7d" stroke-width="1" opacity="0.4"/>
+```
+
+  </g>
+
+  <!-- ── TOP DECORATIVE LINE ── -->
+
+  <line x1="100" y1="118" x2="412" y2="118" stroke="rgba(125,207,125,0.2)" stroke-width="1"/>
+  <!-- tiny diamond in center of line -->
+  <polygon points="256,112 262,118 256,124 250,118" fill="rgba(125,207,125,0.35)"/>
+
+  <!-- ── MAIN GEORGIAN LETTER მ (large, centered) ── -->
+
+  <!-- Glow layer -->
+
+<text x="256" y="280"
+font-family="'Noto Serif Georgian', 'DejaVu Sans', serif"
+font-size="220"
+text-anchor="middle"
+dominant-baseline="middle"
+fill="rgba(45,122,58,0.4)"
+filter="url(#softGlow)">მ</text>
+
+  <!-- Main letter -->
+
+<text x="256" y="280"
+font-family="'Noto Serif Georgian', 'DejaVu Sans', serif"
+font-size="220"
+text-anchor="middle"
+dominant-baseline="middle"
+fill="url(#letterGold)"
+filter="url(#letterGlow)">მ</text>
+
+  <!-- ── SUBTITLE LETTERS (small Georgian alphabet strip) ── -->
+
+<text x="256" y="370"
+font-family="'Noto Serif Georgian', 'DejaVu Sans', serif"
+font-size="24"
+text-anchor="middle"
+dominant-baseline="middle"
+fill="rgba(125,207,125,0.55)"
+letter-spacing="6">ა ბ გ დ ე ვ ზ</text>
+
+  <!-- ── GREEN ACCENT BAR UNDER SUBTITLE ── -->
+
+  <rect x="180" y="390" width="152" height="2" rx="1" fill="url(#greenAccent)" opacity="0.4"/>
+
+  <!-- ── TOP TITLE TEXT ── -->
+
+<text x="256" y="96"
+font-family="Georgia, 'Noto Serif Georgian', serif"
+font-size="18"
+text-anchor="middle"
+dominant-baseline="middle"
+fill="rgba(232,224,204,0.55)"
+letter-spacing="3">MEGRELIAN</text>
+
+  <!-- ── BOTTOM TEXT ── -->
+
+<text x="256" y="430"
+font-family="Georgia, serif"
+font-size="14"
+text-anchor="middle"
+dominant-baseline="middle"
+fill="rgba(125,207,125,0.45)"
+letter-spacing="2">DICTIONARY</text>
+
+  <!-- ── TINY DOTS (decorative) ── -->
+
+  <g fill="rgba(125,207,125,0.3)">
+    <circle cx="200" cy="430" r="2"/>
+    <circle cx="312" cy="430" r="2"/>
+    <circle cx="256" cy="452" r="1.5" opacity="0.5"/>
+  </g>
+
+  <!-- ── FINAL OUTER GLOW RING ── -->
+
+<rect width="512" height="512" rx="112" ry="112"
+fill="none"
+stroke="rgba(125,207,125,0.12)"
+stroke-width="3"/>
+</svg>
