@@ -6,21 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 ```
-<!-- SEO: названия и описания на трёх языках -->
 <title>მარგალური — Мегрельский словарь и переводчик / Mingrelian Dictionary</title>
 <meta name="description" content="Мегрельский словарь и переводчик онлайн. Перевод слов на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი. Mingrelian dictionary and translator." />
-
-<!-- Ключевые слова -->
 <meta name="keywords" content="мегрельский словарь, мегрельский переводчик, мегрельский язык, мегрельские слова, мегрельский онлайн, megrelian dictionary, megrelian translator, mingrelian dictionary, mingrelian language, მეგრული ლექსიკონი, მეგრული თარგმანი, მარგალური ენა" />
-
-<!-- Google Search Console -->
 <meta name="google-site-verification" content="lRAa8W_EInorNJaBXAcYPCpraBWcFvJvA01M1b8PLzk" />
-
-<!-- Автор -->
 <meta name="author" content="მარგალური" />
 <meta name="robots" content="index, follow" />
 
-<!-- Open Graph (для соцсетей) -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://megrelian-dictionary.vercel.app/" />
 <meta property="og:title" content="მარგალური — Мегрельский словарь и переводчик" />
@@ -28,35 +20,14 @@
 <meta property="og:locale" content="ru_RU" />
 <meta property="og:locale:alternate" content="ka_GE" />
 <meta property="og:locale:alternate" content="en_US" />
-
-<!-- Canonical URL -->
 <link rel="canonical" href="https://megrelian-dictionary.vercel.app/" />
 
-<!-- ══════════════════════════════════════════════
-     PWA / ИКОНКА НА ЭКРАНЕ ДОМОЙ
-     Положи megrelian-icon.svg в папку /public/
-     ══════════════════════════════════════════════ -->
-
-<!-- iOS: иконка при сохранении на экран домой -->
-<link rel="apple-touch-icon" href="/IMG_8739.png" />
-
-<!-- iOS: название под иконкой -->
-<meta name="apple-mobile-web-app-title" content="მარგალური" />
-
-<!-- iOS: полноэкранный режим (без адресной строки Safari) -->
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="მარგალური" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-<!-- Android / Chrome: цвет строки браузера -->
 <meta name="theme-color" content="#0f1a12" />
-
-<!-- Универсальная иконка (браузерная вкладка и Android) -->
-<link rel="icon" type="image/svg+xml" href="/megrelian-icon.svg" />
-
-<!-- PWA манифест (Android «Добавить на главный экран») -->
 <link rel="manifest" href="/manifest.json" />
 
-<!-- Шрифт -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400;700&display=swap" rel="stylesheet" />
 
@@ -64,6 +35,58 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0f1a12; }
 </style>
+
+<script>
+  (function() {
+    var c = document.createElement('canvas');
+    c.width = 512; c.height = 512;
+    var ctx = c.getContext('2d');
+    var S = 512;
+    function rr(r) {
+      ctx.beginPath();
+      ctx.moveTo(r,0); ctx.lineTo(S-r,0);
+      ctx.quadraticCurveTo(S,0,S,r);
+      ctx.lineTo(S,S-r);
+      ctx.quadraticCurveTo(S,S,S-r,S);
+      ctx.lineTo(r,S);
+      ctx.quadraticCurveTo(0,S,0,S-r);
+      ctx.lineTo(0,r);
+      ctx.quadraticCurveTo(0,0,r,0);
+      ctx.closePath();
+    }
+    var bg = ctx.createLinearGradient(0,0,S,S);
+    bg.addColorStop(0,'#0a1a0c');
+    bg.addColorStop(0.5,'#0f2214');
+    bg.addColorStop(1,'#071209');
+    rr(112); ctx.fillStyle=bg; ctx.fill();
+    var glow = ctx.createRadialGradient(S/2,190,0,S/2,190,280);
+    glow.addColorStop(0,'rgba(45,122,58,0.55)');
+    glow.addColorStop(1,'rgba(10,26,12,0)');
+    rr(112); ctx.fillStyle=glow; ctx.fill();
+    rr(100); ctx.strokeStyle='rgba(125,207,125,0.45)'; ctx.lineWidth=2; ctx.stroke();
+    ctx.font='600 18px Georgia,serif';
+    ctx.fillStyle='rgba(232,224,204,0.5)';
+    ctx.textAlign='center';
+    ctx.fillText('MEGRELIAN',256,96);
+    ctx.font="bold 230px Georgia,serif";
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.shadowColor='rgba(60,160,60,0.6)'; ctx.shadowBlur=25;
+    var gold = ctx.createLinearGradient(256,120,256,390);
+    gold.addColorStop(0,'#f5e070');
+    gold.addColorStop(0.5,'#e8c840');
+    gold.addColorStop(1,'#b89020');
+    ctx.fillStyle=gold;
+    ctx.fillText('\u10DB',256,285);
+    ctx.shadowBlur=0; ctx.textBaseline='alphabetic';
+    ctx.font='14px Georgia,serif';
+    ctx.fillStyle='rgba(125,207,125,0.45)';
+    ctx.fillText('DICTIONARY',256,430);
+    var link = document.createElement('link');
+    link.rel = 'apple-touch-icon';
+    link.href = c.toDataURL('image/png');
+    document.head.appendChild(link);
+  })();
+</script>
 ```
 
   </head>
