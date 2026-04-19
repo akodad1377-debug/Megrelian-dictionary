@@ -321,6 +321,44 @@ const DICT = [
     meg:"ოში",        tr:"oši",         geo:"ასი",                ru:"сто",                          en:"hundred"},
   {topic:"numbers",
     meg:"ანთასი",     tr:"antasi",      geo:"ათასი",              ru:"тысяча",                       en:"thousand"},
+
+  // ── РАЗНОЕ (из словаря, буква ა) ─────────────────────────────────
+  {topic:"misc",
+    meg:"აბა!",       tr:"aba",         geo:"აბა!",               ru:"ну-ка! да! ну!",               en:"come on! hey!"},
+  {topic:"misc",
+    meg:"აბაზი",      tr:"abazi",       geo:"აბაზი, ოცი კაპიკი",  ru:"двугривенный, двадцать копеек",en:"twenty kopecks"},
+  {topic:"misc",
+    meg:"აბანა",      tr:"abana",       geo:"1. აბანო 2. სამკურნალო წყლები", ru:"1. баня 2. лечебные воды", en:"1. bath 2. medicinal waters"},
+  {topic:"misc",
+    meg:"აბანი",      tr:"abani",       geo:"ადგილი",             ru:"место",                        en:"place"},
+  {topic:"misc",
+    meg:"აბარწა",     tr:"abarc̣a",     geo:"ჟირმალი; ლია აივანი",ru:"крыльцо; открытый балкон",    en:"porch; open balcony"},
+  {topic:"misc",
+    meg:"აბაშა",      tr:"abaša",       geo:"აბაშა (სოფელი, მდინარე)", ru:"Абаша (село и река в Мегрелии)", en:"Abasha (village and river in Mingrelia)"},
+  {topic:"misc",
+    meg:"აბაშური",    tr:"abašuri",     geo:"1. აბაშელი 2. აბაშური", ru:"1. абашец 2. абашский",    en:"1. person from Abasha 2. of Abasha"},
+  {topic:"misc",
+    meg:"აბორჯება",   tr:"aborǯeba",    geo:"აბნევა, დაბნევა",    ru:"растеряться",                  en:"to get confused, to get lost"},
+  {topic:"misc",
+    meg:"აბორჯებული", tr:"aborǯebuli", geo:"დაბნეული",            ru:"растерянный; рассеянный",      en:"confused; absent-minded"},
+  {topic:"misc",
+    meg:"აბჟუა",      tr:"abžua",       geo:"აფხაზეთი",           ru:"Абхазия",                      en:"Abkhazia"},
+  {topic:"misc",
+    meg:"აბრაგალა",   tr:"abragala",    geo:"აბრაგად ყოფნა, აბრაგობა", ru:"абречество, разбойничество", en:"brigandage, outlaw life"},
+  {topic:"misc",
+    meg:"აბრაგი",     tr:"abragi",      geo:"აბრაგი",             ru:"абрек, разбойник",             en:"abrek, brigand"},
+  {topic:"misc",
+    meg:"აბუჩეჩი",    tr:"abučeči",     geo:"მცენარის ერთ-ერთი სახეობა", ru:"род травы (ботан.)",   en:"a type of plant (bot.)"},
+  {topic:"misc",
+    meg:"აგაგა",      tr:"agaga",       geo:"მოჩვენება, ლანდი; ჩონჩხი", ru:"привидение, призрак; скелет", en:"ghost, apparition; skeleton"},
+  {topic:"misc",
+    meg:"აგაფა",      tr:"agapa",       geo:"კვეტო",              ru:"соха (сам.)",                  en:"plow (Samurz. dial.)"},
+  {topic:"misc",
+    meg:"აგვარა",     tr:"agvara",      geo:"1. ბაკი 2. ბოსელი, გომური", ru:"1. скотный двор 2. хлев", en:"1. cattle yard 2. barn, cowshed"},
+  {topic:"misc",
+    meg:"აგვართა",    tr:"agvarta",     geo:"ბრბო, თაყარილობა",   ru:"масса, толпа",                 en:"mass, crowd"},
+  {topic:"misc",
+    meg:"ადამიანი",   tr:"adamiani",    geo:"ადამიანი, გადატ. ქალი", ru:"человек; перен. женщина",   en:"person; fig. woman"},
 ];
 
 // ─── ТЕМЫ ────────────────────────────────────────────────────────────────────
@@ -338,6 +376,7 @@ const TOPICS = [
   {key:"descriptions", ru:"Описания",      ge:"აღწერა",       en:"Descriptions",  icon:"✨"},
   {key:"home",         ru:"Дом",           ge:"სახლი",        en:"Home",          icon:"🏠"},
   {key:"numbers",      ru:"Числа",         ge:"რიცხვები",     en:"Numbers",       icon:"🔢"},
+  {key:"misc",         ru:"Разное",        ge:"სხვადასხვა",   en:"Misc",          icon:"📚"},
 ];
 
 export default function App() {
