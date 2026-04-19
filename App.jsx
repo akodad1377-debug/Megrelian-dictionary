@@ -7,6 +7,25 @@ function firstLetter(meg) {
   return "";
 }
 
+// Сортировка по грузинскому алфавиту (посимвольно, как в словаре)
+function compareGeorgian(a, b) {
+  const aw = a.meg;
+  const bw = b.meg;
+  const len = Math.max(aw.length, bw.length);
+  for (let i = 0; i < len; i++) {
+    const ac = aw[i] ?? "";
+    const bc = bw[i] ?? "";
+    if (ac === bc) continue;
+    const ai = GEO_ALPHA.indexOf(ac);
+    const bi = GEO_ALPHA.indexOf(bc);
+    // если символ не в алфавите — ставим в конец
+    const an = ai === -1 ? 999 : ai;
+    const bn = bi === -1 ? 999 : bi;
+    if (an !== bn) return an - bn;
+  }
+  return 0;
+}
+
 function HL({ text, q }) {
   if (!q || !text) return text;
   const idx = text.toLowerCase().indexOf(q.toLowerCase());
@@ -405,7 +424,7 @@ export default function App() {
         e.en.toLowerCase().includes(q)
       );
       return e[searchIn]?.toLowerCase().includes(q);
-    });
+    }).sort(compareGeorgian);
   }, [query, searchIn, topic, alpha]);
 
   const UI = {
