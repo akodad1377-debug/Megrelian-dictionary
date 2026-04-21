@@ -173,7 +173,7 @@ const DICT = [
 
   // ── ДОМ ──────────────────────────────────────────────────────────
   {topic:"home", meg:"აბანა",         tr:"abana",       geo:"1. აბანო 2. სამკურნალო წყლები", ru:"1. баня 2. лечебные воды",         en:"1. bath 2. medicinal waters"},
-  {topic:"home", meg:"აბარwა",        tr:"abarc̣a",     geo:"ჟირმალი; ლია აივანი",         ru:"крыльцо; открытый балкон",            en:"porch; open balcony"},
+  {topic:"home", meg:"აბარწა",        tr:"abarc̣a",     geo:"ჟირმალი; ლია აივანი",         ru:"крыльцо; открытый балкон",            en:"porch; open balcony"},
   {topic:"home", meg:"აგაფა",         tr:"agapa",       geo:"კვეტო",                       ru:"соха (сам.)",                         en:"plow (Samurz. dial.)"},
   {topic:"home", meg:"აგვარა",        tr:"agvara",      geo:"1. ბაკი 2. ბოსელი, გომური",  ru:"1. скотный двор 2. хлев",             en:"1. cattle yard 2. barn"},
   {topic:"home", meg:"აკოშკა",        tr:"aḳošḳa",     geo:"ფანჯარა",                     ru:"окно",                                en:"window"},
