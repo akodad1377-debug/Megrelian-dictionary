@@ -1,12 +1,12 @@
 {
-  "name": "Мегрельский словарь",
-  "short_name": "მეგრული",
-  "description": "Мегрельско-русско-грузинский словарь. Климов & Каджаиа, 2023.",
+  "name": "მარგალური",
+  "short_name": "მარგალური",
+  "description": "Мегрельский словарь и переводчик",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f1a12",
-  "theme_color": "#7dcf7d",
   "orientation": "portrait",
+  "background_color": "#0f1a12",
+  "theme_color": "#0f1a12",
   "icons": [
     {
       "src": "/icon-192.png",
