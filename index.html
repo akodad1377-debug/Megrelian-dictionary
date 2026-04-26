@@ -1,87 +1,109 @@
 <!DOCTYPE html>
-
 <html lang="ka">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-```
-<title>მარგალური</title>
-<meta name="description" content="Мегрельский словарь и переводчик онлайн. Перевод слов на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი. Mingrelian dictionary and translator." />
-<meta name="keywords" content="мегрельский словарь, мегрельский переводчик, мегрельский язык, мегрельские слова, мегрельский онлайн, megrelian dictionary, megrelian translator, mingrelian dictionary, mingrelian language, მეგრული ლექსიკონი, მეგრული თარგმანი, მარგალური ენა" />
-<meta name="google-site-verification" content="lRAa8W_EInorNJaBXAcYPCpraBWcFvJvA01M1b8PLzk" />
-<meta name="author" content="მარგალური" />
-<meta name="robots" content="index, follow" />
+    <title>მარგალური</title>
+    <meta name="description" content="Мегрельский словарь и переводчик онлайн. Перевод слов на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი. Mingrelian dictionary and translator." />
+    <meta name="keywords" content="мегрельский словарь, мегрельский переводчик, мегрельский язык, мегрельские слова, мегрельский онлайн, megrelian dictionary, megrelian translator, mingrelian dictionary, mingrelian language, მეგრული ლექსიკონი, მეგრული თარგმანი, მარგალური ენა" />
+    <meta name="google-site-verification" content="lRAa8W_EInorNJaBXAcYPCpraBWcFvJvA01M1b8PLzk" />
+    <meta name="author" content="მარგალური" />
+    <meta name="robots" content="index, follow" />
 
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://megrelian-dictionary.vercel.app/" />
-<meta property="og:title" content="მარგალური — Мегрельский словарь и переводчик" />
-<meta property="og:description" content="Мегрельский словарь онлайн. Перевод на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი." />
-<meta property="og:locale" content="ru_RU" />
-<meta property="og:locale:alternate" content="ka_GE" />
-<meta property="og:locale:alternate" content="en_US" />
-<link rel="canonical" href="https://megrelian-dictionary.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://megrelian-dictionary.vercel.app/" />
+    <meta property="og:title" content="მარგალური — Мегрельский словарь и переводчик" />
+    <meta property="og:description" content="Мегრельский словарь онлайн. Перевод на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი." />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:locale:alternate" content="ka_GE" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <link rel="canonical" href="https://megrelian-dictionary.vercel.app/" />
 
-<!-- PWA / Apple -->
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="მარგალური" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="theme-color" content="#0f1a12" />
-<link rel="manifest" href="/manifest.json" />
+    <!-- PWA / Apple -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="მარგალური" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0f1a12" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- Манифест вшит inline через blob — не зависит от сервера -->
+    <script>
+      (function() {
+        var manifest = {
+          name: "მარგალური",
+          short_name: "მარგალური",
+          description: "Мегрельский словарь и переводчик",
+          start_url: "/",
+          display: "standalone",
+          orientation: "portrait",
+          background_color: "#0f1a12",
+          theme_color: "#0f1a12",
+          icons: [{
+            src: "/megrelian-icon.svg",
+            sizes: "any",
+            type: "image/svg+xml"
+          }]
+        };
+        var blob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = url;
+        document.head.appendChild(link);
+      })();
+    </script>
 
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0f1a12; }
-</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400;700&display=swap" rel="stylesheet" />
 
-<script>
-  (function() {
-    var c = document.createElement('canvas');
-    c.width = 512; c.height = 512;
-    var ctx = c.getContext('2d');
-    var S = 512;
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #0f1a12; }
+    </style>
 
-    function rr(r) {
-      ctx.beginPath();
-      ctx.moveTo(r,0); ctx.lineTo(S-r,0);
-      ctx.quadraticCurveTo(S,0,S,r);
-      ctx.lineTo(S,S-r);
-      ctx.quadraticCurveTo(S,S,S-r,S);
-      ctx.lineTo(r,S);
-      ctx.quadraticCurveTo(0,S,0,S-r);
-      ctx.lineTo(0,r);
-      ctx.quadraticCurveTo(0,0,r,0);
-      ctx.closePath();
-    }
+    <script>
+      (function() {
+        var c = document.createElement('canvas');
+        c.width = 512; c.height = 512;
+        var ctx = c.getContext('2d');
+        var S = 512;
 
-    var bg = ctx.createLinearGradient(0,0,S,S);
-    bg.addColorStop(0,'#f0faf0');
-    bg.addColorStop(1,'#d8f0d8');
-    rr(112); ctx.fillStyle=bg; ctx.fill();
+        function rr(r) {
+          ctx.beginPath();
+          ctx.moveTo(r,0); ctx.lineTo(S-r,0);
+          ctx.quadraticCurveTo(S,0,S,r);
+          ctx.lineTo(S,S-r);
+          ctx.quadraticCurveTo(S,S,S-r,S);
+          ctx.lineTo(r,S);
+          ctx.quadraticCurveTo(0,S,0,S-r);
+          ctx.lineTo(0,r);
+          ctx.quadraticCurveTo(0,0,r,0);
+          ctx.closePath();
+        }
 
-    ctx.font="bold 340px 'Noto Serif Georgian',Georgia,serif";
-    ctx.textAlign='center';
-    ctx.textBaseline='middle';
-    ctx.shadowColor='rgba(0,100,0,0.2)';
-    ctx.shadowBlur=20;
-    var green = ctx.createLinearGradient(256,100,256,420);
-    green.addColorStop(0,'#2d8a2d');
-    green.addColorStop(1,'#1a5c1a');
-    ctx.fillStyle=green;
-    ctx.fillText('\u10db',256,270);
+        var bg = ctx.createLinearGradient(0,0,S,S);
+        bg.addColorStop(0,'#f0faf0');
+        bg.addColorStop(1,'#d8f0d8');
+        rr(112); ctx.fillStyle=bg; ctx.fill();
 
-    var link = document.createElement('link');
-    link.rel = 'apple-touch-icon';
-    link.href = c.toDataURL('image/png');
-    document.head.appendChild(link);
-  })();
-</script>
-```
+        ctx.font="bold 340px 'Noto Serif Georgian',Georgia,serif";
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.shadowColor='rgba(0,100,0,0.2)';
+        ctx.shadowBlur=20;
+        var green = ctx.createLinearGradient(256,100,256,420);
+        green.addColorStop(0,'#2d8a2d');
+        green.addColorStop(1,'#1a5c1a');
+        ctx.fillStyle=green;
+        ctx.fillText('\u10db',256,270);
 
+        var link = document.createElement('link');
+        link.rel = 'apple-touch-icon';
+        link.href = c.toDataURL('image/png');
+        document.head.appendChild(link);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
