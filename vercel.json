@@ -1,6 +1,7 @@
-
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+{
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/((?!manifest.json|sw.js|.*\\.js|.*\\.css|.*\\.png|.*\\.svg|.*\\.ico).*)", "destination": "/index.html" }
   ]
 }
