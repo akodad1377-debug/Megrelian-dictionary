@@ -2,7 +2,7 @@
 <html lang="ka">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <title>მარგალური</title>
     <meta name="description" content="Мегрельский словарь и переводчик онлайн. Перевод слов на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი. Mingrelian dictionary and translator." />
@@ -14,7 +14,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://megrelian-dictionary.vercel.app/" />
     <meta property="og:title" content="მარგალური — Мегрельский словарь и переводчик" />
-    <meta property="og:description" content="Мегრельский словарь онлайн. Перевод на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი." />
+    <meta property="og:description" content="Мегрельский словарь онлайн. Перевод на мегрельский язык с русского, грузинского и английского. მეგრული ლექსიკონი." />
     <meta property="og:locale" content="ru_RU" />
     <meta property="og:locale:alternate" content="ka_GE" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -23,10 +23,10 @@
     <!-- PWA / Apple -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="მარგალური" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="theme-color" content="#0f1a12" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="theme-color" content="#080e09" />
 
-    <!-- Манифест вшит inline через blob — не зависит от сервера -->
+    <!-- Манифест inline -->
     <script>
       (function() {
         var manifest = {
@@ -60,6 +60,10 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { background: #0f1a12; }
+      /* Отступ под статус-бар iOS */
+      header {
+        padding-top: env(safe-area-inset-top) !important;
+      }
     </style>
 
     <script>
