@@ -196,6 +196,15 @@ const DICT = [
   {topic:"home", meg:"ღობერი",        tr:"ğoberi",      geo:"ღობე",                        ru:"забор",                               en:"fence"},
   {topic:"home", meg:"ჸუდე",          tr:"ʼude",        geo:"სახლი",                       ru:"дом",                                 en:"house"},
 
+
+  // ── ТЕЛО ─────────────────────────────────────────────────────────
+  {topic:"body", meg:"დუდი",       tr:"dudi",        geo:"თავი",                        ru:"голова",                              en:"head"},
+  {topic:"body", meg:"ჸვა",        tr:"ʼva",         geo:"შუბლი",                       ru:"лоб",                                 en:"forehead"},
+  {topic:"body", meg:"თოლი",       tr:"toli",         geo:"თვალი",                       ru:"глаз",                                en:"eye"},
+  {topic:"body", meg:"თომა",       tr:"toma",         geo:"თმა",                         ru:"волосы",                              en:"hair",        dialects:{sen:{meg:"თომა",tr:"toma"},sam:{meg:"თუმა",tr:"tuma"}}},
+  {topic:"body", meg:"წაბი",       tr:"c̣abi",        geo:"წარბი",                       ru:"бровь",                               en:"eyebrow"},
+  {topic:"body", meg:"წიმორთი",    tr:"c̣imorti",     geo:"ნაკუთალი (წვივისა)",          ru:"икра (ноги)",                         en:"calf (of leg)"},
+  {topic:"body", meg:"წყურკუჩხი",  tr:"c̣q̣urkučxi",  geo:"კოჭი",                        ru:"лодыжка",                             en:"ankle",          dialect:"sam"},
   // ── ЧИСЛА ────────────────────────────────────────────────────────
   {topic:"numbers", num:1,    meg:"ართი",       tr:"arti",        geo:"ერთი",                        ru:"один",                                en:"one"},
   {topic:"numbers", num:2,    meg:"ჟირი",       tr:"žiri",        geo:"ორი",                         ru:"два",                                 en:"two"},
@@ -227,6 +236,7 @@ const TOPICS = [
   {key:"language",     ru:"Язык",          ge:"ენა",          en:"Language",      icon:"💬"},
   {key:"descriptions", ru:"Описания",      ge:"აღწერა",       en:"Descriptions",  icon:"✨"},
   {key:"home",         ru:"Дом",           ge:"სახლი",        en:"Home",          icon:"🏠"},
+  {key:"body",         ru:"Тело",           ge:"სხეული",       en:"Body",          icon:"🫀"},
   {key:"numbers",      ru:"Числа",         ge:"რიცხვები",     en:"Numbers",       icon:"🔢"},
 ];
 
@@ -409,21 +419,39 @@ export default function App() {
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {results.map((entry,i)=>(
               <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
-                {entry.dialect && (
-                  <div style={{position:"absolute",top:10,right:10,fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,
-                    background:entry.dialect==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)",
-                    color:entry.dialect==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)",
-                    border:entry.dialect==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)",
-                  }}>
-                    {entry.dialect==="sam"?"сам.":"сен."}
-                  </div>
-                )}
-                <div style={{marginBottom:9}}>
-                  <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
-                    <HL text={entry.meg} q={q}/>
-                  </div>
-                  <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{entry.tr}]</div>
-                </div>
+                {(() => {
+                  const hasDialects = !!entry.dialects;
+                  const activeDial = hasDialects && dialect !== "all" && entry.dialects[dialect] ? dialect
+                    : hasDialects ? "sen" : null;
+                  const displayMeg = hasDialects ? entry.dialects[activeDial]?.meg || entry.meg : entry.meg;
+                  const displayTr  = hasDialects ? entry.dialects[activeDial]?.tr  || entry.tr  : entry.tr;
+                  return (<>
+                    {/* Бейдж диалекта или переключатель */}
+                    <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
+                      {hasDialects ? (
+                        Object.keys(entry.dialects).map(d=>(
+                          <button key={d} onClick={()=>setDialect(d)} style={{
+                            fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,cursor:"pointer",border:"none",
+                            background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.35)":"rgba(255,160,80,0.35)"):"rgba(255,255,255,0.06)",
+                            color:activeDial===d?(d==="sam"?"rgba(160,200,255,1)":"rgba(255,200,130,1)"):"rgba(232,224,204,0.3)",
+                          }}>{d==="sam"?"сам.":"сен."}</button>
+                        ))
+                      ) : entry.dialect ? (
+                        <div style={{fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,
+                          background:entry.dialect==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)",
+                          color:entry.dialect==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)",
+                          border:entry.dialect==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)",
+                        }}>{entry.dialect==="sam"?"сам.":"сен."}</div>
+                      ) : null}
+                    </div>
+                    <div style={{marginBottom:9}}>
+                      <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
+                        <HL text={displayMeg} q={q}/>
+                      </div>
+                      <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{displayTr}]</div>
+                    </div>
+                  </>);
+                })()}
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
                   {[
                     {lbl:"ქართ.", val:entry.geo, col:"rgba(180,200,255,0.85)"},
