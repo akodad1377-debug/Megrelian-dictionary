@@ -129,7 +129,7 @@ const DICT = [
   // ── ВРЕМЯ И МЕСТО ────────────────────────────────────────────────
   {topic:"time_place", meg:"აბანი",   tr:"abani",       geo:"ადგილი",                      ru:"место",                               en:"place"},
   {topic:"time_place", meg:"აბაშა",   tr:"abaša",       geo:"აბაშა (სოფელი, მდინარე)",     ru:"Абаша (село и река в Мегрелии)",      en:"Abasha (village and river in Mingrelia)"},
-  {topic:"time_place", meg:"აბჟუა",   tr:"abžua",       geo:"აფხაზეთი",                    ru:"Абхазия",                             en:"Abkhazia"},
+  {topic:"time_place", meg:"აბჟუა",   tr:"abžua",   dialect:"sam",       geo:"აფხაზეთი",                    ru:"Абхазия",                             en:"Abkhazia"},
   {topic:"time_place", meg:"ადრე",    tr:"adre",        geo:"ადრე",                        ru:"рано",                                en:"early"},
   {topic:"time_place", meg:"ამდღა",   tr:"amdğa",       geo:"დღეს",                        ru:"сегодня",                             en:"today"},
   {topic:"time_place", meg:"ამნიჯი",  tr:"amniǯi",      geo:"ამ საღამოს",                  ru:"этим вечером",                        en:"this evening"},
@@ -157,8 +157,8 @@ const DICT = [
   {topic:"language", meg:"სახელი",    tr:"saxeli",      geo:"სახელი",                      ru:"имя",                                 en:"name"},
 
   // ── ОПИСАНИЯ ─────────────────────────────────────────────────────
-  {topic:"descriptions", meg:"აბორჯება",  tr:"aborǯeba",  geo:"აბნევა, დაბნევა",           ru:"растеряться",                         en:"to get confused"},
-  {topic:"descriptions", meg:"აბორჯებული",tr:"aborǯebuli",geo:"დაბნეული",                  ru:"растерянный; рассеянный",             en:"confused; absent-minded"},
+  {topic:"descriptions", meg:"აბორჯება",  tr:"aborǯeba",  dialect:"sen",  geo:"აბნევა, დაბნევა",           ru:"растеряться",                         en:"to get confused"},
+  {topic:"descriptions", meg:"აბორჯებული",tr:"aborǯebuli",dialect:"sen",geo:"დაბნეული",                  ru:"растерянный; рассеянный",             en:"confused; absent-minded"},
   {topic:"descriptions", meg:"ადვილო",    tr:"advilo",    geo:"ადვილად",                   ru:"легко (нареч.)",                      en:"easily"},
   {topic:"descriptions", meg:"ამუნათი",   tr:"amunati",   geo:"ლამაზი, საუკეთესო",         ru:"прекрасный",                          en:"beautiful, wonderful"},
   {topic:"descriptions", meg:"ბედი",      tr:"bedi",      geo:"ბედი",                      ru:"судьба, счастье, участь",             en:"fate, destiny"},
@@ -173,8 +173,8 @@ const DICT = [
 
   // ── ДОМ ──────────────────────────────────────────────────────────
   {topic:"home", meg:"აბანა",         tr:"abana",       geo:"1. აბანო 2. სამკურნალო წყლები", ru:"1. баня 2. лечебные воды",         en:"1. bath 2. medicinal waters"},
-  {topic:"home", meg:"აბარწა",        tr:"abarc̣a",     geo:"ჟირმალი; ლია აივანი",         ru:"крыльцо; открытый балкон",            en:"porch; open balcony"},
-  {topic:"home", meg:"აგაფა",         tr:"agapa",       geo:"კვეტო",                       ru:"соха (сам.)",                         en:"plow (Samurz. dial.)"},
+  {topic:"home", meg:"აბარწა",        tr:"abarc̣a",     dialect:"sam",     geo:"ჟირმალი; ლია აივანი",         ru:"крыльцо; открытый балкон",            en:"porch; open balcony"},
+  {topic:"home", meg:"აგაფა",         tr:"agapa",       dialect:"sam",       geo:"კვეტო",                       ru:"соха (сам.)",                         en:"plow (Samurz. dial.)"},
   {topic:"home", meg:"აგვარა",        tr:"agvara",      geo:"1. ბაკი 2. ბოსელი, გომური",  ru:"1. скотный двор 2. хлев",             en:"1. cattle yard 2. barn"},
   {topic:"home", meg:"აკოშკა",        tr:"aḳošḳa",     geo:"ფანჯარა",                     ru:"окно",                                en:"window"},
   {topic:"home", meg:"ბალიში",        tr:"bališi",      geo:"ბალიში",                      ru:"подушка",                             en:"pillow"},
@@ -197,20 +197,20 @@ const DICT = [
   {topic:"home", meg:"ჸუდე",          tr:"ʼude",        geo:"სახლი",                       ru:"дом",                                 en:"house"},
 
   // ── ЧИСЛА ────────────────────────────────────────────────────────
-  {topic:"numbers", meg:"ართი",       tr:"arti",        geo:"ერთი",                        ru:"один",                                en:"one"},
-  {topic:"numbers", meg:"ანთასი",     tr:"antasi",      geo:"ათასი",                       ru:"тысяча",                              en:"thousand"},
-  {topic:"numbers", meg:"ამშვი",      tr:"amšvi",       geo:"ექვსი",                       ru:"шесть",                               en:"six"},
-  {topic:"numbers", meg:"ეჩი",        tr:"eči",         geo:"ოცი",                         ru:"двадцать",                            en:"twenty"},
-  {topic:"numbers", meg:"ეჩდოვითი",   tr:"ečdoviti",    geo:"ოცდაათი",                     ru:"тридцать",                            en:"thirty"},
-  {topic:"numbers", meg:"ვითი",       tr:"viti",        geo:"ათი",                         ru:"десять",                              en:"ten"},
-  {topic:"numbers", meg:"ოთხი",       tr:"otxi",        geo:"ოთხი",                        ru:"четыре",                              en:"four"},
-  {topic:"numbers", meg:"ოში",        tr:"oši",         geo:"ასი",                         ru:"сто",                                 en:"hundred"},
-  {topic:"numbers", meg:"რუო",        tr:"ruo",         geo:"რვა",                         ru:"восемь",                              en:"eight"},
-  {topic:"numbers", meg:"სუმი",       tr:"sumi",        geo:"სამი",                        ru:"три",                                 en:"three"},
-  {topic:"numbers", meg:"შკვითი",     tr:"škviti",      geo:"შვიდი",                       ru:"семь",                                en:"seven"},
-  {topic:"numbers", meg:"ჩხორო",      tr:"čxoro",       geo:"ცხრა",                        ru:"девять",                              en:"nine"},
-  {topic:"numbers", meg:"ხუთი",       tr:"xuti",        geo:"ხუთი",                        ru:"пять",                                en:"five"},
-  {topic:"numbers", meg:"ჟირი",       tr:"žiri",        geo:"ორი",                         ru:"два",                                 en:"two"},
+  {topic:"numbers", num:1,    meg:"ართი",       tr:"arti",        geo:"ერთი",                        ru:"один",                                en:"one"},
+  {topic:"numbers", num:2,    meg:"ჟირი",       tr:"žiri",        geo:"ორი",                         ru:"два",                                 en:"two"},
+  {topic:"numbers", num:3,    meg:"სუმი",       tr:"sumi",        geo:"სამი",                        ru:"три",                                 en:"three"},
+  {topic:"numbers", num:4,    meg:"ოთხი",       tr:"otxi",        geo:"ოთხი",                        ru:"четыре",                              en:"four"},
+  {topic:"numbers", num:5,    meg:"ხუთი",       tr:"xuti",        geo:"ხუთი",                        ru:"пять",                                en:"five"},
+  {topic:"numbers", num:6,    meg:"ამშვი",      tr:"amšvi",       geo:"ექვსი",                       ru:"шесть",                               en:"six"},
+  {topic:"numbers", num:7,    meg:"შკვითი",     tr:"škviti",      geo:"შვიდი",                       ru:"семь",                                en:"seven"},
+  {topic:"numbers", num:8,    meg:"რუო",        tr:"ruo",         geo:"რვა",                         ru:"восемь",                              en:"eight"},
+  {topic:"numbers", num:9,    meg:"ჩხორო",      tr:"čxoro",       geo:"ცხრა",                        ru:"девять",                              en:"nine"},
+  {topic:"numbers", num:10,   meg:"ვითი",       tr:"viti",        geo:"ათი",                         ru:"десять",                              en:"ten"},
+  {topic:"numbers", num:20,   meg:"ეჩი",        tr:"eči",         geo:"ოცი",                         ru:"двадцать",                            en:"twenty"},
+  {topic:"numbers", num:30,   meg:"ეჩდოვითი",   tr:"ečdoviti",    geo:"ოცდაათი",                     ru:"тридцать",                            en:"thirty"},
+  {topic:"numbers", num:100,  meg:"ოში",        tr:"oši",         geo:"ასი",                         ru:"сто",                                 en:"hundred"},
+  {topic:"numbers", num:1000, meg:"ანთასი",     tr:"antasi",      geo:"ათასი",                       ru:"тысяча",                              en:"thousand"},
 ];
 
 const TOPICS = [
@@ -236,6 +236,7 @@ export default function App() {
   const [searchIn, setSearchIn] = useState("all");
   const [topic, setTopic]       = useState("all");
   const [alpha, setAlpha]       = useState("all");
+  const [dialect, setDialect]   = useState("all");
 
   const alphaList = useMemo(() => {
     const s = new Set();
@@ -248,6 +249,7 @@ export default function App() {
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
       if (topic !== "all" && e.topic !== topic) return false;
+      if (dialect !== "all" && e.dialect && e.dialect !== dialect) return false;
       if (!q) return true;
       if (searchIn === "all") return (
         e.meg.toLowerCase().includes(q) ||
@@ -256,8 +258,13 @@ export default function App() {
         e.en.toLowerCase().includes(q)
       );
       return e[searchIn]?.toLowerCase().includes(q);
-    }).sort(compareGeorgian);
-  }, [query, searchIn, topic, alpha]);
+    }).sort((a, b) => {
+      if (a.topic === "numbers" && b.topic === "numbers") {
+        return (a.num ?? 0) - (b.num ?? 0);
+      }
+      return compareGeorgian(a, b);
+    });
+  }, [query, searchIn, topic, alpha, dialect]);
 
   const UI = {
     ru:{title:"Мегрельский словарь",   sub:"Климов & Каджаиа, 2023",  ph:"Поиск слова…",    noR:"Ничего не найдено", tot:"слов в базе", sin:"Искать в:"},
@@ -345,6 +352,28 @@ export default function App() {
           ))}
         </div>
 
+
+        {/* ДИАЛЕКТ */}
+        <div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+          <span style={{fontSize:10,color:"rgba(232,224,204,0.32)",letterSpacing:1.5,textTransform:"uppercase"}}>
+            {uiLang==="ru"?"Диалект":uiLang==="en"?"Dialect":"დიალექტი"}
+          </span>
+          {[
+            {key:"all", ru:"Все",            en:"All",       ge:"ყველა"},
+            {key:"sam", ru:"Самурзакано-Зугдидский", en:"Samurz-Zugdidi", ge:"სამურზ.-ზუგდ."},
+            {key:"sen", ru:"Сенакско-Мартвильский",  en:"Senaki-Martvili", ge:"სენ.-მარტვ."},
+          ].map(d=>(
+            <button key={d.key} className="pill" onClick={()=>setDialect(d.key)} style={{
+              whiteSpace:"nowrap",padding:"4px 10px",fontSize:11,
+              background:dialect===d.key?"rgba(125,180,255,0.9)":"rgba(80,120,180,0.12)",
+              color:dialect===d.key?"#0f1a12":"rgba(180,200,255,0.7)",
+              fontWeight:dialect===d.key?"bold":"normal",
+              border:"1px solid rgba(80,120,180,0.25)",
+            }}>
+              {uiLang==="ru"?d.ru:uiLang==="en"?d.en:d.ge}
+            </button>
+          ))}
+        </div>
         <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
           <div style={{position:"relative"}}>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
@@ -379,7 +408,16 @@ export default function App() {
         ) : (
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {results.map((entry,i)=>(
-              <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px"}}>
+              <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
+                {entry.dialect && (
+                  <div style={{position:"absolute",top:10,right:10,fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,
+                    background:entry.dialect==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)",
+                    color:entry.dialect==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)",
+                    border:entry.dialect==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)",
+                  }}>
+                    {entry.dialect==="sam"?"сам.":"сен."}
+                  </div>
+                )}
                 <div style={{marginBottom:9}}>
                   <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
                     <HL text={entry.meg} q={q}/>
