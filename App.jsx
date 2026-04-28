@@ -247,6 +247,8 @@ export default function App() {
   const [topic, setTopic]       = useState("all");
   const [alpha, setAlpha]       = useState("all");
   const [dialect, setDialect]   = useState("all");
+  const [cardDialects, setCardDialects] = useState({});
+  const [cardDialects, setCardDialects] = useState({});
 
   const alphaList = useMemo(() => {
     const s = new Set();
@@ -421,8 +423,9 @@ export default function App() {
               <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
                 {(() => {
                   const hasDialects = !!entry.dialects;
-                  const activeDial = hasDialects && dialect !== "all" && entry.dialects[dialect] ? dialect
-                    : hasDialects ? "sen" : null;
+                  const activeDial = hasDialects
+                    ? (cardDialects[i] || Object.keys(entry.dialects)[0])
+                    : null;
                   const displayMeg = hasDialects ? entry.dialects[activeDial]?.meg || entry.meg : entry.meg;
                   const displayTr  = hasDialects ? entry.dialects[activeDial]?.tr  || entry.tr  : entry.tr;
                   return (<>
@@ -430,7 +433,7 @@ export default function App() {
                     <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
                       {hasDialects ? (
                         Object.keys(entry.dialects).map(d=>(
-                          <button key={d} onClick={()=>setDialect(d)} style={{
+                          <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[cardKey]:d}))} style={
                             fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,cursor:"pointer",border:"none",
                             background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.35)":"rgba(255,160,80,0.35)"):"rgba(255,255,255,0.06)",
                             color:activeDial===d?(d==="sam"?"rgba(160,200,255,1)":"rgba(255,200,130,1)"):"rgba(232,224,204,0.3)",
