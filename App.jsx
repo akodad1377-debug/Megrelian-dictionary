@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+// Данные подтягиваются из соседнего файла
 import { GEO_ALPHA, TOPICS, DICT } from "./data";
 
 // --- Вспомогательные функции ---
@@ -37,8 +38,8 @@ export default function App() {
   const [searchIn, setSearchIn] = useState("all");
   const [topic, setTopic]       = useState("all");
   const [alpha, setAlpha]       = useState("all");
-  const [dialect, setDialect]   = useState("all"); // Общий фильтр
-  const [cardDialects, setCardDialects] = useState({}); // Ручные переключения
+  const [dialect, setDialect]   = useState("all"); 
+  const [cardDialects, setCardDialects] = useState({}); 
 
   const alphaList = useMemo(() => {
     const s = new Set();
@@ -49,17 +50,21 @@ export default function App() {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return DICT.filter(e => {
+      // 1. Фильтр по алфавиту
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
+      // 2. Фильтр по темам
       if (topic !== "all" && e.topic !== topic) return false;
       
-      // Логика фильтрации: если выбран конкретный диалект, 
-      // показываем только те слова, где он есть (в корне или в dialects)
+      // 3. Умный фильтр диалектов:
+      // Показываем слово если: выбрано "Все" ИЛИ это общее слово ИЛИ слово совпадает с выбранным диалектом
       if (dialect !== "all") {
+        const isCommon = !e.dialect && !e.dialects; 
         const hasInRoot = e.dialect === dialect;
         const hasInVariants = e.dialects && !!e.dialects[dialect];
-        if (!hasInRoot && !hasInVariants) return false;
+        if (!isCommon && !hasInRoot && !hasInVariants) return false;
       }
 
+      // 4. Поиск
       if (!q) return true;
       if (searchIn === "all") return (
         e.meg.toLowerCase().includes(q) ||
@@ -117,7 +122,6 @@ export default function App() {
 
       <div style={{maxWidth:700,margin:"0 auto",padding:"16px 14px 60px"}}>
         
-        {/* АЛФАВИТ */}
         <div className="sc" style={{display:"flex",gap:3,overflowX:"auto",paddingBottom:8,marginBottom:8}}>
           {alphaList.map(l=>(
             <button key={l} className="pill" onClick={()=>setAlpha(l)} style={{
@@ -129,7 +133,6 @@ export default function App() {
           ))}
         </div>
 
-        {/* КАТЕГОРИИ */}
         <div className="sc" style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:10,marginBottom:15}}>
           {TOPICS.map(tp=>(
             <button key={tp.key} className="pill" onClick={()=>setTopic(tp.key)} style={{
@@ -141,7 +144,6 @@ export default function App() {
           ))}
         </div>
 
-        {/* ФИЛЬТР ДИАЛЕКТОВ */}
         <div style={{marginBottom:15, display:"flex", alignItems:"center", gap:8, flexWrap:"wrap"}}>
           <span style={{fontSize:10, color:"rgba(232,224,204,0.3)", textTransform:"uppercase"}}>{t.dial}:</span>
           {[
@@ -154,13 +156,10 @@ export default function App() {
               background: dialect===d.k ? "rgba(125,180,255,0.2)" : "rgba(80,160,80,0.05)",
               color: dialect===d.k ? "#7db4ff" : "rgba(232,224,204,0.5)",
               border: "1px solid rgba(80,160,80,0.15)"
-            }}>
-              {uiLang==="ge"?d.g : uiLang==="en"?d.e : d.r}
-            </button>
+            }}>{uiLang==="ge"?d.g : uiLang==="en"?d.e : d.r}</button>
           ))}
         </div>
 
-        {/* ПОИСК */}
         <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
           <div style={{position:"relative"}}>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
@@ -170,18 +169,14 @@ export default function App() {
           </div>
         </div>
 
-        {/* КАРТОЧКИ */}
         <div style={{fontSize:11,color:"rgba(232,224,204,0.35)",marginBottom:10}}>{results.length} / {DICT.length} {t.tot}</div>
         
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {results.map((entry,i)=>{
             const hasDialects = !!entry.dialects;
-            const ck = entry.meg; // Уникальный ключ слова
+            const ck = entry.meg; 
 
-            // ЛОГИКА ВЫБОРА: 
-            // 1. Если для этого слова есть ручной выбор (в cardDialects) — берем его.
-            // 2. Если ручного выбора нет, но в ОБЩЕМ фильтре выбран диалект (sam/sen) и он доступен для этого слова — берем его.
-            // 3. Иначе — берем первый доступный вариант.
+            // Определяем активный диалект для карточки
             let activeDial = cardDialects[ck];
             if (!activeDial && hasDialects) {
               if (dialect !== "all" && entry.dialects[dialect]) {
@@ -195,7 +190,7 @@ export default function App() {
             const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr  || entry.tr)  : entry.tr;
 
             return (
-              <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
+              <div key={i} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
                 <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
                   {hasDialects ? Object.keys(entry.dialects).map(d=>(
                     <button key={d} onClick={() => setCardDialects(prev => ({...prev, [ck]: d}))} style={{
