@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 const GEO_ALPHA = ["ა","ბ","გ","დ","ე","ვ","ზ","თ","ი","კ","ლ","მ","ნ","ო","პ","ჟ","რ","ს","ტ","უ","ფ","ქ","ღ","ყ","შ","ჩ","ც","ძ","წ","ჭ","ხ","ჯ","ჰ","ჸ"];
 
@@ -52,7 +52,7 @@ const DICT = [
   {topic:"family", meg:"დიდა",       tr:"dida",        geo:"დედა",                        ru:"мать",                                en:"mother"},
   {topic:"family", meg:"მუმა",       tr:"muma",        geo:"მამა",                        ru:"отец",                                en:"father"},
   {topic:"family", meg:"ბაბა",       tr:"baba",        geo:"მამა",                        ru:"папаша; обращение отца к сыну",       en:"papa; daddy"},
-  {topic:"family", meg:"ჯიმა",       tr:"ǯima",        geo:"ძმა",                         ru:"брат",                                en:"brother"},
+  {topic:"family", meg:"ჯიма",       tr:"ǯima",        geo:"ძმა",                         ru:"брат",                                en:"brother"},
   {topic:"family", meg:"და",         tr:"da",          geo:"და",                          ru:"сестра",                              en:"sister"},
   {topic:"family", meg:"სკუა",       tr:"skua",        geo:"შვილი",                       ru:"ребёнок, дитя",                       en:"child"},
   {topic:"family", meg:"ბოში",       tr:"boši",        geo:"ბიჭი, ვაჟი",                 ru:"мальчик, юноша; сын",                 en:"boy, young man; son"},
@@ -66,7 +66,7 @@ const DICT = [
   {topic:"family", meg:"ბიძისკუა",   tr:"biʒiskua",    geo:"ბიძაშვილი",                   ru:"двоюродный брат/сестра",              en:"cousin"},
   {topic:"family", meg:"ქომონჯი",    tr:"komonǯi",     geo:"ქმარი",                       ru:"муж",                                 en:"husband"},
   {topic:"family", meg:"ოსური",      tr:"osuri",       geo:"ცოლი",                        ru:"жена",                                en:"wife"},
-  {topic:"family", meg:"დიანთილი",   tr:"diantili",    geo:"დედამთილი",                   ru:"свекровь",                            en:"mother-in-law"},
+  {topic:"family", meg:"диანთილი",   tr:"diantili",    geo:"დედამთილი",                   ru:"свекровь",                            en:"mother-in-law"},
   {topic:"family", meg:"მუანთილი",   tr:"muantili",    geo:"მამამთილი",                   ru:"свёкор",                              en:"father-in-law"},
   {topic:"family", meg:"ნათესე",     tr:"natese",      geo:"ნათესავი",                    ru:"родственник",                         en:"relative"},
   {topic:"family", meg:"ბაღანა",     tr:"bağana",      geo:"ბავშვი, ბალღი",              ru:"ребёнок",                             en:"child, infant"},
@@ -80,11 +80,14 @@ const DICT = [
   {topic:"nature", meg:"ბუნება",     tr:"buneba",      geo:"ბუნება",                      ru:"природа",                             en:"nature"},
   {topic:"nature", meg:"დაჩხირი",    tr:"dačxiri",     geo:"ცეცხლი; ხანძარი",            ru:"огонь, пожар",                        en:"fire"},
   {topic:"nature", meg:"ქუა",        tr:"kua",         geo:"ქვა",                         ru:"камень",                              en:"stone"},
+  {topic:"nature", meg:"ატატია",     tr:"atatia",       geo:"თეთრი და ფუფუკი თოვლი",    ru:"очень белый и мягкий снег",           en:"very white and soft snow"},
+  {topic:"nature", meg:"ლანჯა",      tr:"lanǯa",        geo:"სპილენძი",                  ru:"медь",                                en:"copper"},
+  {topic:"nature", meg:"წურწუფა",    tr:"c̣urc̣upa",     geo:"გოგირდი",                   ru:"сера",                                en:"sulfur",         dialect:"sen"},
 
   // ── РАСТЕНИЯ ─────────────────────────────────────────────────────
   {topic:"plants", meg:"აბუჩეჩი",    tr:"abučeči",     geo:"მცენარის ერთ-ერთი სახეობა",  ru:"род травы (ботан.)",                  en:"a type of plant (bot.)"},
   {topic:"plants", meg:"ასკილი",     tr:"askili",      geo:"ასკილი",                      ru:"шиповник, дикая роза",                en:"wild rose, briar"},
-  {topic:"plants", meg:"ბამბე",      tr:"bambe",       geo:"ბამბა",                       ru:"хлопок, вата",                        en:"cotton, wadding"},
+  {topic:"plants", meg:"ბамბე",      tr:"bambe",       geo:"ბამბა",                       ru:"хлопок, вата",                        en:"cotton, wadding"},
   {topic:"plants", meg:"ბია",        tr:"bia",         geo:"კომში",                       ru:"айва",                                en:"quince"},
   {topic:"plants", meg:"ბინეხი",     tr:"binexi",      geo:"ვენახი, ვაზი",               ru:"виноградник, виноградная лоза",       en:"vineyard; grapevine"},
   {topic:"plants", meg:"ბული",       tr:"buli",        geo:"ბალი",                        ru:"черешня",                             en:"cherry"},
@@ -96,6 +99,19 @@ const DICT = [
   {topic:"animals", meg:"გირინი",    tr:"girini",      geo:"ვირი",                        ru:"осёл",                                en:"donkey"},
   {topic:"animals", meg:"ქოთომი",    tr:"kotomi",      geo:"ქათამი",                      ru:"курица",                              en:"hen"},
   {topic:"animals", meg:"ხოჯი",      tr:"xoǯi",        geo:"ხარი",                        ru:"бык",                                 en:"bull"},
+  {topic:"animals", meg:"არქემი",    tr:"arḳemi",      geo:"აქლემი",                    ru:"верблюд",                             en:"camel"},
+  {topic:"animals", meg:"ბარტყი",    tr:"barṭq̣i",      geo:"ბარტყი",                    ru:"птенец",                              en:"chick"},
+  {topic:"animals", meg:"ბათია",     tr:"batia",        geo:"ზაქი, ღოღო",                ru:"буйволёнок",                          en:"young buffalo"},
+  {topic:"animals", meg:"ბатки",     tr:"batki",        geo:"ციკანი (წლამდე)",           ru:"(годовалый) козлёнок",                en:"(yearling) kid"},
+  {topic:"animals", meg:"ბაღირია",   tr:"bağiria",      geo:"პატარა ბეღურა, ბარტყი",    ru:"воробышек",                           en:"sparrow chick"},
+  {topic:"animals", meg:"კვატა",     tr:"kvata",        geo:"იხვი",                      ru:"утка",                                en:"duck"},
+  {topic:"animals", meg:"კუ",        tr:"ku",           geo:"კუ",                        ru:"череპახა",                            en:"tortoise"},
+  {topic:"animals", meg:"ლაკვი",     tr:"lakvi",        geo:"ლეკვი",                     ru:"щенок",                               en:"puppy"},
+  {topic:"animals", meg:"ლომი",      tr:"lomi",         geo:"ლომი",                      ru:"лев",                                 en:"lion"},
+  {topic:"animals", meg:"ლოქორუა",   tr:"loḳorua",     geo:"ლოკოკინა",                  ru:"улитка",                              en:"snail",          dialect:"sen"},
+  {topic:"animals", meg:"მაბარუუ",   tr:"mabaruu",      geo:"მუხლუხო",                   ru:"гусеница",                            en:"caterpillar"},
+  {topic:"animals", meg:"ტი",        tr:"ṭi",           geo:"ტილი",                      ru:"вошь",                                en:"louse"},
+  {topic:"animals", meg:"წყირი",     tr:"c̣q̣iri",       geo:"რწყილი",                    ru:"блоха",                               en:"flea"},
 
   // ── ЕДА ──────────────────────────────────────────────────────────
   {topic:"food", meg:"ატამა",        tr:"atama",       geo:"ატამი",                       ru:"персик",                              en:"peach"},
@@ -125,6 +141,7 @@ const DICT = [
   {topic:"society", meg:"სოფელი",    tr:"sopeli",      geo:"სოფელი",                      ru:"село",                                en:"village"},
   {topic:"society", meg:"ქიანა",     tr:"kiana",       geo:"ქვეყანა",                     ru:"страна",                              en:"country"},
   {topic:"society", meg:"ხარხი",     tr:"xarxi",       geo:"ხალხი",                       ru:"народ, люди",                         en:"people, folk"},
+  {topic:"society", meg:"აფხაზა",    tr:"apxaza",       geo:"აფხაზი",                    ru:"абхаз",                               en:"Abkhazian"},
 
   // ── ВРЕМЯ И МЕСТО ────────────────────────────────────────────────
   {topic:"time_place", meg:"აბანი",   tr:"abani",       geo:"ადგილი",                      ru:"место",                               en:"place"},
@@ -132,7 +149,7 @@ const DICT = [
   {topic:"time_place", meg:"აბჟუა",   tr:"abžua",   dialect:"sam",       geo:"აფხაზეთი",                    ru:"Абхазия",                             en:"Abkhazia"},
   {topic:"time_place", meg:"ადრე",    tr:"adre",        geo:"ადრე",                        ru:"рано",                                en:"early"},
   {topic:"time_place", meg:"ამდღა",   tr:"amdğa",       geo:"დღეს",                        ru:"сегодня",                             en:"today"},
-  {topic:"time_place", meg:"ამნიჯი",  tr:"amniǯi",      geo:"ამ საღამოს",                  ru:"этим вечером",                        en:"this evening"},
+  {topic:"time_place", meg:"ამниჯი",  tr:"amniǯi",      geo:"ამ საღამოს",                  ru:"этим вечером",                        en:"this evening"},
   {topic:"time_place", meg:"აპრილი",  tr:"aprili",      geo:"აპრილი",                      ru:"апрель",                              en:"April"},
   {topic:"time_place", meg:"არგუსო",  tr:"arguso",      geo:"აგვისტო",                     ru:"август",                              en:"August"},
   {topic:"time_place", meg:"არდგილი", tr:"ardgili",     geo:"ადგილი",                      ru:"место",                               en:"place"},
@@ -145,6 +162,11 @@ const DICT = [
   {topic:"time_place", meg:"გაზაფხული",tr:"gazapxuli",  geo:"გაზაფხული",                   ru:"весна",                               en:"spring"},
   {topic:"time_place", meg:"სათი",    tr:"sati",        geo:"საათი",                       ru:"час, часы",                           en:"hour, clock"},
   {topic:"time_place", meg:"სო",      tr:"so",          geo:"სად",                         ru:"где",                                 en:"where"},
+  {topic:"time_place", meg:"ასხი",   tr:"asxi",         geo:"ასხი (მთა ჩრდ. სამეგრელოში)", ru:"Асхи (гора в сев. Мегрелии)",     en:"Askhi (mountain in N. Mingrelia)"},
+  {topic:"time_place", meg:"აფხაზეთი",tr:"apxazeti",   geo:"აფხაზეთი",                  ru:"Абхазия",                             en:"Abkhazia"},
+  {topic:"time_place", meg:"ახალ-სენაკი",tr:"axal-senaki",geo:"ახალი სენაკი",            ru:"Ахал-сенаки",                         en:"Akhal-Senaki"},
+  {topic:"time_place", meg:"ბათომი", tr:"batomi",       geo:"ბათუმი (ქალაქი)",           ru:"Батуми",                              en:"Batumi"},
+  {topic:"time_place", meg:"კულე",   tr:"kule",         geo:"სოხუმი",                    ru:"Сухуми",                              en:"Sukhumi"},
 
   // ── ЯЗЫК И ОБЩЕНИЕ ───────────────────────────────────────────────
   {topic:"language", meg:"აბა!",      tr:"aba",         geo:"აბა!",                        ru:"ну-ка! да! ну!",                      en:"come on! hey!"},
@@ -159,7 +181,7 @@ const DICT = [
   // ── ОПИСАНИЯ ─────────────────────────────────────────────────────
   {topic:"descriptions", meg:"აბორჯება",  tr:"aborǯeba",  dialect:"sen",  geo:"აბნევა, დაბნევა",           ru:"растеряться",                         en:"to get confused"},
   {topic:"descriptions", meg:"აბორჯებული",tr:"aborǯebuli",dialect:"sen",geo:"დაბნეული",                  ru:"растерянный; рассеянный",             en:"confused; absent-minded"},
-  {topic:"descriptions", meg:"ადვილო",    tr:"advilo",    geo:"ადვილად",                   ru:"легко (нареч.)",                      en:"easily"},
+  {topic:"descriptions", meg:"адвиლო",    tr:"advilo",    geo:"ადვილად",                   ru:"легко (нареч.)",                      en:"easily"},
   {topic:"descriptions", meg:"ამუნათი",   tr:"amunati",   geo:"ლამაზი, საუკეთესო",         ru:"прекрасный",                          en:"beautiful, wonderful"},
   {topic:"descriptions", meg:"ბედი",      tr:"bedi",      geo:"ბედი",                      ru:"судьба, счастье, участь",             en:"fate, destiny"},
   {topic:"descriptions", meg:"ბედნიერება",tr:"bedniereba",geo:"ბედნიერება",                ru:"счастье",                             en:"happiness"},
@@ -176,7 +198,7 @@ const DICT = [
   {topic:"home", meg:"აბარწა",        tr:"abarc̣a",     dialect:"sam",     geo:"ჟირმალი; ლია აივანი",         ru:"крыльцо; открытый балкон",            en:"porch; open balcony"},
   {topic:"home", meg:"აგაფა",         tr:"agapa",       dialect:"sam",       geo:"კვეტო",                       ru:"соха (сам.)",                         en:"plow (Samurz. dial.)"},
   {topic:"home", meg:"აგვარა",        tr:"agvara",      geo:"1. ბაკი 2. ბოსელი, გომური",  ru:"1. скотный двор 2. хлев",             en:"1. cattle yard 2. barn"},
-  {topic:"home", meg:"აკოშკა",        tr:"aḳošḳa",     geo:"ფანჯარა",                     ru:"окно",                                en:"window"},
+  {topic:"home", meg:"აკოшკა",        tr:"aḳošḳa",     geo:"ფანჯარა",                     ru:"окно",                                en:"window"},
   {topic:"home", meg:"ბალიში",        tr:"bališi",      geo:"ბალიში",                      ru:"подушка",                             en:"pillow"},
   {topic:"home", meg:"ბარბალი",       tr:"barbali",     geo:"ბორბალი",                     ru:"колесо",                              en:"wheel"},
   {topic:"home", meg:"ბარგი",         tr:"bargi",       geo:"სამოსი, ბარგი",               ru:"одежда; вещи, багаж",                 en:"clothes; belongings"},
@@ -191,96 +213,38 @@ const DICT = [
   {topic:"home", meg:"ონჯირალი",      tr:"onǯirali",    geo:"საძინებელი",                  ru:"спальня",                             en:"bedroom"},
   {topic:"home", meg:"ორთვალი",       tr:"ortvali",     geo:"სახურავი",                    ru:"крыша",                               en:"roof"},
   {topic:"home", meg:"პროლი",         tr:"p̣roli",      geo:"იატაკი",                      ru:"пол",                                 en:"floor"},
-  {topic:"home", meg:"სტოლი",         tr:"stoli",       geo:"მაგიდა",                      ru:"стол",                                en:"table"},
+  {topic:"home", meg:"სტოლი",         tr:"stoli",       geo:"მაгида",                      ru:"стол",                                en:"table"},
   {topic:"home", meg:"ტყვა",          tr:"ṭq̣va",       geo:"კიბე",                        ru:"лестница",                            en:"staircase"},
   {topic:"home", meg:"ღობერი",        tr:"ğoberi",      geo:"ღობე",                        ru:"забор",                               en:"fence"},
   {topic:"home", meg:"ჸუდე",          tr:"ʼude",        geo:"სახლი",                       ru:"дом",                                 en:"house"},
+  {topic:"home", meg:"კვაღა",        tr:"kvağa",        geo:"ნაჯახი",                    ru:"топорик",                             en:"hatchet"},
 
 
   // ── ТЕЛО ─────────────────────────────────────────────────────────
   {topic:"body", meg:"დუდი",       tr:"dudi",        geo:"თავი",                        ru:"голова",                              en:"head"},
   {topic:"body", meg:"ჸვა",        tr:"ʼva",         geo:"შუბლი",                       ru:"лоб",                                 en:"forehead"},
   {topic:"body", meg:"თოლი",       tr:"toli",         geo:"თვალი",                       ru:"глаз",                                en:"eye"},
-  {topic:"body", meg:"თომა",       tr:"toma",         geo:"თმა",                         ru:"волосы",                              en:"hair",        dialects:{sen:{meg:"თომა",tr:"toma"},sam:{meg:"თუმა",tr:"tuma"}}},
+  
+  // РАЗДЕЛИЛИ ВОЛОСЫ НА ДВА ДИАЛЕКТА ДЛЯ ОДНОРОДНОГО ДИЗАЙНА
+  {topic:"body", meg:"თომა",       tr:"toma",         geo:"თმა",                         ru:"волосы",                              en:"hair",        dialect:"sen"},
+  {topic:"body", meg:"თუმა",       tr:"tuma",         geo:"თმა",                         ru:"волосы",                              en:"hair",        dialect:"sam"},
+
   {topic:"body", meg:"წაბი",       tr:"c̣abi",        geo:"წარბი",                       ru:"бровь",                               en:"eyebrow"},
   {topic:"body", meg:"წიმორთი",    tr:"c̣imorti",     geo:"ნაკუთალი (წვივისა)",          ru:"икра (ноги)",                         en:"calf (of leg)"},
   {topic:"body", meg:"წყურკუჩხი",  tr:"c̣q̣urkučxi",  geo:"კოჭი",                        ru:"лодыжка",                             en:"ankle",          dialect:"sam"},
   {topic:"body", meg:"კვარბირგული", tr:"kvarbiguli",  geo:"მუხლის თავი",                 ru:"коленная чашечка",            en:"kneecap"},
-  {topic:"body", meg:"კუტუ",        tr:"kutu",         geo:"ბავშვის პენისი",               ru:"пенис (детский)",             en:"penis (child)"},
+  {topic:"body", meg:"კუტუ",        tr:"kutu",         geo:"ბავшვის პენისი",               ru:"пенис (детский)",             en:"penis (child)"},
   {topic:"body", meg:"კუჩხი",       tr:"kučxi",        geo:"ფეხი",                         ru:"нога",                        en:"leg, foot"},
   {topic:"body", meg:"კუჭი",        tr:"kuč̣i",         geo:"კუჭი",                         ru:"желудок",                     en:"stomach"},
-  {topic:"animals", meg:"წყირი",     tr:"c̣q̣iri",      geo:"რწყილი",                       ru:"блоха",                       en:"flea"},
-  {topic:"animals", meg:"კვატა",     tr:"kvata",        geo:"იხვი",                         ru:"утка",                        en:"duck"},
-  {topic:"animals", meg:"კუ",        tr:"ku",           geo:"კუ",                           ru:"черепаха",                    en:"turtle"},
-  {topic:"animals", meg:"ლაკვი",     tr:"lakvi",        geo:"ლეკვი",                        ru:"щенок",                       en:"puppy"},
-  {topic:"animals", meg:"ლომი",      tr:"lomi",         geo:"ლომი",                         ru:"лев",                         en:"lion"},
-  {topic:"animals", meg:"ლოქორუა",   tr:"lokọrua",      geo:"ლოკოკინა",                     ru:"улитка",                      en:"snail",          dialect:"sen"},
-  {topic:"animals", meg:"მაბარუუ",   tr:"mabaruu",      geo:"მუხლუხო",                      ru:"гусеница",                    en:"caterpillar"},
-  {topic:"animals", meg:"არქემი",    tr:"arkemi",       geo:"აქლემი",                       ru:"верблюд",                     en:"camel"},
-  {topic:"animals", meg:"ტი",        tr:"ṭi",           geo:"ტილი",                         ru:"вошь",                        en:"louse"},
-  {topic:"animals", meg:"ბარტყი",    tr:"bartq̣i",      geo:"ბარტყი",                       ru:"птенец",                      en:"chick"},
-  {topic:"animals", meg:"ბატია",     tr:"batia",        geo:"ზაქი, ღოღო",                   ru:"буйволёнок",                  en:"buffalo calf"},
-  {topic:"animals", meg:"ბატკი",     tr:"batki",        geo:"ციკანი (წლამდე)",              ru:"(годовалый) козлёнок",        en:"(yearling) kid"},
-  {topic:"animals", meg:"ბაღირია",   tr:"bağiria",      geo:"პატარა ბეღურა, ბარტყი",       ru:"воробышек",                   en:"sparrow chick"},
-  {topic:"nature", meg:"წურწუფა",   tr:"c̣urc̣upa",    geo:"გოგირდი",                      ru:"сера",                        en:"sulfur",         dialect:"sen"},
-  {topic:"nature", meg:"ლანჯა",     tr:"lanǯa",        geo:"სპილენძი",                     ru:"медь",                        en:"copper"},
-  {topic:"nature", meg:"ატატია",    tr:"atatia",       geo:"თეთრი და ფუფუკი თოვლი",       ru:"очень белый и мягкий снег",   en:"very white soft snow"},
-  {topic:"home", meg:"კვაღა",       tr:"kvağa",        geo:"ნაჯახი",                       ru:"топорик",                     en:"hatchet"},
-  {topic:"society", meg:"აფხაზა",   tr:"apxaza",       geo:"აფხაზი",                       ru:"абхаз",                       en:"Abkhaz"},
-  {topic:"society", meg:"კუ",        tr:"ku",           geo:"ერთგვარი ადამყოფობა",          ru:"род болезни",                 en:"a type of disease"},
-  {topic:"time_place", meg:"კულე",   tr:"kule",         geo:"სოხუმი",                       ru:"Сухуми",                      en:"Sukhumi"},
-  {topic:"time_place", meg:"ასხი",   tr:"asxi",         geo:"ასხი (მთა ჩრდილო სამეგრელოში)", ru:"Асхи (гора в сев. Мегрелии)", en:"Askhi (mountain in N. Mingrelia)"},
-  {topic:"time_place", meg:"აფხაზეთი",tr:"apxazeti",   geo:"აფხაზეთი",                     ru:"Абхазия",                     en:"Abkhazia"},
-  {topic:"time_place", meg:"ახალ-სენაკი",tr:"axal-senaki",geo:"ახალი სენაკი",              ru:"Ахал-сенаки",                 en:"Akhal-Senaki"},
-  {topic:"time_place", meg:"ბათომი", tr:"batomi",       geo:"ბათუმი (ქალაქი)",              ru:"Батуми",                      en:"Batumi"},
 
-  // ── ТЕЛО (новые) ─────────────────────────────────────────────────
-  {topic:"body", meg:"კვარბირგული", tr:"kvarbir̄uli", geo:"მუხლის თავი",              ru:"коленная чашечка",                    en:"kneecap"},
-  {topic:"body", meg:"კუტუ",        tr:"kutu",         geo:"ბავშვის პენისი",            ru:"пенис (детский)",                     en:"penis (child)"},
-  {topic:"body", meg:"კუჭი",        tr:"kuč̣i",        geo:"კუჭი",                      ru:"желудок",                             en:"stomach"},
-  {topic:"body", meg:"კუჩხი",       tr:"kučxi",        geo:"ფეხი",                      ru:"нога",                                en:"leg, foot"},
-
-  // ── ЖИВОТНЫЕ (новые) ─────────────────────────────────────────────
-  {topic:"animals", meg:"არქემი",    tr:"arḳemi",      geo:"აქლემი",                    ru:"верблюд",                             en:"camel"},
-  {topic:"animals", meg:"ბარტყი",    tr:"barṭq̣i",      geo:"ბარტყი",                    ru:"птенец",                              en:"chick"},
-  {topic:"animals", meg:"ბათია",     tr:"batia",        geo:"ზაქი, ღოღო",                ru:"буйволёнок",                          en:"young buffalo"},
-  {topic:"animals", meg:"ბატკი",     tr:"batki",        geo:"ციკანი (წლამდე)",           ru:"(годовалый) козлёнок",                en:"(yearling) kid"},
-  {topic:"animals", meg:"ბაღირია",   tr:"bağiria",      geo:"პატარა ბეღურა, ბარტყი",    ru:"воробышек",                           en:"sparrow chick"},
-  {topic:"animals", meg:"კვატა",     tr:"kvata",        geo:"იხვი",                      ru:"утка",                                en:"duck"},
-  {topic:"animals", meg:"კუ",        tr:"ku",           geo:"კუ",                        ru:"черепаха",                            en:"tortoise"},
-  {topic:"animals", meg:"ლაკვი",     tr:"lakvi",        geo:"ლეკვი",                     ru:"щенок",                               en:"puppy"},
-  {topic:"animals", meg:"ლომი",      tr:"lomi",         geo:"ლომი",                      ru:"лев",                                 en:"lion"},
-  {topic:"animals", meg:"ლოქორუა",   tr:"loḳorua",     geo:"ლოკოკინა",                  ru:"улитка",                              en:"snail",          dialect:"sen"},
-  {topic:"animals", meg:"მაბარუუ",   tr:"mabaruu",      geo:"მუხლუხო",                   ru:"гусеница",                            en:"caterpillar"},
-  {topic:"animals", meg:"ტი",        tr:"ṭi",           geo:"ტილი",                      ru:"вошь",                                en:"louse"},
-  {topic:"animals", meg:"წყირი",     tr:"c̣q̣iri",       geo:"რწყილი",                    ru:"блоха",                               en:"flea"},
-
-  // ── ПРИРОДА (новые) ───────────────────────────────────────────────
-  {topic:"nature", meg:"ატატია",     tr:"atatia",       geo:"თეთრი და ფუფუკი თოვლი",    ru:"очень белый и мягкий снег",           en:"very white and soft snow"},
-  {topic:"nature", meg:"ლანჯა",      tr:"lanǯa",        geo:"სპილენძი",                  ru:"медь",                                en:"copper"},
-  {topic:"nature", meg:"წურწუფა",    tr:"c̣urc̣upa",     geo:"გოგირდი",                   ru:"сера",                                en:"sulfur",         dialect:"sen"},
-
-  // ── ДОМ (новые) ───────────────────────────────────────────────────
-  {topic:"home", meg:"კვაღა",        tr:"kvağa",        geo:"ნაჯახი",                    ru:"топорик",                             en:"hatchet"},
-
-  // ── ОБЩЕСТВО (новые) ──────────────────────────────────────────────
-  {topic:"society", meg:"აფხაზა",    tr:"apxaza",       geo:"აფხაზი",                    ru:"абхаз",                               en:"Abkhazian"},
-  {topic:"society", meg:"კუ",        tr:"ku",           geo:"ერთგვარი ადამყოფობა",       ru:"род болезни",                         en:"type of illness"},
-
-  // ── ВРЕМЯ И МЕСТО (новые) ─────────────────────────────────────────
-  {topic:"time_place", meg:"ასხი",   tr:"asxi",         geo:"ასხი (მთა ჩრდ. სამეგრელოში)", ru:"Асхи (гора в сев. Мегрелии)",     en:"Askhi (mountain in N. Mingrelia)"},
-  {topic:"time_place", meg:"აფხაზეთი",tr:"apxazeti",   geo:"აფხაზეთი",                  ru:"Абхазия",                             en:"Abkhazia"},
-  {topic:"time_place", meg:"ახალ-სენაკი",tr:"axal-senaki",geo:"ახალი სენაკი",            ru:"Ахал-сенаки",                         en:"Akhal-Senaki"},
-  {topic:"time_place", meg:"ბათომი", tr:"batomi",       geo:"ბათუმი (ქალაქი)",           ru:"Батуми",                              en:"Batumi"},
-  {topic:"time_place", meg:"კულე",   tr:"kule",         geo:"სოხუმი",                    ru:"Сухуми",                              en:"Sukhumi"},
   // ── ЧИСЛА ────────────────────────────────────────────────────────
   {topic:"numbers", num:1,    meg:"ართი",       tr:"arti",        geo:"ერთი",                        ru:"один",                                en:"one"},
   {topic:"numbers", num:2,    meg:"ჟირი",       tr:"žiri",        geo:"ორი",                         ru:"два",                                 en:"two"},
   {topic:"numbers", num:3,    meg:"სუმი",       tr:"sumi",        geo:"სამი",                        ru:"три",                                 en:"three"},
   {topic:"numbers", num:4,    meg:"ოთხი",       tr:"otxi",        geo:"ოთხი",                        ru:"четыре",                              en:"four"},
   {topic:"numbers", num:5,    meg:"ხუთი",       tr:"xuti",        geo:"ხუთი",                        ru:"пять",                                en:"five"},
-  {topic:"numbers", num:6,    meg:"ამშვი",      tr:"amšvi",       geo:"ექვსი",                       ru:"шесть",                               en:"six"},
-  {topic:"numbers", num:7,    meg:"შკვითი",     tr:"škviti",      geo:"შვიდი",                       ru:"семь",                                en:"seven"},
+  {topic:"numbers", num:6,    meg:"ამшვი",      tr:"amšvi",       geo:"ექვსი",                       ru:"шесть",                               en:"six"},
+  {topic:"numbers", num:7,    meg:"шკვითი",     tr:"škviti",      geo:"шვიდი",                       ru:"семь",                                en:"seven"},
   {topic:"numbers", num:8,    meg:"რუო",        tr:"ruo",         geo:"რვა",                         ru:"восемь",                              en:"eight"},
   {topic:"numbers", num:9,    meg:"ჩხორო",      tr:"čxoro",       geo:"ცხრა",                        ru:"девять",                              en:"nine"},
   {topic:"numbers", num:10,   meg:"ვითი",       tr:"viti",        geo:"ათი",                         ru:"десять",                              en:"ten"},
@@ -315,7 +279,6 @@ export default function App() {
   const [topic, setTopic]       = useState("all");
   const [alpha, setAlpha]       = useState("all");
   const [dialect, setDialect]   = useState("all");
-  const [cardDialects, setCardDialects] = useState({});
 
   const alphaList = useMemo(() => {
     const s = new Set();
@@ -390,9 +353,6 @@ export default function App() {
 
       <div style={{maxWidth:700,margin:"0 auto",padding:"16px 14px 60px"}}>
         <div style={{marginBottom:10}}>
-          <div style={{fontSize:10,color:"rgba(232,224,204,0.32)",marginBottom:5,letterSpacing:1.5,textTransform:"uppercase"}}>
-            {uiLang==="ru"?"Алфавит":uiLang==="en"?"Alphabet":"ანბანი"}
-          </div>
           <div className="sc" style={{display:"flex",gap:3,overflowX:"auto",paddingBottom:3}}>
             {alphaList.map(l=>{
               const isAll = l==="all";
@@ -431,28 +391,24 @@ export default function App() {
           ))}
         </div>
 
+        <div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+          {[
+            {key:"all", ru:"Все диалекты", en:"All Dialects", ge:"ყველა დიალექტი"},
+            {key:"sam", ru:"Самурзакано-Зугдидский", en:"Samurz-Zugdidi", ge:"სამურზ.-ზუგდ."},
+            {key:"sen", ru:"Сенакский",      en:"Senaki",    ge:"სენაკური"},
+          ].map(d=>(
+            <button key={d.key} className="pill" onClick={()=>setDialect(d.key)} style={{
+              whiteSpace:"nowrap",padding:"4px 10px",fontSize:11,
+              background:dialect===d.key?"rgba(125,180,255,0.9)":"rgba(80,120,180,0.12)",
+              color:dialect===d.key?"#0f1a12":"rgba(180,200,255,0.7)",
+              fontWeight:dialect===d.key?"bold":"normal",
+              border:"1px solid rgba(80,120,180,0.25)",
+            }}>
+              {uiLang==="ru"?d.ru:uiLang==="en"?d.en:d.ge}
+            </button>
+          ))}
+        </div>
 
-        {/* ДИАЛЕКТ */}
-<div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-  <span style={{fontSize:10,color:"rgba(232,224,204,0.32)",letterSpacing:1.5,textTransform:"uppercase"}}>
-    {uiLang==="ru"?"Диалект":uiLang==="en"?"Dialect":"დიალექტი"}
-  </span>
-  {[
-    {key:"all", ru:"Все",            en:"All",       ge:"ყველა"},
-    {key:"sam", ru:"Самурзакано-Зугдидский", en:"Samurz-Zugdidi", ge:"სამურზ.-ზუგდ."},
-    {key:"sen", ru:"Сенакский",      en:"Senaki",    ge:"სენაკური"}, // Поменял здесь
-  ].map(d=>(
-    <button key={d.key} className="pill" onClick={()=>setDialect(d.key)} style={{
-      whiteSpace:"nowrap",padding:"4px 10px",fontSize:11,
-      background:dialect===d.key?"rgba(125,180,255,0.9)":"rgba(80,120,180,0.12)",
-      color:dialect===d.key?"#0f1a12":"rgba(180,200,255,0.7)",
-      fontWeight:dialect===d.key?"bold":"normal",
-      border:"1px solid rgba(80,120,180,0.25)",
-    }}>
-      {uiLang==="ru"?d.ru:uiLang==="en"?d.en:d.ge}
-    </button>
-  ))}
-</div>
         <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
           <div style={{position:"relative"}}>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
@@ -460,24 +416,6 @@ export default function App() {
               style={{width:"100%",boxSizing:"border-box",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:10,padding:"10px 34px 10px 37px",fontSize:16,color:"#e8e0cc",fontFamily:"Georgia,'Noto Serif Georgian',serif"}}/>
             {query && <button onClick={()=>setQuery("")} style={{position:"absolute",right:9,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"rgba(232,224,204,0.4)",cursor:"pointer",fontSize:18}}>✕</button>}
           </div>
-          <div style={{display:"flex",gap:4,marginTop:8,flexWrap:"wrap",alignItems:"center"}}>
-            <span style={{fontSize:10,color:"rgba(232,224,204,0.35)"}}>{t.sin}</span>
-            {[["all",allLabel],["meg","მეგრ."],["ru","Рус."],["en","Eng."],["geo","ქარ."]].map(([k,lb])=>(
-              <button key={k} onClick={()=>setSearchIn(k)} style={{
-                border:"1px solid rgba(80,160,80,0.2)",borderRadius:12,padding:"2px 8px",fontSize:11,
-                fontFamily:"Georgia,serif",cursor:"pointer",
-                background:searchIn===k?"#7dcf7d":"rgba(80,160,80,0.1)",
-                color:searchIn===k?"#0f1a12":"#e8e0cc",
-                fontWeight:searchIn===k?"bold":"normal",
-              }}>{lb}</button>
-            ))}
-          </div>
-        </div>
-
-        <div style={{marginBottom:10,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-          <span style={{fontSize:11,color:"rgba(232,224,204,0.35)"}}>{results.length} / {DICT.length} {t.tot}</span>
-          {alpha!=="all" && <span style={{fontSize:20,color:"#7dcf7d",fontFamily:"'Noto Serif Georgian',Georgia,serif",background:"rgba(80,160,80,0.12)",borderRadius:6,padding:"0 8px",border:"1px solid rgba(80,160,80,0.18)"}}>{alpha}</span>}
-          {topic!=="all" && <span style={{fontSize:11,color:"rgba(180,220,180,0.5)",background:"rgba(80,160,80,0.07)",borderRadius:6,padding:"1px 7px",border:"1px solid rgba(80,160,80,0.13)"}}>{TOPICS.find(tp=>tp.key===topic)?.icon} {topLabel(TOPICS.find(tp=>tp.key===topic))}</span>}
         </div>
 
         {results.length===0 ? (
@@ -487,37 +425,22 @@ export default function App() {
         ) : (
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
             {results.map((entry,i)=>{
-              const hasDialects = !!entry.dialects;
-              const ck = entry.meg;
-              const activeDial = hasDialects
-                ? (cardDialects[ck] || Object.keys(entry.dialects)[0])
-                : null;
-              const displayMeg = hasDialects ? (entry.dialects[activeDial]?.meg || entry.meg) : entry.meg;
-              const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr  || entry.tr)  : entry.tr;
               return (
               <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
-                <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
-                  {hasDialects ? (
-                    Object.keys(entry.dialects).map(d=>(
-                      <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[ck]:d}))} style={{
-                        fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,cursor:"pointer",border:"none",
-                        background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.35)":"rgba(255,160,80,0.35)"):"rgba(255,255,255,0.06)",
-                        color:activeDial===d?(d==="sam"?"rgba(160,200,255,1)":"rgba(255,200,130,1)"):"rgba(232,224,204,0.3)",
-                      }}>{d==="sam"?"сам.":"сен."}</button>
-                    ))
-                  ) : entry.dialect ? (
+                <div style={{position:"absolute",top:10,right:10}}>
+                  {entry.dialect && (
                     <div style={{fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,
                       background:entry.dialect==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)",
                       color:entry.dialect==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)",
                       border:entry.dialect==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)",
                     }}>{entry.dialect==="sam"?"сам.":"сен."}</div>
-                  ) : null}
+                  )}
                 </div>
                 <div style={{marginBottom:9}}>
                   <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
-                    <HL text={displayMeg} q={q}/>
+                    <HL text={entry.meg} q={q}/>
                   </div>
-                  <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{displayTr}]</div>
+                  <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{entry.tr}]</div>
                 </div>
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
                   {[
