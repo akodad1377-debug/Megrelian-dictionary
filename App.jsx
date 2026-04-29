@@ -1,18 +1,24 @@
 import { useState, useMemo } from "react";
 import { GEO_ALPHA, TOPICS, DICT } from "./data";
 
-// --- Логика ---
+// --- Вспомогательные функции ---
 function firstLetter(meg) {
   for (const ch of meg) if (GEO_ALPHA.includes(ch)) return ch;
   return "";
 }
 
 function compareGeorgian(a, b) {
-  const aw = a.meg, bw = b.meg;
+  const aw = a.meg;
+  const bw = b.meg;
   const len = Math.max(aw.length, bw.length);
   for (let i = 0; i < len; i++) {
-    const ai = GEO_ALPHA.indexOf(aw[i] ?? ""), bi = GEO_ALPHA.indexOf(bw[i] ?? "");
-    const an = ai === -1 ? 999 : ai, bn = bi === -1 ? 999 : bi;
+    const ac = aw[i] ?? "";
+    const bc = bw[i] ?? "";
+    if (ac === bc) continue;
+    const ai = GEO_ALPHA.indexOf(ac);
+    const bi = GEO_ALPHA.indexOf(bc);
+    const an = ai === -1 ? 999 : ai;
+    const bn = bi === -1 ? 999 : bi;
     if (an !== bn) return an - bn;
   }
   return 0;
@@ -22,18 +28,19 @@ function HL({ text, q }) {
   if (!q || !text) return text;
   const idx = text.toLowerCase().indexOf(q.toLowerCase());
   if (idx === -1) return text;
-  return <>{text.slice(0,idx)}<mark style={{background:"rgba(125,207,125,0.3)",borderRadius:2,color:"inherit"}}>{text.slice(idx,idx+q.length)}</mark>{text.slice(idx+q.length)}</>;
+  return <>{text.slice(0,idx)}<mark style={{background:"rgba(244,160,35,0.45)",borderRadius:3,color:"inherit"}}>{text.slice(idx,idx+q.length)}</mark>{text.slice(idx+q.length)}</>;
 }
 
 export default function App() {
-  const [uiLang, setUiLang] = useState("ru");
-  const [query, setQuery] = useState("");
+  const [uiLang, setUiLang]     = useState("ru");
+  const [query, setQuery]       = useState("");
   const [searchIn, setSearchIn] = useState("all");
-  const [topic, setTopic] = useState("all");
-  const [alpha, setAlpha] = useState("all");
-  const [dialect, setDialect] = useState("all");
+  const [topic, setTopic]       = useState("all");
+  const [alpha, setAlpha]       = useState("all");
+  const [dialect, setDialect]   = useState("all");
   const [cardDialects, setCardDialects] = useState({});
 
+  // Логика кнопок диалекта: глобальный сброс ручных настроек
   const handleGlobalDialectChange = (newDial) => {
     setDialect(newDial);
     setCardDialects({});
@@ -50,122 +57,163 @@ export default function App() {
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
       if (topic !== "all" && e.topic !== topic) return false;
+      
       if (dialect !== "all") {
-        const isCommon = !e.dialect && !e.dialects;
+        const isCommon = !e.dialect && !e.dialects; 
         const hasInRoot = e.dialect === dialect;
         const hasInVariants = e.dialects && !!e.dialects[dialect];
         if (!isCommon && !hasInRoot && !hasInVariants) return false;
       }
+
       if (!q) return true;
-      if (searchIn === "all") return ["meg","geo","ru","en"].some(k => e[k]?.toLowerCase().includes(q));
+      if (searchIn === "all") return (
+        e.meg.toLowerCase().includes(q) || e.geo.toLowerCase().includes(q) ||
+        e.ru.toLowerCase().includes(q) || e.en.toLowerCase().includes(q)
+      );
       return e[searchIn]?.toLowerCase().includes(q);
-    }).sort((a, b) => a.topic === "numbers" && b.topic === "numbers" ? (a.num||0)-(b.num||0) : compareGeorgian(a, b));
+    }).sort((a, b) => {
+      if (a.topic === "numbers" && b.topic === "numbers") return (a.num ?? 0) - (b.num ?? 0);
+      return compareGeorgian(a, b);
+    });
   }, [query, searchIn, topic, alpha, dialect]);
 
   const UI = {
-    ru:{title:"Мегрельский словарь", sub:"Климов & Каджаиа, 2026", ph:"Поиск слова...", dial:"ДИАЛЕКТ", alf:"АЛФАВИТ", tot:"слов в базе", s1:"Самурзакано-зугдидский", s2:"Сенакский"},
-    en:{title:"Mingrelian Dictionary", sub:"Klimov & Kadjaia, 2026", ph:"Search...", dial:"DIALECT", alf:"ALPHABET", tot:"words", s1:"Samurzakano-Zugdidian", s2:"Senaki"},
-    ge:{title:"მეგრული ლექსიკონი", sub:"კლიმოვი & კაჯაია, 2026", ph:"ძიება...", dial:"დიალექტი", alf:"ანბანი", tot:"სიტყვა", s1:"სამურზაყანო-ზუგდიდური", s2:"სენაკური"}
+    ru:{title:"Мегрельский словарь", sub:"Климов & Каджаиа, 2026", ph:"Поиск слова…", noR:"Ничего не найдено", tot:"слов в базе", sin:"Искать в:", dial:"Диалект"},
+    en:{title:"Mingrelian Dictionary", sub:"Klimov & Kadjaia, 2026", ph:"Search a word…", noR:"Nothing found", tot:"words", sin:"Search in:", dial:"Dialect"},
+    ge:{title:"მეგრული ლექსიკონი", sub:"კლიმოვი & კაჯაია, 2026", ph:"სიტყვის ძიება…", noR:"ვერ მოიძებნა", tot:"სიტყვა", sin:"ძებნა:", dial:"დიალექტი"},
   };
   const t = UI[uiLang];
+  const FLAG = {ru:"🇷🇺", en:"🇬🇧", ge:"🇬🇪"};
+  const topLabel = tp => uiLang==="ge" ? tp.ge : uiLang==="en" ? tp.en : tp.ru;
   const allLabel = uiLang==="ge" ? "ყველა" : uiLang==="en" ? "All" : "Все";
 
   return (
-    <div style={{minHeight:"100vh",background:"#0f1a12",fontFamily:"Georgia,serif",color:"#e8e0cc",paddingBottom:40}}>
-      <style>{`.sc::-webkit-scrollbar{display:none}.sc{scrollbar-width:none}`}</style>
+    <div style={{minHeight:"100vh",background:"#0f1a12",fontFamily:"'Georgia','Noto Serif Georgian',serif",color:"#e8e0cc"}}>
+      <div style={{position:"fixed",inset:0,pointerEvents:"none",background:"radial-gradient(ellipse 80% 50% at 50% 0%,rgba(60,140,60,0.1) 0%,transparent 65%)"}}/>
+      <style>{`
+        @keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+        .fu{animation:fadeUp 0.25s ease-out}
+        input:focus{outline:none}
+        .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
+        .pill:hover{transform:scale(1.04)}
+        .sc::-webkit-scrollbar{display:none}
+        .sc{-ms-overflow-style:none;scrollbar-width:none}
+      `}</style>
 
-      <header style={{position:"sticky",top:0,zIndex:100,background:"#0f1a12",padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center", borderBottom:"1px solid rgba(125,207,125,0.1)"}}>
-        <div>
-          <div style={{fontWeight:"bold",fontSize:18,color:"#7dcf7d"}}>📖 {t.title}</div>
-          <div style={{fontSize:10,opacity:0.4}}>{t.sub}</div>
+      <header style={{position:"sticky",top:0,zIndex:100,background:"rgba(8,14,9,0.93)",backdropFilter:"blur(14px)",borderBottom:"1px solid rgba(80,160,80,0.18)",padding:"11px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{display:"flex",alignItems:"center",gap:9}}>
+          <span style={{fontSize:22}}>📖</span>
+          <div>
+            <div style={{fontWeight:"bold",fontSize:16,color:"#7dcf7d",letterSpacing:.8}}>{t.title}</div>
+            <div style={{fontSize:10,color:"rgba(232,224,204,0.38)"}}>{t.sub}</div>
+          </div>
         </div>
-        <div style={{display:"flex",gap:6}}>
+        <div style={{display:"flex",gap:4}}>
           {["ru","en","ge"].map(l=>(
-            <button key={l} onClick={()=>setUiLang(l)} style={{background:uiLang===l?"#7dcf7d":"#1a261c",border:"none",borderRadius:12,padding:"6px 10px",color:uiLang===l?"#0f1a12":"#e8e0cc",fontSize:11,cursor:"pointer"}}>
-              {l==="ru"?"🇷🇺 Рус":l==="en"?"🇬🇧 Eng":"🇬🇪 ქар"}
+            <button key={l} className="pill" onClick={()=>setUiLang(l)} style={{padding:"5px 11px",fontSize:12,background:uiLang===l?"#7dcf7d":"rgba(80,160,80,0.12)",color:uiLang===l?"#0f1a12":"#e8e0cc",fontWeight:uiLang===l?"bold":"normal",border:"1px solid rgba(80,160,80,0.24)"}}>
+              {FLAG[l]}
             </button>
           ))}
         </div>
       </header>
 
-      <div style={{maxWidth:600,margin:"0 auto",padding:"16px 16px"}}>
-        <div style={{fontSize:10,opacity:0.3,marginBottom:8,letterSpacing:1}}>{t.alf}</div>
-        <div className="sc" style={{display:"flex",gap:6,overflowX:"auto",marginBottom:16,paddingBottom:4}}>
+      <div style={{maxWidth:700,margin:"0 auto",padding:"16px 14px 60px"}}>
+        
+        <div className="sc" style={{display:"flex",gap:3,overflowX:"auto",marginBottom:10}}>
           {alphaList.map(l=>(
-            <button key={l} onClick={()=>setAlpha(l)} style={{
-              minWidth:36,height:36,borderRadius:18,border:"none",
-              background:alpha===l?"#7dcf7d":"#1a261c", color:alpha===l?"#0f1a12":"#e8e0cc",
-              fontSize:l==="all"?12:18,cursor:"pointer"
+            <button key={l} className="pill" onClick={()=>setAlpha(l)} style={{
+              minWidth: l==="all"? "auto":34, padding:"5px 11px", fontSize: l==="all"?12:20,
+              background:alpha===l?"#7dcf7d":"rgba(80,160,80,0.1)", color:alpha===l?"#0f1a12":"#b8d8b8", border:"1px solid rgba(80,160,80,0.2)"
             }}>{l==="all"?allLabel:l}</button>
           ))}
         </div>
 
-        <div className="sc" style={{display:"flex",gap:8,overflowX:"auto",marginBottom:20}}>
+        <div className="sc" style={{display:"flex",gap:5,overflowX:"auto",marginBottom:15}}>
           {TOPICS.map(tp=>(
-            <button key={tp.key} onClick={()=>setTopic(tp.key)} style={{
-              whiteSpace:"nowrap",padding:"8px 14px",borderRadius:15,border:"none",
-              background:topic===tp.key?"#7dcf7d":"#1a261c", color:topic===tp.key?"#0f1a12":"#e8e0cc", fontSize:13,cursor:"pointer"
-            }}>{tp.icon} {uiLang==="ge"?tp.ge:uiLang==="en"?tp.en:tp.ru}</button>
+            <button key={tp.key} className="pill" onClick={()=>setTopic(tp.key)} style={{
+              whiteSpace:"nowrap",padding:"5px 11px",fontSize:12,
+              background:topic===tp.key?"#7dcf7d":"rgba(80,160,80,0.1)", color:topic===tp.key?"#0f1a12":"#e8e0cc", border:"1px solid rgba(80,160,80,0.2)"
+            }}>{tp.icon} {topLabel(tp)}</button>
           ))}
         </div>
 
-        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:24}}>
-          <span style={{fontSize:10,opacity:0.3,letterSpacing:1}}>{t.dial}:</span>
-          <div style={{display:"flex", gap:6}}>
-            {[
-              {k:"all", n:allLabel},
-              {k:"sam", n:t.s1},
-              {k:"sen", n:t.s2}
-            ].map(d=>(
-              <button key={d.k} onClick={()=>handleGlobalDialectChange(d.k)} style={{
-                padding:"6px 14px",borderRadius:15,border:"1px solid rgba(125,207,125,0.15)",
-                background:dialect===d.k?"rgba(125,207,125,0.2)":"#1a261c", 
-                color:dialect===d.k?"#7dcf7d":"#e8e0cc", 
-                fontSize:12,cursor:"pointer"
-              }}>{d.n}</button>
+        <div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+          <span style={{fontSize:10,color:"rgba(232,224,204,0.32)",letterSpacing:1.5,textTransform:"uppercase"}}>{t.dial}:</span>
+          {[
+            {k:"all", n:allLabel},
+            {k:"sam", n: uiLang==="ge"?"სამურზ.":"Сам."},
+            {k:"sen", n: uiLang==="ge"?"სენაკური":"Сен."}
+          ].map(d=>(
+            <button key={d.k} className="pill" onClick={()=>handleGlobalDialectChange(d.k)} style={{
+              padding:"4px 12px",fontSize:11,
+              background:dialect===d.k?"rgba(125,180,255,0.9)":"rgba(80,120,180,0.12)",
+              color:dialect===d.k?"#0f1a12":"rgba(180,200,255,0.7)", border:"1px solid rgba(80,120,180,0.25)"
+            }}>{d.n}</button>
+          ))}
+        </div>
+
+        <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
+          <div style={{position:"relative", marginBottom:8}}>
+            <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",opacity:0.4}}>🔍</span>
+            <input value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.ph}
+              style={{width:"100%",boxSizing:"border-box",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:10,padding:"10px 34px 10px 37px",fontSize:16,color:"#e8e0cc"}}/>
+          </div>
+          <div style={{display:"flex",gap:4,flexWrap:"wrap",alignItems:"center"}}>
+            <span style={{fontSize:10,opacity:0.35}}>{t.sin}</span>
+            {[["all",allLabel],["meg","მეგр."],["ru","Рус."],["en","Eng."],["geo","ქარ."]].map(([k,lb])=>(
+              <button key={k} onClick={()=>setSearchIn(k)} style={{
+                border:"1px solid rgba(80,160,80,0.2)",borderRadius:12,padding:"2px 8px",fontSize:11, cursor:"pointer",
+                background:searchIn===k?"#7dcf7d":"rgba(80,160,80,0.1)", color:searchIn===k?"#0f1a12":"#e8e0cc"
+              }}>{lb}</button>
             ))}
           </div>
         </div>
 
-        <div style={{background:"#162218",borderRadius:16,padding:14,border:"1px solid #223324",marginBottom:16}}>
-          <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:10}}>
-            <span style={{opacity:0.3}}>🔍</span>
-            <input value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.ph} style={{width:"100%",background:"none",border:"none",color:"#e8e0cc",fontSize:18}}/>
-          </div>
-          <div style={{display:"flex",gap:8,fontSize:11, borderTop:"1px solid rgba(125,207,125,0.05)", paddingTop:10}}>
-            <span style={{opacity:0.4}}>Искать в:</span>
-            {[["all","Все"],["meg","მეგ."],["ru","Рус."],["en","Eng."],["geo","ქар."]].map(([k,v])=>(
-              <button key={k} onClick={()=>setSearchIn(k)} style={{background:searchIn===k?"#7dcf7d":"#223324",color:searchIn===k?"#000":"#7dcf7d",border:"none",borderRadius:8,padding:"2px 8px",cursor:"pointer"}}>{v}</button>
-            ))}
-          </div>
-        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {results.map((entry,i)=>{
+            const hasDialects = !!entry.dialects;
+            const ck = entry.meg; 
+            
+            let activeDial = cardDialects[ck];
+            if (!activeDial && hasDialects) {
+              activeDial = (dialect !== "all" && entry.dialects[dialect]) ? dialect : Object.keys(entry.dialects)[0];
+            }
 
-        <div style={{fontSize:11,opacity:0.4,marginBottom:12}}>{results.length} / {DICT.length} {t.tot}</div>
-
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {results.map((e,i)=>{
-            const hasD = !!e.dialects;
-            let act = cardDialects[e.meg] || (hasD ? (dialect!=="all" && e.dialects[dialect] ? dialect : Object.keys(e.dialects)[0]) : null);
-            const dMeg = hasD ? (e.dialects[act]?.meg || e.meg) : e.meg;
-            const dTr = hasD ? (e.dialects[act]?.tr || e.tr) : e.tr;
+            const displayMeg = hasDialects ? (entry.dialects[activeDial]?.meg || entry.meg) : entry.meg;
+            const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr  || entry.tr)  : entry.tr;
 
             return (
-              <div key={i} style={{background:"#162218",borderRadius:16,padding:16,position:"relative",border:"1px solid #223324"}}>
-                {hasD ? (
-                  <div style={{position:"absolute",top:12,right:12,display:"flex",gap:4}}>
-                    {Object.keys(e.dialects).map(dk=>(
-                      <button key={dk} onClick={()=>setCardDialects(p=>({...p,[e.meg]:dk}))} style={{fontSize:9,padding:"2px 6px",borderRadius:6,border:"none",background:act===dk?"#3a5a40":"#0f1a12",color:act===dk?"#7dcf7d":"#444",fontWeight:"bold", cursor:"pointer"}}>{dk==="sam"?"сам.":"сен."}</button>
-                    ))}
+              <div key={i} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
+                <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
+                  {hasDialects ? Object.keys(entry.dialects).map(d=>(
+                    <button key={d} onClick={() => setCardDialects(prev=>({...prev,[ck]:d}))} style={{
+                      fontSize:9,padding:"2px 6px",borderRadius:6,border:"none",fontWeight:"bold",cursor:"pointer",
+                      background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.35)":"rgba(255,160,80,0.35)"):"rgba(255,255,255,0.06)",
+                      color:activeDial===d?(d==="sam"?"rgba(160,200,255,1)":"rgba(255,200,130,1)"):"rgba(232,224,204,0.3)",
+                    }}>{d==="sam"?"сам.":"сен."}</button>
+                  )) : entry.dialect && (
+                    <div style={{fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",background:entry.dialect==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)",color:entry.dialect==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)"}}>{entry.dialect==="sam"?"сам.":"сен."}</div>
+                  )}
+                </div>
+
+                <div style={{marginBottom:9}}>
+                  <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",fontFamily:"'Noto Serif Georgian',serif"}}><HL text={displayMeg} q={query}/></div>
+                  <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic"}}>[{displayTr}]</div>
+                </div>
+
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
+                  <div>
+                    <div style={{fontSize:9,opacity:0.27,textTransform:"uppercase"}}>ქართ.</div>
+                    <div style={{fontSize:13,color:"rgba(180,200,255,0.85)"}}><HL text={entry.geo} q={query}/></div>
                   </div>
-                ) : e.dialect && (
-                  <div style={{position:"absolute",top:12,right:12,fontSize:9,padding:"2px 6px",background:"#0f1a12",color:"#3a5a40",borderRadius:6, fontWeight:"bold"}}>{e.dialect==="sam"?"сам.":"сен."}</div>
-                )}
-                <div style={{fontSize:28,fontWeight:"bold",color:"#7dcf7d",marginBottom:2}}><HL text={dMeg} q={query}/></div>
-                <div style={{fontSize:12,opacity:0.4,marginBottom:12}}>[{dTr}]</div>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
-                  {[{l:"ქართ.",v:e.geo},{l:"РУС.",v:e.ru},{l:"ENG.",v:e.en}].map((c,idx)=>(
-                    <div key={idx}><div style={{fontSize:9,opacity:0.3,marginBottom:2}}>{c.l}</div><div style={{fontSize:13}}><HL text={c.v} q={query}/></div></div>
-                  ))}
+                  <div>
+                    <div style={{fontSize:9,opacity:0.27,textTransform:"uppercase"}}>Рус.</div>
+                    <div style={{fontSize:13,color:"rgba(232,224,204,0.85)"}}><HL text={entry.ru} q={query}/></div>
+                  </div>
+                  <div>
+                    <div style={{fontSize:9,opacity:0.27,textTransform:"uppercase"}}>Eng.</div>
+                    <div style={{fontSize:13,color:"rgba(200,222,200,0.85)"}}><HL text={entry.en} q={query}/></div>
+                  </div>
                 </div>
               </div>
             );
