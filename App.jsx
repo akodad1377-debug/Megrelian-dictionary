@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-// Импорт данных из data.js
 import { GEO_ALPHA, TOPICS, DICT } from "./data";
 
 // --- Вспомогательные функции ---
@@ -32,15 +31,14 @@ function HL({ text, q }) {
   return <>{text.slice(0,idx)}<mark style={{background:"rgba(244,160,35,0.45)",borderRadius:3,color:"inherit"}}>{text.slice(idx,idx+q.length)}</mark>{text.slice(idx+q.length)}</>;
 }
 
-// --- Основной компонент ---
 export default function App() {
   const [uiLang, setUiLang]     = useState("ru");
   const [query, setQuery]       = useState("");
   const [searchIn, setSearchIn] = useState("all");
   const [topic, setTopic]       = useState("all");
   const [alpha, setAlpha]       = useState("all");
-  const [dialect, setDialect]   = useState("all");
-  const [cardDialects, setCardDialects] = useState({});
+  const [dialect, setDialect]   = useState("all"); // Общий фильтр
+  const [cardDialects, setCardDialects] = useState({}); // Ручные переключения
 
   const alphaList = useMemo(() => {
     const s = new Set();
@@ -53,7 +51,15 @@ export default function App() {
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
       if (topic !== "all" && e.topic !== topic) return false;
-      if (dialect !== "all" && e.dialect && e.dialect !== dialect) return false;
+      
+      // Логика фильтрации: если выбран конкретный диалект, 
+      // показываем только те слова, где он есть (в корне или в dialects)
+      if (dialect !== "all") {
+        const hasInRoot = e.dialect === dialect;
+        const hasInVariants = e.dialects && !!e.dialects[dialect];
+        if (!hasInRoot && !hasInVariants) return false;
+      }
+
       if (!q) return true;
       if (searchIn === "all") return (
         e.meg.toLowerCase().includes(q) ||
@@ -88,8 +94,6 @@ export default function App() {
         input:focus{outline:none}
         .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
         .pill:hover{transform:scale(1.02)}
-        .card{transition:transform 0.15s,box-shadow 0.15s}
-        .card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.45)}
         .sc::-webkit-scrollbar{display:none}
         .sc{-ms-overflow-style:none;scrollbar-width:none}
       `}</style>
@@ -137,7 +141,7 @@ export default function App() {
           ))}
         </div>
 
-        {/* ФИЛЬТР ДИАЛЕКТОВ (ОБНОВЛЕННЫЙ) */}
+        {/* ФИЛЬТР ДИАЛЕКТОВ */}
         <div style={{marginBottom:15, display:"flex", alignItems:"center", gap:8, flexWrap:"wrap"}}>
           <span style={{fontSize:10, color:"rgba(232,224,204,0.3)", textTransform:"uppercase"}}>{t.dial}:</span>
           {[
@@ -172,17 +176,29 @@ export default function App() {
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {results.map((entry,i)=>{
             const hasDialects = !!entry.dialects;
-            const ck = entry.meg;
-            const activeDial = hasDialects ? (cardDialects[ck] || Object.keys(entry.dialects)[0]) : null;
+            const ck = entry.meg; // Уникальный ключ слова
+
+            // ЛОГИКА ВЫБОРА: 
+            // 1. Если для этого слова есть ручной выбор (в cardDialects) — берем его.
+            // 2. Если ручного выбора нет, но в ОБЩЕМ фильтре выбран диалект (sam/sen) и он доступен для этого слова — берем его.
+            // 3. Иначе — берем первый доступный вариант.
+            let activeDial = cardDialects[ck];
+            if (!activeDial && hasDialects) {
+              if (dialect !== "all" && entry.dialects[dialect]) {
+                activeDial = dialect;
+              } else {
+                activeDial = Object.keys(entry.dialects)[0];
+              }
+            }
+
             const displayMeg = hasDialects ? (entry.dialects[activeDial]?.meg || entry.meg) : entry.meg;
             const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr  || entry.tr)  : entry.tr;
 
             return (
               <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
-                {/* В карточках оставляем сокращения */}
                 <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
                   {hasDialects ? Object.keys(entry.dialects).map(d=>(
-                    <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[ck]:d}))} style={{
+                    <button key={d} onClick={() => setCardDialects(prev => ({...prev, [ck]: d}))} style={{
                       fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",cursor:"pointer",border:"none",
                       background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.35)":"rgba(255,160,80,0.35)"):"rgba(255,255,255,0.06)",
                       color:activeDial===d?(d==="sam"?"rgba(160,200,255,1)":"rgba(255,200,130,1)"):"rgba(232,224,204,0.3)",
