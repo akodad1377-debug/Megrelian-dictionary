@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-// Данные подтягиваются из соседнего файла
 import { GEO_ALPHA, TOPICS, DICT } from "./data";
 
 // --- Вспомогательные функции ---
@@ -41,6 +40,12 @@ export default function App() {
   const [dialect, setDialect]   = useState("all"); 
   const [cardDialects, setCardDialects] = useState({}); 
 
+  // Функция для смены общего диалекта со сбросом ручных настроек
+  const handleDialectChange = (newDialect) => {
+    setDialect(newDialect);
+    setCardDialects({}); // Сбрасываем все ручные переключения в карточках
+  };
+
   const alphaList = useMemo(() => {
     const s = new Set();
     DICT.forEach(e => { const ch = firstLetter(e.meg); if (ch) s.add(ch); });
@@ -50,13 +55,10 @@ export default function App() {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return DICT.filter(e => {
-      // 1. Фильтр по алфавиту
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
-      // 2. Фильтр по темам
       if (topic !== "all" && e.topic !== topic) return false;
       
-      // 3. Умный фильтр диалектов:
-      // Показываем слово если: выбрано "Все" ИЛИ это общее слово ИЛИ слово совпадает с выбранным диалектом
+      // Показываем слово, если оно общее или содержит нужный диалект
       if (dialect !== "all") {
         const isCommon = !e.dialect && !e.dialects; 
         const hasInRoot = e.dialect === dialect;
@@ -64,13 +66,10 @@ export default function App() {
         if (!isCommon && !hasInRoot && !hasInVariants) return false;
       }
 
-      // 4. Поиск
       if (!q) return true;
       if (searchIn === "all") return (
-        e.meg.toLowerCase().includes(q) ||
-        e.geo.toLowerCase().includes(q) ||
-        e.ru.toLowerCase().includes(q) ||
-        e.en.toLowerCase().includes(q)
+        e.meg.toLowerCase().includes(q) || e.geo.toLowerCase().includes(q) ||
+        e.ru.toLowerCase().includes(q) || e.en.toLowerCase().includes(q)
       );
       return e[searchIn]?.toLowerCase().includes(q);
     }).sort((a, b) => {
@@ -80,9 +79,9 @@ export default function App() {
   }, [query, searchIn, topic, alpha, dialect]);
 
   const UI = {
-    ru:{title:"Мегрельский словарь", sub:"Климов & Каджаиа, 2026", ph:"Поиск слова…", noR:"Ничего не найдено", tot:"слов в базе", sin:"Искать в:", dial:"Диалект"},
-    en:{title:"Mingrelian Dictionary", sub:"Klimov & Kadjaia, 2026", ph:"Search a word…", noR:"Nothing found", tot:"words", sin:"Search in:", dial:"Dialect"},
-    ge:{title:"მეგრული ლექსიკონი", sub:"კლიმოვი & კაჯაია, 2026", ph:"სიტყვის ძიება…", noR:"ვერ მოიძებნა", tot:"სიტყვა", sin:"ძებნა:", dial:"დიალექტი"},
+    ru:{title:"Мегрельский словарь", sub:"Климов & Каджаиа, 2026", ph:"Поиск слова…", noR:"Ничего не найдено", tot:"слов в базе", dial:"Диалект"},
+    en:{title:"Mingrelian Dictionary", sub:"Klimov & Kadjaia, 2026", ph:"Search a word…", noR:"Nothing found", tot:"words", dial:"Dialect"},
+    ge:{title:"მეგრული ლექსიკონი", sub:"კლიმოვი & კაჯაია, 2026", ph:"სიტყვის ძიება…", noR:"ვერ მოიძებნა", tot:"სიტყვა", dial:"დიალექტი"},
   };
   const t = UI[uiLang];
   const FLAG = {ru:"🇷🇺", en:"🇬🇧", ge:"🇬🇪"};
@@ -122,6 +121,7 @@ export default function App() {
 
       <div style={{maxWidth:700,margin:"0 auto",padding:"16px 14px 60px"}}>
         
+        {/* АЛФАВИТ */}
         <div className="sc" style={{display:"flex",gap:3,overflowX:"auto",paddingBottom:8,marginBottom:8}}>
           {alphaList.map(l=>(
             <button key={l} className="pill" onClick={()=>setAlpha(l)} style={{
@@ -133,6 +133,7 @@ export default function App() {
           ))}
         </div>
 
+        {/* КАТЕГОРИИ */}
         <div className="sc" style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:10,marginBottom:15}}>
           {TOPICS.map(tp=>(
             <button key={tp.key} className="pill" onClick={()=>setTopic(tp.key)} style={{
@@ -144,6 +145,7 @@ export default function App() {
           ))}
         </div>
 
+        {/* ВЕРХНИЙ ФИЛЬТР ДИАЛЕКТОВ */}
         <div style={{marginBottom:15, display:"flex", alignItems:"center", gap:8, flexWrap:"wrap"}}>
           <span style={{fontSize:10, color:"rgba(232,224,204,0.3)", textTransform:"uppercase"}}>{t.dial}:</span>
           {[
@@ -151,7 +153,7 @@ export default function App() {
             {k:"sam", r:"Самурзакано-зугдидский", e:"Samurzakan-Zugdidi", g:"სამურზაყანო-ზუგდიდური"},
             {k:"sen", r:"Сенакский", e:"Senaki", g:"სენაკური"}
           ].map(d=>(
-            <button key={d.k} className="pill" onClick={()=>setDialect(d.k)} style={{
+            <button key={d.k} className="pill" onClick={()=>handleDialectChange(d.k)} style={{
               padding:"6px 12px", fontSize:11,
               background: dialect===d.k ? "rgba(125,180,255,0.2)" : "rgba(80,160,80,0.05)",
               color: dialect===d.k ? "#7db4ff" : "rgba(232,224,204,0.5)",
@@ -176,7 +178,6 @@ export default function App() {
             const hasDialects = !!entry.dialects;
             const ck = entry.meg; 
 
-            // Определяем активный диалект для карточки
             let activeDial = cardDialects[ck];
             if (!activeDial && hasDialects) {
               if (dialect !== "all" && entry.dialects[dialect]) {
