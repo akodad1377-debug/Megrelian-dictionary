@@ -433,26 +433,27 @@ export default function App() {
 
 
         {/* ДИАЛЕКТ */}
-        <div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-          <span style={{fontSize:10,color:"rgba(232,224,204,0.32)",letterSpacing:1.5,textTransform:"uppercase"}}>
-            {uiLang==="ru"?"Диалект":uiLang==="en"?"Dialect":"დიალექტი"}
-          </span>
-          {[
-            {key:"all", ru:"Все",            en:"All",       ge:"ყველა"},
-            {key:"sam", ru:"Самурзакано-Зугдидский", en:"Samurz-Zugdidi", ge:"სამურზ.-ზუგდ."},
-            {key:"sen", ru:"Сенакско-Мартвильский",  en:"Senaki-Martvili", ge:"სენ.-მარტვ."},
-          ].map(d=>(
-            <button key={d.key} className="pill" onClick={()=>setDialect(d.key)} style={{
-              whiteSpace:"nowrap",padding:"4px 10px",fontSize:11,
-              background:dialect===d.key?"rgba(125,180,255,0.9)":"rgba(80,120,180,0.12)",
-              color:dialect===d.key?"#0f1a12":"rgba(180,200,255,0.7)",
-              fontWeight:dialect===d.key?"bold":"normal",
-              border:"1px solid rgba(80,120,180,0.25)",
-            }}>
-              {uiLang==="ru"?d.ru:uiLang==="en"?d.en:d.ge}
-            </button>
-          ))}
-        </div>
+<div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+  <span style={{fontSize:10,color:"rgba(232,224,204,0.32)",letterSpacing:1.5,textTransform:"uppercase"}}>
+    {uiLang==="ru"?"Диалект":uiLang==="en"?"Dialect":"დიალექტი"}
+  </span>
+  {[
+    {key:"all", ru:"Все",            en:"All",       ge:"ყველა"},
+    {key:"sam", ru:"Самурзакано-Зугдидский", en:"Samurz-Zugdidi", ge:"სამურზ.-ზუგდ."},
+    {key:"sen", ru:"Сенакский",      en:"Senaki",    ge:"სენაკური"}, // Поменял здесь
+  ].map(d=>(
+    <button key={d.key} className="pill" onClick={()=>setDialect(d.key)} style={{
+      whiteSpace:"nowrap",padding:"4px 10px",fontSize:11,
+      background:dialect===d.key?"rgba(125,180,255,0.9)":"rgba(80,120,180,0.12)",
+      color:dialect===d.key?"#0f1a12":"rgba(180,200,255,0.7)",
+      fontWeight:dialect===d.key?"bold":"normal",
+      border:"1px solid rgba(80,120,180,0.25)",
+    }}>
+      {uiLang==="ru"?d.ru:uiLang==="en"?d.en:d.ge}
+    </button>
+  ))}
+</div>
+
         <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
           <div style={{position:"relative"}}>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
