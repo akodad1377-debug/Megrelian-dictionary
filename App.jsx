@@ -87,14 +87,13 @@ export default function App() {
         .fu{animation:fadeUp 0.25s ease-out}
         input:focus{outline:none}
         .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
-        .pill:hover{transform:scale(1.04)}
+        .pill:hover{transform:scale(1.02)}
         .card{transition:transform 0.15s,box-shadow 0.15s}
         .card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.45)}
         .sc::-webkit-scrollbar{display:none}
         .sc{-ms-overflow-style:none;scrollbar-width:none}
       `}</style>
 
-      {/* ШАПКА */}
       <header style={{position:"sticky",top:0,zIndex:100,background:"rgba(8,14,9,0.93)",backdropFilter:"blur(14px)",borderBottom:"1px solid rgba(80,160,80,0.18)",padding:"11px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:9}}>
           <span style={{fontSize:22}}>📖</span>
@@ -138,16 +137,16 @@ export default function App() {
           ))}
         </div>
 
-        {/* ФИЛЬТР ДИАЛЕКТОВ */}
+        {/* ФИЛЬТР ДИАЛЕКТОВ (ОБНОВЛЕННЫЙ) */}
         <div style={{marginBottom:15, display:"flex", alignItems:"center", gap:8, flexWrap:"wrap"}}>
           <span style={{fontSize:10, color:"rgba(232,224,204,0.3)", textTransform:"uppercase"}}>{t.dial}:</span>
           {[
             {k:"all", r:"Все", e:"All", g:"ყველა"},
-            {k:"sam", r:"Сам.", e:"Sam.", g:"სამ."},
-            {k:"sen", r:"Сен.", e:"Sen.", g:"სენ."}
+            {k:"sam", r:"Самурзакано-зугдидский", e:"Samurzakan-Zugdidi", g:"სამურზაყანო-ზუგდიდური"},
+            {k:"sen", r:"Сенакский", e:"Senaki", g:"სენაკური"}
           ].map(d=>(
             <button key={d.k} className="pill" onClick={()=>setDialect(d.k)} style={{
-              padding:"4px 10px", fontSize:11,
+              padding:"6px 12px", fontSize:11,
               background: dialect===d.k ? "rgba(125,180,255,0.2)" : "rgba(80,160,80,0.05)",
               color: dialect===d.k ? "#7db4ff" : "rgba(232,224,204,0.5)",
               border: "1px solid rgba(80,160,80,0.15)"
@@ -180,7 +179,7 @@ export default function App() {
 
             return (
               <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
-                {/* Метки диалектов в карточке */}
+                {/* В карточках оставляем сокращения */}
                 <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
                   {hasDialects ? Object.keys(entry.dialects).map(d=>(
                     <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[ck]:d}))} style={{
