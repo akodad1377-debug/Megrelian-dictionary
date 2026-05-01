@@ -414,7 +414,7 @@ export default function App() {
             {key:"sam", ru:"Самурзакано-Зугдидский", en:"Samurz-Zugdidi", ge:"სამურზ.-ზუგდ."},
             {key:"sen", ru:"Сенакский",  en:"Senaki", ge:"სენ."},
           ].map(d=>(
-            <button key={d.key} className="pill" onClick={()=>setDialect(d.key)} style={{
+            <button key={d.key} className="pill" onClick={()=>{setDialect(d.key);setCardDialects({});}} style={{
               whiteSpace:"nowrap",padding:"4px 10px",fontSize:11,
               background:dialect===d.key?"rgba(125,180,255,0.9)":"rgba(80,120,180,0.12)",
               color:dialect===d.key?"#0f1a12":"rgba(180,200,255,0.7)",
@@ -462,7 +462,11 @@ export default function App() {
               const hasDialects = !!entry.dialects;
               const ck = entry.meg;
               const activeDial = hasDialects
-                ? (cardDialects[ck] || Object.keys(entry.dialects)[0])
+                ? (cardDialects[ck] !== undefined
+                    ? cardDialects[ck]
+                    : (dialect !== "all" && entry.dialects[dialect]
+                        ? dialect
+                        : Object.keys(entry.dialects)[0]))
                 : null;
               const displayMeg = hasDialects ? (entry.dialects[activeDial]?.meg || entry.meg) : entry.meg;
               const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr  || entry.tr)  : entry.tr;
@@ -472,7 +476,7 @@ export default function App() {
                   {hasDialects ? (
                     Object.keys(entry.dialects).map(d=>(
                       <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[ck]:d}))} style={{
-                        fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,cursor:"pointer",
+                        fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,cursor:"pointer",fontFamily:"Georgia,serif",
                         background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)"):"transparent",
                         color:activeDial===d?(d==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)"):"rgba(232,224,204,0.2)",
                         border:activeDial===d?(d==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)"):"1px solid transparent",
