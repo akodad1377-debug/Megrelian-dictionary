@@ -214,7 +214,7 @@ const DICT = [
   {topic:"animals", meg:"კუ",        tr:"ku",           geo:"კუ",                           ru:"черепаха",                    en:"turtle"},
   {topic:"animals", meg:"ლაკვი",     tr:"lakvi",        geo:"ლეკვი",                        ru:"щенок",                       en:"puppy"},
   {topic:"animals", meg:"ლომი",      tr:"lomi",         geo:"ლომი",                         ru:"лев",                         en:"lion"},
-  {topic:"animals", meg:"ლოქორუა",   tr:"lokọrua",      geo:"ლოკოკინა",                     ru:"улитка",                      en:"snail",          dialect:"sen"},
+  {topic:"animals", meg:"ლოქორუა",   tr:"lokorua",      geo:"ლოკოკინა",                     ru:"улитка",                      en:"snail",          dialect:"sen"},
   {topic:"animals", meg:"მაბარუუ",   tr:"mabaruu",      geo:"მუხლუხო",                      ru:"гусеница",                    en:"caterpillar"},
   {topic:"animals", meg:"არქემი",    tr:"arkemi",       geo:"აქლემი",                       ru:"верблюд",                     en:"camel"},
   {topic:"animals", meg:"ტი",        tr:"ṭi",           geo:"ტილი",                         ru:"вошь",                        en:"louse"},
