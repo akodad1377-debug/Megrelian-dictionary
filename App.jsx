@@ -201,7 +201,7 @@ const DICT = [
   {topic:"body", meg:"დუდი",       tr:"dudi",        geo:"თავი",                        ru:"голова",                              en:"head"},
   {topic:"body", meg:"ჸვა",        tr:"ʼva",         geo:"შუბლი",                       ru:"лоб",                                 en:"forehead"},
   {topic:"body", meg:"თოლი",       tr:"toli",         geo:"თვალი",                       ru:"глаз",                                en:"eye"},
-  {topic:"body", meg:"თომა",       tr:"toma",         geo:"თმა",                         ru:"волосы",                              en:"hair",        dialects:{sen:{meg:"თომა",tr:"toma"},sam:{meg:"თუმა",tr:"tuma"}}},
+  {topic:"body", meg:"თომა",       tr:"toma",         geo:"თმა",                         ru:"волосы",                              en:"hair",        dialects:{sam:{meg:"თუმა",tr:"tuma"},sen:{meg:"თომა",tr:"toma"}}},
   {topic:"body", meg:"წაბი",       tr:"c̣abi",        geo:"წარბი",                       ru:"бровь",                               en:"eyebrow"},
   {topic:"body", meg:"წიმორთი",    tr:"c̣imorti",     geo:"ნაკუთალი (წვივისა)",          ru:"икра (ноги)",                         en:"calf (of leg)"},
   {topic:"body", meg:"წყურკუჩხი",  tr:"c̣q̣urkučxi",  geo:"კოჭი",                        ru:"лодыжка",                             en:"ankle",          dialect:"sam"},
