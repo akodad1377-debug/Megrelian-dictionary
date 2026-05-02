@@ -101,8 +101,8 @@ const DICT = [
   {topic:"food", meg:"ატამა",        tr:"atama",       geo:"ატამი",                       ru:"персик",                              en:"peach"},
   {topic:"food", meg:"ბჟა",          tr:"bža",         geo:"რძე",                         ru:"молоко",                              en:"milk"},
   {topic:"food", meg:"ბურახი",       tr:"buraxi",      geo:"კვასი",                       ru:"квас",                                en:"kvass"},
-  {topic:"food", meg:"გემო",         tr:"gemo",        geo:"გემო",                        ru:"вкус",                                en:"taste, flavour"},
-  {topic:"food", meg:"გემუანი",      tr:"gemuani",     geo:"გემრიელი",                    ru:"вкусный",                             en:"tasty, delicious"},
+  {topic:"descriptions", meg:"გემო",         tr:"gemo",        geo:"გემო",                        ru:"вкус",                                en:"taste, flavour"},
+  {topic:"descriptions", meg:"გემუანი",      tr:"gemuani",     geo:"გემრიელი",                    ru:"вкусный",                             en:"tasty, delicious"},
   {topic:"food", meg:"ქობალი",       tr:"kobali",      geo:"პური",                        ru:"хлеб",                                en:"bread"},
   {topic:"food", meg:"სადილი",       tr:"sadili",      geo:"სადილი",                      ru:"обед",                                en:"lunch, dinner"},
 
@@ -111,46 +111,46 @@ const DICT = [
   {topic:"society", meg:"აბაშური",   tr:"abašuri",     geo:"1. აბაშელი 2. აბაშური",      ru:"1. абашец 2. абашский",               en:"1. person from Abasha 2. of Abasha"},
   {topic:"society", meg:"აბრაგალა",  tr:"abragala",    geo:"აბრაგად ყოფნა, აბრაგობა",    ru:"абречество, разбойничество",          en:"brigandage, outlaw life"},
   {topic:"society", meg:"აბრაგი",    tr:"abragi",      geo:"აბრაგი",                      ru:"абрек, разбойник",                    en:"abrek, brigand"},
-  {topic:"society", meg:"აგაგა",     tr:"agaga",       geo:"მოჩვენება, ლანდი; ჩონჩხი",   ru:"привидение, призрак; скелет",         en:"ghost, apparition; skeleton"},
+  {topic:"culture", meg:"აგაგა",     tr:"agaga",       geo:"მოჩვენება, ლანდი; ჩონჩხი",   ru:"привидение, призрак; скелет",         en:"ghost, apparition; skeleton"},
   {topic:"society", meg:"აგვართა",   tr:"agvarta",     geo:"ბრბო, თაყარილობა",            ru:"масса, толпа",                        en:"mass, crowd"},
   {topic:"society", meg:"ადამიანი",  tr:"adamiani",    geo:"ადამიანი, გადატ. ქალი",       ru:"человек; перен. женщина",             en:"person; fig. woman"},
   {topic:"society", meg:"ბაზარი",    tr:"bazari",      geo:"ბაზარი",                      ru:"базар",                               en:"market, bazaar"},
   {topic:"society", meg:"ბერი",      tr:"beri",        geo:"ბერი",                        ru:"монах",                               en:"monk"},
-  {topic:"society", meg:"ბობოხი",    tr:"boboxi",      geo:"ხმამაღალი ლაპარაკი",          ru:"громкий разговор",                    en:"loud talk"},
-  {topic:"society", meg:"ბობოხია",   tr:"bobobia",     geo:"მხვეწარი, ამპარტავანი",       ru:"хвастун",                             en:"boaster, braggart"},
+  {topic:"language", meg:"ბობოხი",    tr:"boboxi",      geo:"ხმამაღალი ლაპარაკი",          ru:"громкий разговор",                    en:"loud talk"},
+  {topic:"language", meg:"ბობოხია",   tr:"bobobia",     geo:"მხვეწარი, ამპარტავანი",       ru:"хвастун",                             en:"boaster, braggart"},
   {topic:"society", meg:"ბოშიკათა",  tr:"bošiḳata",    geo:"ახალგაზრდობა",                ru:"молодёжь",                            en:"youth (collective)"},
   {topic:"society", meg:"გემი",      tr:"gemi",        geo:"გემი",                        ru:"корабль",                             en:"ship"},
   {topic:"society", meg:"კოჩი",      tr:"ḳoči",        geo:"ადამიანი",                    ru:"человек",                             en:"person"},
-  {topic:"society", meg:"ნოღა",      tr:"noğa",        geo:"ქალაქი",                      ru:"город",                               en:"city"},
-  {topic:"society", meg:"სოფელი",    tr:"sopeli",      geo:"სოფელი",                      ru:"село",                                en:"village"},
-  {topic:"society", meg:"ქიანა",     tr:"kiana",       geo:"ქვეყანა",                     ru:"страна",                              en:"country"},
+  {topic:"geography", meg:"ნოღა",      tr:"noğa",        geo:"ქალაქი",                      ru:"город",                               en:"city"},
+  {topic:"geography", meg:"სოფელი",    tr:"sopeli",      geo:"სოფელი",                      ru:"село",                                en:"village"},
+  {topic:"geography", meg:"ქიანა",     tr:"kiana",       geo:"ქვეყანა",                     ru:"страна",                              en:"country"},
   {topic:"society", meg:"ხარხი",     tr:"xarxi",       geo:"ხალხი",                       ru:"народ, люди",                         en:"people, folk"},
 
   // ── ВРЕМЯ И МЕСТО ────────────────────────────────────────────────
-  {topic:"time_place", meg:"აბანი",   tr:"abani",       geo:"ადგილი",                      ru:"место",                               en:"place"},
-  {topic:"time_place", meg:"აბაშა",   tr:"abaša",       geo:"აბაშა (სოფელი, მდინარე)",     ru:"Абаша (село и река в Мегрелии)",      en:"Abasha (village and river in Mingrelia)"},
-  {topic:"time_place", meg:"აბჟუა",   tr:"abžua",   dialect:"sam",       geo:"აფხაზეთი",                    ru:"Абхазия",                             en:"Abkhazia"},
-  {topic:"time_place", meg:"ადრე",    tr:"adre",        geo:"ადრე",                        ru:"рано",                                en:"early"},
-  {topic:"time_place", meg:"ამდღა",   tr:"amdğa",       geo:"დღეს",                        ru:"сегодня",                             en:"today"},
-  {topic:"time_place", meg:"ამნიჯი",  tr:"amniǯi",      geo:"ამ საღამოს",                  ru:"этим вечером",                        en:"this evening"},
-  {topic:"time_place", meg:"აპრილი",  tr:"aprili",      geo:"აპრილი",                      ru:"апрель",                              en:"April"},
-  {topic:"time_place", meg:"არგუსო",  tr:"arguso",      geo:"აგვისტო",                     ru:"август",                              en:"August"},
-  {topic:"time_place", meg:"არდგილი", tr:"ardgili",     geo:"ადგილი",                      ru:"место",                               en:"place"},
-  {topic:"time_place", meg:"ართიალამო",tr:"artialamo",  geo:"ერთბაშად",                    ru:"сразу",                               en:"at once, immediately"},
-  {topic:"time_place", meg:"ართიშა",  tr:"artiša",      geo:"ერთხელ",                      ru:"однажды, один раз",                   en:"once, one time"},
-  {topic:"time_place", meg:"ართო",    tr:"arto",        geo:"ერთად",                       ru:"вместе",                              en:"together"},
-  {topic:"time_place", meg:"ასე",     tr:"ase",         geo:"ახლა",                        ru:"теперь, ныне",                        en:"now"},
-  {topic:"time_place", meg:"ბჟადალი", tr:"bžadali",     geo:"დასავლეთი (სიტყვასიტყვ. მზის ჩასვლა)", ru:"запад (букв. закат солнца)",  en:"west (lit. sunset)"},
-  {topic:"time_place", meg:"ბჟაიოლუ", tr:"bžaiolu",    geo:"აღმოსავლეთი",                 ru:"восток",                              en:"east"},
-  {topic:"time_place", meg:"გაზაფხული",tr:"gazapxuli",  geo:"გაზაფხული",                   ru:"весна",                               en:"spring"},
-  {topic:"time_place", meg:"სათი",    tr:"sati",        geo:"საათი",                       ru:"час, часы",                           en:"hour, clock"},
-  {topic:"time_place", meg:"სო",      tr:"so",          geo:"სად",                         ru:"где",                                 en:"where"},
+  {topic:"geography", meg:"აბანი",   tr:"abani",       geo:"ადგილი",                      ru:"место",                               en:"place"},
+  {topic:"geography", meg:"აბაშა",   tr:"abaša",       geo:"აბაშა (სოფელი, მდინარე)",     ru:"Абаша (село и река в Мегрелии)",      en:"Abasha (village and river in Mingrelia)"},
+  {topic:"geography", meg:"აბჟუა",   tr:"abžua",   dialect:"sam",       geo:"აფხაზეთი",                    ru:"Абхазия",                             en:"Abkhazia"},
+  {topic:"time", meg:"ადრე",    tr:"adre",        geo:"ადრე",                        ru:"рано",                                en:"early"},
+  {topic:"time", meg:"ამდღა",   tr:"amdğa",       geo:"დღეს",                        ru:"сегодня",                             en:"today"},
+  {topic:"time", meg:"ამნიჯი",  tr:"amniǯi",      geo:"ამ საღამოს",                  ru:"этим вечером",                        en:"this evening"},
+  {topic:"time", meg:"აპრილი",  tr:"aprili",      geo:"აპრილი",                      ru:"апрель",                              en:"April"},
+  {topic:"time", meg:"არგუსო",  tr:"arguso",      geo:"აგვისტო",                     ru:"август",                              en:"August"},
+  {topic:"geography", meg:"არდგილი", tr:"ardgili",     geo:"ადგილი",                      ru:"место",                               en:"place"},
+  {topic:"time", meg:"ართიალამო",tr:"artialamo",  geo:"ერთბაშად",                    ru:"сразу",                               en:"at once, immediately"},
+  {topic:"time", meg:"ართიშა",  tr:"artiša",      geo:"ერთხელ",                      ru:"однажды, один раз",                   en:"once, one time"},
+  {topic:"time", meg:"ართო",    tr:"arto",        geo:"ერთად",                       ru:"вместе",                              en:"together"},
+  {topic:"time", meg:"ასე",     tr:"ase",         geo:"ახლა",                        ru:"теперь, ныне",                        en:"now"},
+  {topic:"time", meg:"ბჟადალი", tr:"bžadali",     geo:"დასავლეთი (სიტყვასიტყვ. მზის ჩასვლა)", ru:"запад (букв. закат солнца)",  en:"west (lit. sunset)"},
+  {topic:"time", meg:"ბჟაიოლუ", tr:"bžaiolu",    geo:"აღმოსავლეთი",                 ru:"восток",                              en:"east"},
+  {topic:"time", meg:"გაზაფხული",tr:"gazapxuli",  geo:"გაზაფხული",                   ru:"весна",                               en:"spring"},
+  {topic:"time", meg:"სათი",    tr:"sati",        geo:"საათი",                       ru:"час, часы",                           en:"hour, clock"},
+  {topic:"geography", meg:"სო",      tr:"so",          geo:"სად",                         ru:"где",                                 en:"where"},
 
   // ── ЯЗЫК И ОБЩЕНИЕ ───────────────────────────────────────────────
   {topic:"language", meg:"აბა!",      tr:"aba",         geo:"აბა!",                        ru:"ну-ка! да! ну!",                      en:"come on! hey!"},
   {topic:"language", meg:"ამბე",      tr:"ambe",        geo:"ამბავი",                      ru:"весть, история, известие",            en:"news, tidings"},
-  {topic:"language", meg:"ანგელოზი",  tr:"angelozi",    geo:"ანგელოზი",                    ru:"ангел",                               en:"angel"},
-  {topic:"language", meg:"არიკი",     tr:"ariki",       geo:"ზღაპარი",                     ru:"сказка",                              en:"fairy tale"},
+  {topic:"culture", meg:"ანგელოზი",  tr:"angelozi",    geo:"ანგელოზი",                    ru:"ангел",                               en:"angel"},
+  {topic:"culture", meg:"არიკი",     tr:"ariki",       geo:"ზღაპარი",                     ru:"сказка",                              en:"fairy tale"},
   {topic:"language", meg:"გვარი",     tr:"gvari",       geo:"გვარი",                       ru:"фамилия",                             en:"surname"},
   {topic:"language", meg:"გურაფა",    tr:"gurapa",      geo:"სწავლა",                      ru:"учёба",                               en:"study"},
   {topic:"language", meg:"ნინა",      tr:"nina",        geo:"ენა",                         ru:"язык",                                en:"language"},
@@ -168,7 +168,7 @@ const DICT = [
   {topic:"descriptions", meg:"ბეჯითი",    tr:"beǯiti",    geo:"ბეჯითი, მუყაითი",          ru:"прилежный",                           en:"diligent, assiduous"},
   {topic:"descriptions", meg:"ბოლო",      tr:"bolo",      geo:"ბოლო",                      ru:"конец",                               en:"end"},
   {topic:"descriptions", meg:"ბონი",      tr:"boni",      geo:"პირდაპირი, სწორი",          ru:"прямой; ровный",                      en:"straight; level, even"},
-  {topic:"descriptions", meg:"ბრელი",     tr:"breli",     geo:"ბევრი",                     ru:"много",                               en:"many, much"},
+  {topic:"pronouns", meg:"ბრელი",     tr:"breli",     geo:"ბევრი",                     ru:"много",                               en:"many, much"},
   {topic:"descriptions", meg:"ჰამო",      tr:"hamo",      geo:"სასიამოვნო, ტკბილი",        ru:"приятный, сладкий",                   en:"pleasant, sweet"},
 
   // ── ДОМ ──────────────────────────────────────────────────────────
@@ -227,11 +227,11 @@ const DICT = [
   {topic:"nature", meg:"ატატია",    tr:"atatia",       geo:"თეთრი და ფუფუკი თოვლი",       ru:"очень белый и мягкий снег",   en:"very white soft snow"},
   {topic:"home", meg:"კვაღა",       tr:"kvağa",        geo:"ნაჯახი",                       ru:"топорик",                     en:"hatchet"},
   {topic:"society", meg:"აფხაზა",   tr:"apxaza",       geo:"აფხაზი",                       ru:"абхаз",                       en:"Abkhaz"},
-  {topic:"time_place", meg:"კულე",   tr:"kule",         geo:"სოხუმი",                       ru:"Сухуми",                      en:"Sukhumi"},
-  {topic:"time_place", meg:"ასხი",   tr:"asxi",         geo:"ასხი (მთა ჩრდილო სამეგრელოში)", ru:"Асхи (гора в сев. Мегрелии)", en:"Askhi (mountain in N. Mingrelia)"},
-  {topic:"time_place", meg:"აფხაზეთი",tr:"apxazeti",   geo:"აფხაზეთი",                     ru:"Абхазия",                     en:"Abkhazia"},
-  {topic:"time_place", meg:"ახალ-სენაკი",tr:"axal-senaki",geo:"ახალი სენაკი",              ru:"Ахал-сенаки",                 en:"Akhal-Senaki"},
-  {topic:"time_place", meg:"ბათომი", tr:"batomi",       geo:"ბათუმი (ქალაქი)",              ru:"Батуми",                      en:"Batumi"},
+  {topic:"geography", meg:"კულე",   tr:"kule",         geo:"სოხუმი",                       ru:"Сухуми",                      en:"Sukhumi"},
+  {topic:"geography", meg:"ასხი",   tr:"asxi",         geo:"ასხი (მთა ჩრდილო სამეგრელოში)", ru:"Асхи (гора в сев. Мегрелии)", en:"Askhi (mountain in N. Mingrelia)"},
+  {topic:"geography", meg:"აფხაზეთი",tr:"apxazeti",   geo:"აფხაზეთი",                     ru:"Абхазия",                     en:"Abkhazia"},
+  {topic:"geography", meg:"ახალ-სენაკი",tr:"axal-senaki",geo:"ახალი სენაკი",              ru:"Ахал-сенаки",                 en:"Akhal-Senaki"},
+  {topic:"geography", meg:"ბათომი", tr:"batomi",       geo:"ბათუმი (ქალაქი)",              ru:"Батуми",                      en:"Batumi"},
 
   // ── ТЕЛО (новые) ─────────────────────────────────────────────────
 
@@ -261,34 +261,34 @@ const DICT = [
   {topic:"animals", meg:"მარგვი",   tr:"margvi",       geo:"ბელი (დათვისა)",              ru:"медвежонок",                          en:"bear cub"},
 
   // ── ОБЩЕСТВО (доп.) ───────────────────────────────────────────────
-  {topic:"society", meg:"მარგალი",  tr:"margali",      geo:"მეგრელი; გადატ. გლეხი",      ru:"мегрел; перен. крестьянин",           en:"Mingrelian; fig. peasant"},
-  {topic:"society", meg:"მარგალური",tr:"margaluri",    geo:"მეგრული",                     ru:"мегрельский",                         en:"Mingrelian"},
-  {topic:"society", meg:"მარგალური ნინა",tr:"margaluri nina",geo:"მეგრული ენა",           ru:"мегрельский язык",                    en:"Mingrelian language"},
-  {topic:"society", meg:"მარგალურო",tr:"margaluro",    geo:"მეგრულად",                    ru:"по-мегрельски",                       en:"in Mingrelian"},
+  {topic:"culture", meg:"მარგალი",  tr:"margali",      geo:"მეგრელი; გადატ. გლეხი",      ru:"мегрел; перен. крестьянин",           en:"Mingrelian; fig. peasant"},
+  {topic:"culture", meg:"მარგალური",tr:"margaluri",    geo:"მეგრული",                     ru:"мегрельский",                         en:"Mingrelian"},
+  {topic:"culture", meg:"მარგალური ნინა",tr:"margaluri nina",geo:"მეგრული ენა",           ru:"мегрельский язык",                    en:"Mingrelian language"},
+  {topic:"culture", meg:"მარგალურო",tr:"margaluro",    geo:"მეგრულად",                    ru:"по-мегрельски",                       en:"in Mingrelian"},
   {topic:"society", meg:"მარკინე",  tr:"markine",      geo:"მოჭიდავე",                    ru:"борец",                               en:"wrestler"},
   {topic:"society", meg:"ბაყვი",    tr:"baq̣vi",        geo:"მონა, მორჩილი",               ru:"раб",                                 en:"slave, servant"},
   {topic:"society", meg:"ოსურამი",  tr:"osurami",      geo:"ცოლიანი",                     ru:"женатый",                             en:"married (man)"},
   {topic:"society", meg:"ოსურპატონი",tr:"osurpatoni",  geo:"ქალბატონი",                   ru:"госпожа",                             en:"lady, madam"},
 
   // ── ВРЕМЯ И МЕСТО (доп.) ──────────────────────────────────────────
-  {topic:"time_place", meg:"მარაშინა თუთა",tr:"marašina tuta",geo:"აგვისტო",             ru:"август",                              en:"August",             dialect:"sam"},
-  {topic:"time_place", meg:"ბორჯი",  tr:"borǯi",       geo:"დრო, ჟამი",                   ru:"время, пора",                         en:"time, period"},
-  {topic:"time_place", meg:"დღა",    tr:"dğa",         geo:"დღე",                         ru:"день",                                en:"day"},
-  {topic:"time_place", meg:"გოღა",   tr:"goğa",        geo:"გუშინ",                       ru:"вчера",                               en:"yesterday"},
-  {topic:"time_place", meg:"გოღაწო", tr:"goğac̣o",      geo:"გუშინწინ",                    ru:"позавчера",                           en:"day before yesterday"},
-  {topic:"time_place", meg:"ჭუმანი", tr:"čumani",      geo:"ხვალ",                        ru:"завтра",                              en:"tomorrow"},
-  {topic:"time_place", meg:"ჭუმესერი",tr:"čumeseri",   geo:"ხვალ ღამე",                   ru:"завтра ночью",                        en:"tomorrow night"},
-  {topic:"time_place", meg:"სერი",   tr:"seri",        geo:"ღამე",                        ru:"ночь",                                en:"night"},
-  {topic:"time_place", meg:"ოჭუმარე",tr:"očumare",     geo:"დილა",                        ru:"утро",                                en:"morning"},
-  {topic:"time_place", meg:"თაქი",   tr:"taki",        geo:"აქ",                          ru:"здесь, тут",                          en:"here"},
-  {topic:"time_place", meg:"თექი",   tr:"teki",        geo:"იქ",                          ru:"там",                                 en:"there"},
-  {topic:"time_place", meg:"თექინე", tr:"tekine",      geo:"იქ",                          ru:"там",                                 en:"there"},
-  {topic:"time_place", meg:"სანაკი", tr:"sanaki",      geo:"სენაკი",                      ru:"Сенаки",                              en:"Senaki"},
-  {topic:"time_place", meg:"სანაკური",tr:"sanakuri",   geo:"სენაკელი, სენაკური",          ru:"сенакский",                           en:"of Senaki"},
+  {topic:"time", meg:"მარაშინა თუთა",tr:"marašina tuta",geo:"აგვისტო",             ru:"август",                              en:"August",             dialect:"sam"},
+  {topic:"time", meg:"ბორჯი",  tr:"borǯi",       geo:"დრო, ჟამი",                   ru:"время, пора",                         en:"time, period"},
+  {topic:"time", meg:"დღა",    tr:"dğa",         geo:"დღე",                         ru:"день",                                en:"day"},
+  {topic:"time", meg:"გოღა",   tr:"goğa",        geo:"გუშინ",                       ru:"вчера",                               en:"yesterday"},
+  {topic:"time", meg:"გოღაწო", tr:"goğac̣o",      geo:"გუშინწინ",                    ru:"позавчера",                           en:"day before yesterday"},
+  {topic:"time", meg:"ჭუმანი", tr:"čumani",      geo:"ხვალ",                        ru:"завтра",                              en:"tomorrow"},
+  {topic:"time", meg:"ჭუმესერი",tr:"čumeseri",   geo:"ხვალ ღამე",                   ru:"завтра ночью",                        en:"tomorrow night"},
+  {topic:"time", meg:"სერი",   tr:"seri",        geo:"ღამე",                        ru:"ночь",                                en:"night"},
+  {topic:"time", meg:"ოჭუმარე",tr:"očumare",     geo:"დილა",                        ru:"утро",                                en:"morning"},
+  {topic:"geography", meg:"თაქი",   tr:"taki",        geo:"აქ",                          ru:"здесь, тут",                          en:"here"},
+  {topic:"geography", meg:"თექი",   tr:"teki",        geo:"იქ",                          ru:"там",                                 en:"there"},
+  {topic:"geography", meg:"თექინე", tr:"tekine",      geo:"იქ",                          ru:"там",                                 en:"there"},
+  {topic:"geography", meg:"სანაკი", tr:"sanaki",      geo:"სენაკი",                      ru:"Сенаки",                              en:"Senaki"},
+  {topic:"geography", meg:"სანაკური",tr:"sanakuri",   geo:"სენაკელი, სენაკური",          ru:"сенакский",                           en:"of Senaki"},
 
   // ── ОПИСАНИЯ (доп.) ───────────────────────────────────────────────
-  {topic:"descriptions", meg:"თეში", tr:"teši",        geo:"ისე",                         ru:"так",                                 en:"so, like that"},
-  {topic:"descriptions", meg:"თეცალი",tr:"tecali",     geo:"ასეთი, ამისთანა",             ru:"такой",                               en:"such, of this kind"},
+  {topic:"pronouns", meg:"თეში", tr:"teši",        geo:"ისე",                         ru:"так",                                 en:"so, like that"},
+  {topic:"pronouns", meg:"თეცალი",tr:"tecali",     geo:"ასეთი, ამისთანა",             ru:"такой",                               en:"such, of this kind"},
   {topic:"descriptions", meg:"ძაგვარი",tr:"ʒagvari",   geo:"ჯაგარი",                      ru:"щетина",                              en:"bristle"},
 
   // ── ПРИРОДА (доп.) ────────────────────────────────────────────────
@@ -297,7 +297,7 @@ const DICT = [
 
   // ── ДОМ (доп.) ────────────────────────────────────────────────────
   {topic:"home", meg:"ოჭკორიე",    tr:"očkorie",      geo:"სარკმელი",                    ru:"окно",                                en:"window"},
-  {topic:"home", meg:"ხურხინი",    tr:"xurxini",      geo:"ხვრინვა, ხიხინი",             ru:"храп",                                en:"snoring"},
+  {topic:"body", meg:"ხურხინი",    tr:"xurxini",      geo:"ხვრინვა, ხიხინი",             ru:"храп",                                en:"snoring"},
   {topic:"home", meg:"ჭყუდა",      tr:"č̣q̣uda",        geo:"მზითევი",                     ru:"приданое",                            en:"dowry"},
   {topic:"home", meg:"ხენწი",      tr:"xenc̣i",        geo:"ხიწვი",                       ru:"заноза",                              en:"splinter",           dialect:"sen"},
 
@@ -306,7 +306,7 @@ const DICT = [
   {topic:"descriptions", meg:"ჯოუშტი",  tr:"ǯoušti",    geo:"ჟინიანი, უტეხი, ჯიუტი",      ru:"упрямый",                             en:"stubborn",           dialect:"sen"},
 
   // ── ЯЗЫК (доп.) ──────────────────────────────────────────────────
-  {topic:"language", meg:"ჯოჯოხეთი",   tr:"ǯoǯoxeti",  geo:"ჯოჯოხეთი",                    ru:"ад",                                  en:"hell"},
+  {topic:"culture", meg:"ჯოჯოხეთი",   tr:"ǯoǯoxeti",  geo:"ჯოჯოხეთი",                    ru:"ад",                                  en:"hell"},
   
   // ── СЕМЬЯ (доп.) ─────────────────────────────────────────────────
   {topic:"family", meg:"ჯიჯი",         tr:"ǯiǯi",      geo:"ბიძიკო",                       ru:"дяденька",                            en:"uncle (familiar)"},
@@ -332,11 +332,11 @@ const DICT = [
   {topic:"plants", meg:"ლუღი",         tr:"luği",       geo:"ლეღვი",                       ru:"инжир",                               en:"fig"},
 
   // ── ВРЕМЯ И МЕСТО (доп.) ──────────────────────────────────────────
-  {topic:"time_place", meg:"თუთაშხა",  tr:"tutašxa",    geo:"ორშაბათი",                    ru:"понедельник",                         en:"Monday"},
-  {topic:"time_place", meg:"თახაშხა",  tr:"taxašxa",    geo:"სამშაბათი",                   ru:"вторник",                             en:"Tuesday"},
-  {topic:"time_place", meg:"ჯუმაშხა",  tr:"ǯumašxa",    geo:"ოთხშაბათი",                   ru:"среда",                               en:"Wednesday"},
-  {topic:"time_place", meg:"საბატონი",  tr:"sabatoni",   geo:"შაბათი",                      ru:"суббота",                             en:"Saturday"},
-  {topic:"time_place", meg:"სამურზაყანო",tr:"samurząq̣ano",geo:"სამურზაყანო (სამეგრ. ჩრდ.-დასავლ. ნაწილი)",ru:"Самурзакано (сев.-зап. часть Мегрелии)",en:"Samurzakano (NW Mingrelia)"},
+  {topic:"time", meg:"თუთაშხა",  tr:"tutašxa",    geo:"ორშაბათი",                    ru:"понедельник",                         en:"Monday"},
+  {topic:"time", meg:"თახაშხა",  tr:"taxašxa",    geo:"სამშაბათი",                   ru:"вторник",                             en:"Tuesday"},
+  {topic:"time", meg:"ჯუმაშხა",  tr:"ǯumašxa",    geo:"ოთხშაბათი",                   ru:"среда",                               en:"Wednesday"},
+  {topic:"time", meg:"საბატონი",  tr:"sabatoni",   geo:"შაბათი",                      ru:"суббота",                             en:"Saturday"},
+  {topic:"geography", meg:"სამურზაყანო",tr:"samurząq̣ano",geo:"სამურზაყანო (სამეგრ. ჩრდ.-დასავლ. ნაწილი)",ru:"Самурзакано (сев.-зап. часть Мегрелии)",en:"Samurzakano (NW Mingrelia)"},
 
   // ── НОВЫЕ СЛОВА ───────────────────────────────────────────────────
   // ── СТАРЫЕ НОВЫЕ СЛОВА ──────────────────────────────────────────
@@ -355,13 +355,6 @@ const DICT = [
   {topic:"numbers", num:30,   meg:"ეჩდოვითი",   tr:"ečdoviti",    geo:"ოცდაათი",                     ru:"тридцать",                            en:"thirty"},
   {topic:"numbers", num:100,  meg:"ოში",        tr:"oši",         geo:"ასი",                         ru:"сто",                                 en:"hundred"},
   {topic:"numbers", num:1000, meg:"ანთასი",     tr:"antasi",      geo:"ათასი",                       ru:"тысяча",                              en:"thousand"},
-  // ── НОВЫЕ ПОСТУПЛЕНИЯ ──────────────────────────────────────────
-  {topic:"time_place", meg:"ცაშხა",      tr:"cašxa",     geo:"ხუთშაბათი",   ru:"четверг",      en:"Thursday"},
-  {topic:"time_place", meg:"ობიშხა",     tr:"obišxa",    geo:"პარასკევი",   ru:"пятница",      en:"Friday"},
-  {topic:"society",    meg:"ობირე",      tr:"obire",     geo:"სიმღერა",     ru:"песня",        en:"song"},
-  {topic:"nature",     meg:"ცაში ორტყაფუ", tr:"caši ortq̣apu", geo:"ცისარტყელა", ru:"ცისარტყელა", ru:"радуга", en:"rainbow"},
-  {topic:"nature",     meg:"ცაშკარი",    tr:"caškari",   geo:"ცისკარი",     ru:"заря",         en:"dawn"},
-  {topic:"descriptions", meg:"ცაშფერი",   tr:"cašperi",   geo:"ცისფერი",     ru:"голубой",      en:"light blue"},
 ];
 
 
@@ -389,13 +382,6 @@ const NEW_WORDS = [
   {meg:"კუპატი",       tr:"kupati",        geo:"კუპატუ ძეხვი",                ru:"купаты, род колбасы",                 en:"kupati sausage"},
   {meg:"ლუღი",         tr:"luği",          geo:"ლეღვი",                       ru:"инжир",                               en:"fig"},
   {meg:"სამურზაყანო",  tr:"samurząq̣ano",  geo:"სამურზაყანო",                 ru:"Самурзакано",                         en:"Samurzakano"},
-  // ── НОВЫЕ ПОСТУПЛЕНИЯ ──────────────────────────────────────────
-  {topic:"time_place", meg:"ცაშხა",      tr:"cašxa",     geo:"ხუთშაბათი",   ru:"четверг",      en:"Thursday"},
-  {topic:"time_place", meg:"ობიშხა",     tr:"obišxa",    geo:"პარასკევი",   ru:"пятница",      en:"Friday"},
-  {topic:"society",    meg:"ობირე",      tr:"obire",     geo:"სიმღერა",     ru:"песня",        en:"song"},
-  {topic:"nature",     meg:"ცაში ორტყაფუ", tr:"caši ortq̣apu", geo:"ცისარტყელა", ru:"ცისარტყელა", ru:"радуга", en:"rainbow"},
-  {topic:"nature",     meg:"ცაშკარი",    tr:"caškari",   geo:"ცისკარი",     ru:"заря",         en:"dawn"},
-  {topic:"descriptions", meg:"ცაშფერი",   tr:"cašperi",   geo:"ცისფერი",     ru:"голубой",      en:"light blue"},
 ];
 
 const TOPICS = [
