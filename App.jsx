@@ -1,6 +1,34 @@
 import { useState, useMemo } from "react";
 
-const GEO_ALPHA = ["ა","ბ","გ","დ","ე","ვ","ზ","თ","ი","კ","ლ","მ","ნ","ო","პ","ჟ","რ","ს","ტ","უ","ფ","ქ","ღ","ყ","შ","ჩ","ც","ძ","წ","ჭ","ხ","ჯ","ჰ","ჸ"];
+const GEO_ALPHA = ["ა","ბ","გ","დ","ე","ვ","ზ","თ","ი","კ","ლ","მ","ნ","ო","პ","ჟ","რ","ს","ტ","უ","ფ","ქ","ღ","ყ","შ","ჩ","ც","ძ","წ","ჭ","ხ","ჯ","ჰ","ჸ"  {meg:"ჩხომი",        tr:"čxomi",        geo:"თევზი",                       ru:"рыба",                                en:"fish"},
+  {meg:"ცაშხა",        tr:"cašxa",        geo:"ხუთშაბათი",                   ru:"четверг",                             en:"Thursday"},
+  {meg:"ობიშხა",       tr:"obišxa",       geo:"პარასკევი",                   ru:"пятница",                             en:"Friday"},
+  {meg:"ობირე",        tr:"obire",        geo:"სიმღერა",                     ru:"песня",                               en:"song"},
+  {meg:"ცაში ორტყაფუ",tr:"caši ortq̣apu",geo:"ცისარტყელა",                  ru:"радуга",                              en:"rainbow"},
+  {meg:"ცაშკარი",      tr:"cašḳari",      geo:"ცისკარი",                     ru:"заря",                                en:"dawn"},
+  {meg:"ცაშფერი",      tr:"cašperi",      geo:"ცისფერი",                     ru:"голубой",                             en:"light blue"},
+  {meg:"ციგანი",       tr:"cigani",       geo:"ციგანი",                      ru:"цыган",                               en:"Romani, gypsy"},
+  {meg:"ცირასკუა",     tr:"ciraskua",     geo:"ქალიშვილი",                   ru:"дочь, барышня",                       en:"daughter, young lady"},
+  {meg:"ცირობა",       tr:"ciroba",       geo:"ქალიშვილობა",                 ru:"девичество",                          en:"maidenhood"},
+  {meg:"ციყვი",        tr:"ciq̣vi",        geo:"ციყვი",                       ru:"белка",                               en:"squirrel"},
+  {meg:"ციცანა",       tr:"cicana",       geo:"ღომის სახეობა",               ru:"род гоми",                            en:"type of gomi"},
+  {meg:"ცოდილი",       tr:"codili",       geo:"ცოდვილი",                     ru:"грешник",                             en:"sinner"},
+  {meg:"ცომი",         tr:"comi",         geo:"ცომი",                        ru:"тесто",                               en:"dough"},
+  {meg:"ცხენი",        tr:"cxeni",        geo:"ცხენი",                       ru:"лошадь",                              en:"horse"},
+  {meg:"ცხენენჯი",     tr:"cxeneǯi",      geo:"ცხენოსანი",                   ru:"всадник",                             en:"horseman"},
+  {meg:"ცხონი",        tr:"cxoni",        geo:"ხსენი",                       ru:"молозиво",                            en:"colostrum"},
+  {meg:"ჭია-მარია",    tr:"čia-maria",    geo:"ჭია-მაია",                    ru:"божья коровка",                       en:"ladybird"},
+  {meg:"ჭითა",         tr:"č̣ita",         geo:"წითელი",                      ru:"красный",                             en:"red"},
+  {meg:"ჭირქა",        tr:"č̣irka",        geo:"ჭიქა",                        ru:"стакан",                              en:"glass, cup"},
+  {meg:"ჭკადუ",        tr:"č̣ḳadu",        geo:"მჭედელი",                     ru:"кузнец",                              en:"blacksmith"},
+  {meg:"კიბო",         tr:"kibo",         geo:"კიბო",                        ru:"рак",                                 en:"crayfish"},
+  {meg:"კიბოია",       tr:"kiboia",       geo:"კიბო",                        ru:"рачёк",                               en:"small crayfish"},
+  {meg:"ჩაი",          tr:"čai",          geo:"ჩაი",                         ru:"чай",                                 en:"tea"},
+  {meg:"ჩე",           tr:"če",           geo:"თეთრი",                       ru:"белый",                               en:"white"},
+  {meg:"ჩქიმი",        tr:"čkimi",        geo:"ჩემი",                        ru:"мой",                                 en:"my, mine"},
+  {meg:"ჩქიფი",        tr:"čkipi",        geo:"ჩანგალი",                     ru:"вилка",                               en:"fork"},
+  {meg:"ჩქონი",        tr:"čkoni",        geo:"კუნძული",                     ru:"остров",                              en:"island"},
+];
 
 function firstLetter(meg) {
   for (const ch of meg) if (GEO_ALPHA.includes(ch)) return ch;
@@ -340,6 +368,56 @@ const DICT = [
 
   // ── НОВЫЕ СЛОВА ───────────────────────────────────────────────────
   // ── СТАРЫЕ НОВЫЕ СЛОВА ──────────────────────────────────────────
+
+  // ── ЖИВОТНЫЕ (ц/ч) ───────────────────────────────────────────────
+  {topic:"animals", meg:"ჩხომი",        tr:"čxomi",        geo:"თევზი",                       ru:"рыба",                                en:"fish"},
+  {topic:"animals", meg:"ციყვი",        tr:"ciq̣vi",        geo:"ციყვი",                       ru:"белка",                               en:"squirrel"},
+  {topic:"animals", meg:"ცხენი",        tr:"cxeni",        geo:"ცხენი",                       ru:"лошадь",                              en:"horse"},
+  {topic:"animals", meg:"კიბო",         tr:"kibo",         geo:"კიბო",                        ru:"рак",                                 en:"crayfish"},
+  {topic:"animals", meg:"კიბოია",       tr:"kiboia",       geo:"კიბო",                        ru:"рачёк",                               en:"small crayfish"},
+  {topic:"animals", meg:"ჭია-მარია",    tr:"čia-maria",    geo:"ჭია-მაია",                    ru:"божья коровка",                       en:"ladybird"},
+
+  // ── ПРИРОДА (ц/ч) ────────────────────────────────────────────────
+  {topic:"nature", meg:"ცაში ორტყაფუ", tr:"caši ortq̣apu", geo:"ცისარტყელა",                  ru:"радуга",                              en:"rainbow"},
+  {topic:"nature", meg:"ცაშკარი",      tr:"cašḳari",      geo:"ცისკარი",                     ru:"заря",                                en:"dawn"},
+
+  // ── ОПИСАНИЯ (цвета) ──────────────────────────────────────────────
+  {topic:"descriptions", meg:"ცაშფერი", tr:"cašperi",     geo:"ცისფერი",                     ru:"голубой",                             en:"light blue"},
+  {topic:"descriptions", meg:"ჭითა",    tr:"č̣ita",        geo:"წითელი",                      ru:"красный",                             en:"red"},
+  {topic:"descriptions", meg:"ჩე",      tr:"če",           geo:"თეთრი",                       ru:"белый",                               en:"white"},
+
+  // ── ВРЕМЯ (дни) ───────────────────────────────────────────────────
+  {topic:"time", meg:"ცაშხა",          tr:"cašxa",        geo:"ხუთშაბათი",                   ru:"четверг",                             en:"Thursday"},
+  {topic:"time", meg:"ობიშხა",         tr:"obišxa",       geo:"პარასკევი",                   ru:"пятница",                             en:"Friday"},
+
+  // ── КУЛЬТУРА ──────────────────────────────────────────────────────
+  {topic:"culture", meg:"ობირე",        tr:"obire",        geo:"სიმღერა",                     ru:"песня",                               en:"song"},
+  {topic:"culture", meg:"ციგანი",       tr:"cigani",       geo:"ციგანი",                      ru:"цыган",                               en:"Romani, gypsy"},
+  {topic:"culture", meg:"ცოდილი",       tr:"codili",       geo:"ცოდვილი",                     ru:"грешник",                             en:"sinner"},
+
+  // ── ОБЩЕСТВО ──────────────────────────────────────────────────────
+  {topic:"society", meg:"ცირასკუა",    tr:"ciraskua",     geo:"ქალიშვილი",                   ru:"дочь, барышня",                       en:"daughter, young lady"},
+  {topic:"society", meg:"ცირობა",      tr:"ciroba",       geo:"ქალიშვილობა",                 ru:"девичество",                          en:"maidenhood"},
+  {topic:"society", meg:"ცხენენჯი",    tr:"cxeneǯi",      geo:"ცხენოსანი",                   ru:"всадник",                             en:"horseman"},
+  {topic:"society", meg:"ჭკადუ",       tr:"č̣ḳadu",        geo:"მჭედელი",                     ru:"кузнец",                              en:"blacksmith"},
+
+  // ── ЕДА ───────────────────────────────────────────────────────────
+  {topic:"food", meg:"ციცანა",         tr:"cicana",       geo:"ღომის სახეობა",               ru:"род гоми",                            en:"type of gomi"},
+  {topic:"food", meg:"ცომი",           tr:"comi",         geo:"ცომი",                        ru:"тесто",                               en:"dough"},
+  {topic:"food", meg:"ცხონი",          tr:"cxoni",        geo:"ხსენი",                       ru:"молозиво",                            en:"colostrum"},
+  {topic:"food", meg:"ჩაი",            tr:"čai",          geo:"ჩაი",                         ru:"чай",                                 en:"tea"},
+
+  // ── ДОМ ───────────────────────────────────────────────────────────
+  {topic:"home", meg:"ჭირქა",          tr:"č̣irka",        geo:"ჭიქა",                        ru:"стакан",                              en:"glass, cup"},
+
+  // ── МЕСТОИМЕНИЯ ───────────────────────────────────────────────────
+  {topic:"pronouns", meg:"ჩქიმი",      tr:"čkimi",        geo:"ჩემი",                        ru:"мой",                                 en:"my, mine"},
+
+  // ── ГЕОГРАФИЯ ─────────────────────────────────────────────────────
+  {topic:"geography", meg:"ჩქონი",     tr:"čkoni",        geo:"კუნძული",                     ru:"остров",                              en:"island"},
+
+  // ── ПРЕДМЕТЫ (вилка не очень подходит к home) ─────────────────────
+  {topic:"home", meg:"ჩქიფი",          tr:"čkipi",        geo:"ჩანგალი",                     ru:"вилка",                               en:"fork"},
   // ── ЧИСЛА ────────────────────────────────────────────────────────
   {topic:"numbers", num:1,    meg:"ართი",       tr:"arti",        geo:"ერთი",                        ru:"один",                                en:"one"},
   {topic:"numbers", num:2,    meg:"ჟირი",       tr:"žiri",        geo:"ორი",                         ru:"два",                                 en:"two"},
