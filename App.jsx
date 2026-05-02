@@ -355,6 +355,13 @@ const DICT = [
   {topic:"numbers", num:30,   meg:"ეჩდოვითი",   tr:"ečdoviti",    geo:"ოცდაათი",                     ru:"тридцать",                            en:"thirty"},
   {topic:"numbers", num:100,  meg:"ოში",        tr:"oši",         geo:"ასი",                         ru:"сто",                                 en:"hundred"},
   {topic:"numbers", num:1000, meg:"ანთასი",     tr:"antasi",      geo:"ათასი",                       ru:"тысяча",                              en:"thousand"},
+  // ── НОВЫЕ ПОСТУПЛЕНИЯ ──────────────────────────────────────────
+  {topic:"time_place", meg:"ცაშხა",      tr:"cašxa",     geo:"ხუთშაბათი",   ru:"четверг",      en:"Thursday"},
+  {topic:"time_place", meg:"ობიშხა",     tr:"obišxa",    geo:"პარასკევი",   ru:"пятница",      en:"Friday"},
+  {topic:"society",    meg:"ობირე",      tr:"obire",     geo:"სიმღერა",     ru:"песня",        en:"song"},
+  {topic:"nature",     meg:"ცაში ორტყაფუ", tr:"caši ortq̣apu", geo:"ცისარტყელა", ru:"ცისარტყელა", ru:"радуга", en:"rainbow"},
+  {topic:"nature",     meg:"ცაშკარი",    tr:"caškari",   geo:"ცისკარი",     ru:"заря",         en:"dawn"},
+  {topic:"descriptions", meg:"ცაშფერი",   tr:"cašperi",   geo:"ცისფერი",     ru:"голубой",      en:"light blue"},
 ];
 
 
@@ -382,6 +389,13 @@ const NEW_WORDS = [
   {meg:"კუპატი",       tr:"kupati",        geo:"კუპატუ ძეხვი",                ru:"купаты, род колбасы",                 en:"kupati sausage"},
   {meg:"ლუღი",         tr:"luği",          geo:"ლეღვი",                       ru:"инжир",                               en:"fig"},
   {meg:"სამურზაყანო",  tr:"samurząq̣ano",  geo:"სამურზაყანო",                 ru:"Самурзакано",                         en:"Samurzakano"},
+  // ── НОВЫЕ ПОСТУПЛЕНИЯ ──────────────────────────────────────────
+  {topic:"time_place", meg:"ცაშხა",      tr:"cašxa",     geo:"ხუთშაბათი",   ru:"четверг",      en:"Thursday"},
+  {topic:"time_place", meg:"ობიშხა",     tr:"obišxa",    geo:"პარასკევი",   ru:"пятница",      en:"Friday"},
+  {topic:"society",    meg:"ობირე",      tr:"obire",     geo:"სიმღერა",     ru:"песня",        en:"song"},
+  {topic:"nature",     meg:"ცაში ორტყაფუ", tr:"caši ortq̣apu", geo:"ცისარტყელა", ru:"ცისარტყელა", ru:"радуга", en:"rainbow"},
+  {topic:"nature",     meg:"ცაშკარი",    tr:"caškari",   geo:"ცისკარი",     ru:"заря",         en:"dawn"},
+  {topic:"descriptions", meg:"ცაშფერი",   tr:"cašperi",   geo:"ცისფერი",     ru:"голубой",      en:"light blue"},
 ];
 
 const TOPICS = [
