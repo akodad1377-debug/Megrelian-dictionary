@@ -65,7 +65,7 @@ const DICT = [
   {topic:"family", meg:"მამიდა",     tr:"mamida",      geo:"მამიდა",                      ru:"тётя (сестра отца)",                  en:"aunt (father's sister)"},
   {topic:"family", meg:"ბიძისკუა",   tr:"biʒiskua",    geo:"ბიძაშვილი",                   ru:"двоюродный брат/сестра",              en:"cousin"},
   {topic:"family", meg:"ქომონჯი",    tr:"komonǯi",     geo:"ქმარი",                       ru:"муж",                                 en:"husband"},
-  {topic:"family", meg:"ოსური",      tr:"osuri",       geo:"ცოლი",                        ru:"жена",                                en:"wife"},
+  {topic:"family", meg:"ოსური",      tr:"osuri",       geo:"ქალი, ცოლი",                  ru:"женщина, жена",                       en:"woman, wife"},
   {topic:"family", meg:"დიანთილი",   tr:"diantili",    geo:"დედამთილი",                   ru:"свекровь",                            en:"mother-in-law"},
   {topic:"family", meg:"მუანთილი",   tr:"muantili",    geo:"მამამთილი",                   ru:"свёкор",                              en:"father-in-law"},
   {topic:"family", meg:"ნათესე",     tr:"natese",      geo:"ნათესავი",                    ru:"родственник",                         en:"relative"},
@@ -140,7 +140,7 @@ const DICT = [
   {topic:"time_place", meg:"ართიშა",  tr:"artiša",      geo:"ერთხელ",                      ru:"однажды, один раз",                   en:"once, one time"},
   {topic:"time_place", meg:"ართო",    tr:"arto",        geo:"ერთად",                       ru:"вместе",                              en:"together"},
   {topic:"time_place", meg:"ასე",     tr:"ase",         geo:"ახლა",                        ru:"теперь, ныне",                        en:"now"},
-  {topic:"time_place", meg:"ბჟადალი", tr:"bžadali",     geo:"დასავლეთი",                   ru:"запад",                               en:"west"},
+  {topic:"time_place", meg:"ბჟადალი", tr:"bžadali",     geo:"დასავლეთი (სიტყვასიტყვ. მზის ჩასვლა)", ru:"запад (букв. закат солнца)",  en:"west (lit. sunset)"},
   {topic:"time_place", meg:"ბჟაიოლუ", tr:"bžaiolu",    geo:"აღმოსავლეთი",                 ru:"восток",                              en:"east"},
   {topic:"time_place", meg:"გაზაფხული",tr:"gazapxuli",  geo:"გაზაფხული",                   ru:"весна",                               en:"spring"},
   {topic:"time_place", meg:"სათი",    tr:"sati",        geo:"საათი",                       ru:"час, часы",                           en:"hour, clock"},
@@ -300,6 +300,46 @@ const DICT = [
   {topic:"home", meg:"ხურხინი",    tr:"xurxini",      geo:"ხვრინვა, ხიხინი",             ru:"храп",                                en:"snoring"},
   {topic:"home", meg:"ჭყუდა",      tr:"č̣q̣uda",        geo:"მზითევი",                     ru:"приданое",                            en:"dowry"},
   {topic:"home", meg:"ხენწი",      tr:"xenc̣i",        geo:"ხიწვი",                       ru:"заноза",                              en:"splinter",           dialect:"sen"},
+
+
+  // ── ОПИСАНИЯ (доп.) ──────────────────────────────────────────────
+  {topic:"descriptions", meg:"ჯოუშტი",  tr:"ǯoušti",    geo:"ჟინიანი, უტეხი, ჯიუტი",      ru:"упрямый",                             en:"stubborn",           dialect:"sen"},
+
+  // ── ЯЗЫК (доп.) ──────────────────────────────────────────────────
+  {topic:"language", meg:"ჯოჯოხეთი",   tr:"ǯoǯoxeti",  geo:"ჯოჯოხეთი",                    ru:"ад",                                  en:"hell"},
+  
+  // ── СЕМЬЯ (доп.) ─────────────────────────────────────────────────
+  {topic:"family", meg:"ჯიჯი",         tr:"ǯiǯi",      geo:"ბიძიკო",                       ru:"дяденька",                            en:"uncle (familiar)"},
+
+  // ── ПРИРОДА (доп.) ────────────────────────────────────────────────
+  {topic:"nature", meg:"ბჟა",          tr:"bža",        geo:"მზე",                         ru:"солнце",                              en:"sun"},
+  {topic:"nature", meg:"მუნაფა",       tr:"munapa",     geo:"ღრუბელი",                     ru:"облако",                              en:"cloud"},
+  {topic:"nature", meg:"მურიცხი",      tr:"muricxi",    geo:"ვარსკვლავი",                  ru:"звезда",                              en:"star"},
+  {topic:"nature", meg:"თუთა",         tr:"tuta",       geo:"1. მთვარე 2. თვე",            ru:"1. луна 2. месяц",                    en:"1. moon 2. month"},
+
+  // ── ТЕЛО (доп.) ───────────────────────────────────────────────────
+  {topic:"body", meg:"ბჟაკე",          tr:"bžake",      geo:"წვერი",                       ru:"борода",                              en:"beard"},
+  {topic:"body", meg:"მუნდი",          tr:"mundi",      geo:"უკანალი",                     ru:"задница",                             en:"buttocks"},
+
+  // ── ЕДА (доп.) ────────────────────────────────────────────────────
+  {topic:"food", meg:"თოფური",         tr:"topuri",     geo:"თაფლი",                       ru:"мёд",                                 en:"honey"},
+  {topic:"food", meg:"თუთუმი",         tr:"tutumi",     geo:"თამბაქო",                     ru:"табак",                               en:"tobacco"},
+  {topic:"food", meg:"ხვარხვი",        tr:"xvarxvi",    geo:"ხახვი",                       ru:"лук",                                 en:"onion"},
+  {topic:"food", meg:"კუპატი",         tr:"kupati",     geo:"კუპატუ ძეხვი",                ru:"купаты, род колбасы",                 en:"kupati sausage"},
+
+  // ── РАСТЕНИЯ (доп.) ───────────────────────────────────────────────
+  {topic:"plants", meg:"ძარწუფა",      tr:"ʒarc̣upa",   geo:"ძახველი",                     ru:"калина",                              en:"viburnum"},
+  {topic:"plants", meg:"ლუღი",         tr:"luği",       geo:"ლეღვი",                       ru:"инжир",                               en:"fig"},
+
+  // ── ВРЕМЯ И МЕСТО (доп.) ──────────────────────────────────────────
+  {topic:"time_place", meg:"თუთაშხა",  tr:"tutašxa",    geo:"ორშაბათი",                    ru:"понедельник",                         en:"Monday"},
+  {topic:"time_place", meg:"თახაშხა",  tr:"taxašxa",    geo:"სამშაბათი",                   ru:"вторник",                             en:"Tuesday"},
+  {topic:"time_place", meg:"ჯუმაშხა",  tr:"ǯumašxa",    geo:"ოთხშაბათი",                   ru:"среда",                               en:"Wednesday"},
+  {topic:"time_place", meg:"საბატონი",  tr:"sabatoni",   geo:"შაბათი",                      ru:"суббота",                             en:"Saturday"},
+  {topic:"time_place", meg:"სამურზაყანო",tr:"samurząq̣ano",geo:"სამურზაყანო (სამეგრ. ჩრდ.-დასავლ. ნაწილი)",ru:"Самурзакано (сев.-зап. часть Мегрелии)",en:"Samurzakano (NW Mingrelia)"},
+
+  // ── НОВЫЕ СЛОВА ───────────────────────────────────────────────────
+  // ── СТАРЫЕ НОВЫЕ СЛОВА ──────────────────────────────────────────
   // ── ЧИСЛА ────────────────────────────────────────────────────────
   {topic:"numbers", num:1,    meg:"ართი",       tr:"arti",        geo:"ერთი",                        ru:"один",                                en:"one"},
   {topic:"numbers", num:2,    meg:"ჟირი",       tr:"žiri",        geo:"ორი",                         ru:"два",                                 en:"two"},
@@ -315,6 +355,33 @@ const DICT = [
   {topic:"numbers", num:30,   meg:"ეჩდოვითი",   tr:"ečdoviti",    geo:"ოცდაათი",                     ru:"тридцать",                            en:"thirty"},
   {topic:"numbers", num:100,  meg:"ოში",        tr:"oši",         geo:"ასი",                         ru:"сто",                                 en:"hundred"},
   {topic:"numbers", num:1000, meg:"ანთასი",     tr:"antasi",      geo:"ათასი",                       ru:"тысяча",                              en:"thousand"},
+];
+
+
+// ─── НОВЫЕ СЛОВА (в порядке добавления) ────────────────────────────────────
+const NEW_WORDS = [
+  {meg:"კუ",           tr:"ku",           geo:"ერთგვარი ადამყოფობა",         ru:"род болезни",                         en:"type of illness"},
+  {meg:"ჯოუშტი",       tr:"ǯoušti",       geo:"ჟინიანი, უტეხი, ჯიუტი",      ru:"упрямый",                             en:"stubborn",           dialect:"sen"},
+  {meg:"ჯოჯოხეთი",     tr:"ǯoǯoxeti",     geo:"ჯოჯოხეთი",                    ru:"ад",                                  en:"hell"},
+  {meg:"ჯიჯი",         tr:"ǯiǯi",         geo:"ბიძიკო",                       ru:"дяденька",                            en:"uncle (familiar)"},
+  {meg:"ბჟა",          tr:"bža",           geo:"მზე",                         ru:"солнце",                              en:"sun"},
+  {meg:"ბჟადალი",      tr:"bžadali",       geo:"დასავლეთი",                   ru:"запад (букв. закат солнца)",          en:"west (lit. sunset)"},
+  {meg:"ბჟაკე",        tr:"bžake",         geo:"წვერი",                       ru:"борода",                              en:"beard"},
+  {meg:"თოფური",       tr:"topuri",        geo:"თაფლი",                       ru:"мёд",                                 en:"honey"},
+  {meg:"თუთა",         tr:"tuta",          geo:"1. მთვარე 2. თვე",            ru:"1. луна 2. месяц",                    en:"1. moon 2. month"},
+  {meg:"თუთუმი",       tr:"tutumi",        geo:"თამბაქო",                     ru:"табак",                               en:"tobacco"},
+  {meg:"მუნაფა",       tr:"munapa",        geo:"ღრუბელი",                     ru:"облако",                              en:"cloud"},
+  {meg:"მუნდი",        tr:"mundi",         geo:"უკანალი",                     ru:"задница",                             en:"buttocks"},
+  {meg:"მურიცხი",      tr:"muricxi",       geo:"ვარსკვლავი",                  ru:"звезда",                              en:"star"},
+  {meg:"თუთაშხა",      tr:"tutašxa",       geo:"ორშაბათი",                    ru:"понедельник",                         en:"Monday"},
+  {meg:"თახაშხა",      tr:"taxašxa",       geo:"სამშაბათი",                   ru:"вторник",                             en:"Tuesday"},
+  {meg:"ჯუმაშხა",      tr:"ǯumašxa",       geo:"ოთხშაბათი",                   ru:"среда",                               en:"Wednesday"},
+  {meg:"საბატონი",     tr:"sabatoni",      geo:"შაბათი",                      ru:"суббота",                             en:"Saturday"},
+  {meg:"ძარწუფა",      tr:"ʒarc̣upa",      geo:"ძახველი",                     ru:"калина",                              en:"viburnum"},
+  {meg:"ხვარხვი",      tr:"xvarxvi",       geo:"ხახვი",                       ru:"лук",                                 en:"onion"},
+  {meg:"კუპატი",       tr:"kupati",        geo:"კუპატუ ძეხვი",                ru:"купаты, род колбасы",                 en:"kupati sausage"},
+  {meg:"ლუღი",         tr:"luği",          geo:"ლეღვი",                       ru:"инжир",                               en:"fig"},
+  {meg:"სამურზაყანო",  tr:"samurząq̣ano",  geo:"სამურზაყანო",                 ru:"Самурзакано",                         en:"Samurzakano"},
 ];
 
 const TOPICS = [
@@ -333,6 +400,7 @@ const TOPICS = [
   {key:"home",         ru:"Дом",           ge:"სახლი",        en:"Home",          icon:"🏠"},
   {key:"body",         ru:"Тело",           ge:"სხეული",       en:"Body",          icon:"🫀"},
   {key:"numbers",      ru:"Числа",         ge:"რიცხვები",     en:"Numbers",       icon:"🔢"},
+  {key:"new",          ru:"Новые",          ge:"ახალი",        en:"New",           icon:"🆕"},
 ];
 
 export default function App() {
@@ -352,6 +420,18 @@ export default function App() {
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
+    if (topic === "new") {
+      return NEW_WORDS.filter(e => {
+        if (!q) return true;
+        if (searchIn === "all") return (
+          e.meg.toLowerCase().includes(q) ||
+          e.geo.toLowerCase().includes(q) ||
+          e.ru.toLowerCase().includes(q) ||
+          e.en.toLowerCase().includes(q)
+        );
+        return e[searchIn]?.toLowerCase().includes(q);
+      });
+    }
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
       if (topic !== "all" && e.topic !== topic) return false;
@@ -502,7 +582,7 @@ export default function App() {
         </div>
 
         <div style={{marginBottom:10,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-          <span style={{fontSize:11,color:"rgba(232,224,204,0.35)"}}>{results.length} / {DICT.length} {t.tot}</span>
+          <span style={{fontSize:11,color:"rgba(232,224,204,0.35)"}}>{results.length} / {topic === "new" ? NEW_WORDS.length : DICT.length} {t.tot}</span>
           {alpha!=="all" && <span style={{fontSize:20,color:"#7dcf7d",fontFamily:"'Noto Serif Georgian',Georgia,serif",background:"rgba(80,160,80,0.12)",borderRadius:6,padding:"0 8px",border:"1px solid rgba(80,160,80,0.18)"}}>{alpha}</span>}
           {topic!=="all" && <span style={{fontSize:11,color:"rgba(180,220,180,0.5)",background:"rgba(80,160,80,0.07)",borderRadius:6,padding:"1px 7px",border:"1px solid rgba(80,160,80,0.13)"}}>{TOPICS.find(tp=>tp.key===topic)?.icon} {topLabel(TOPICS.find(tp=>tp.key===topic))}</span>}
         </div>
