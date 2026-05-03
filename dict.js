@@ -347,7 +347,7 @@ const DICT = [
   // ── ОБЩЕСТВО ──────────────────────────────────────────────────────
   {topic:"society", meg:"ცირასკუა",    tr:"ciraskua",     geo:"ქალიშვილი",                   ru:"дочь, барышня",                       en:"daughter, young lady"},
   {topic:"society", meg:"ცირობა",      tr:"ciroba",       geo:"ქალიშვილობა",                 ru:"девичество",                          en:"maidenhood"},
-  {topic:"society", meg:"ცხენენჯი",    tr:"cxeneǯi",      geo:"ცხენოსანი",                   ru:"всадник",                             en:"horseman"},
+  {topic:"society", meg:"ცხენენჯი",    tr:"cxenenǯi",      geo:"ცხენოსანი",                   ru:"всадник",                             en:"horseman"},
   {topic:"society", meg:"ჭკადუ",       tr:"č̣ḳadu",        geo:"მჭედელი",                     ru:"кузнец",                              en:"blacksmith"},
 
   // ── ЕДА ───────────────────────────────────────────────────────────
