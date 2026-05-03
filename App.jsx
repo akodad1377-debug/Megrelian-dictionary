@@ -31,7 +31,7 @@ function HL({ text, q }) {
   return <>{text.slice(0,idx)}<mark style={{background:"rgba(244,160,35,0.45)",borderRadius:3,color:"inherit"}}>{text.slice(idx,idx+q.length)}</mark>{text.slice(idx+q.length)}</>;
 }
 
-import { DICT, NEW_WORDS } from './dict.js';
+import { DICT } from './dict.js';
 
 const TOPICS = [
   {key:"all",          ru:"Все",           ge:"ყველა",        en:"All",           icon:"📖"},
@@ -49,7 +49,6 @@ const TOPICS = [
   {key:"home",         ru:"Дом",           ge:"სახლი",        en:"Home",          icon:"🏠"},
   {key:"body",         ru:"Тело",          ge:"სხეული",       en:"Body",          icon:"🫀"},
   {key:"numbers",      ru:"Числа",         ge:"რიცხვები",     en:"Numbers",       icon:"🔢"},
-  {key:"new",          ru:"Новые",         ge:"ახალი",        en:"New",           icon:"🆕"},
 ];
 
 export default function App() {
@@ -69,22 +68,9 @@ export default function App() {
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (topic === "new") {
-      return NEW_WORDS.filter(e => {
-        if (!q) return true;
-        if (searchIn === "all") return (
-          e.meg.toLowerCase().includes(q) ||
-          e.geo.toLowerCase().includes(q) ||
-          e.ru.toLowerCase().includes(q) ||
-          e.en.toLowerCase().includes(q)
-        );
-        return e[searchIn]?.toLowerCase().includes(q);
-      });
-    }
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
 
-      // ── ИСПРАВЛЕНИЕ: time_place охватывает topic:"time" и topic:"geography" ──
       if (topic !== "all") {
         if (topic === "time_place") {
           if (e.topic !== "time" && e.topic !== "geography") return false;
@@ -186,7 +172,6 @@ export default function App() {
           ))}
         </div>
 
-        {/* ДИАЛЕКТ */}
         <div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
           <span style={{fontSize:10,color:"rgba(232,224,204,0.32)",letterSpacing:1.5,textTransform:"uppercase"}}>
             {uiLang==="ru"?"Диалект":uiLang==="en"?"Dialect":"დიალექტი"}
@@ -230,7 +215,7 @@ export default function App() {
         </div>
 
         <div style={{marginBottom:10,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-          <span style={{fontSize:11,color:"rgba(232,224,204,0.35)"}}>{results.length} / {topic === "new" ? NEW_WORDS.length : DICT.length} {t.tot}</span>
+          <span style={{fontSize:11,color:"rgba(232,224,204,0.35)"}}>{results.length} / {DICT.length} {t.tot}</span>
           {alpha!=="all" && <span style={{fontSize:20,color:"#7dcf7d",fontFamily:"'Noto Serif Georgian',Georgia,serif",background:"rgba(80,160,80,0.12)",borderRadius:6,padding:"0 8px",border:"1px solid rgba(80,160,80,0.18)"}}>{alpha}</span>}
           {topic!=="all" && <span style={{fontSize:11,color:"rgba(180,220,180,0.5)",background:"rgba(80,160,80,0.07)",borderRadius:6,padding:"1px 7px",border:"1px solid rgba(80,160,80,0.13)"}}>{TOPICS.find(tp=>tp.key===topic)?.icon} {topLabel(TOPICS.find(tp=>tp.key===topic))}</span>}
         </div>
