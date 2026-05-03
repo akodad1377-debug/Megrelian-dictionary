@@ -49,7 +49,13 @@ const TOPICS = [
   {key:"home",         ru:"Дом",           ge:"სახლი",        en:"Home",          icon:"🏠"},
   {key:"body",         ru:"Тело",          ge:"სხეული",       en:"Body",          icon:"🫀"},
   {key:"numbers",      ru:"Числа",         ge:"რიცხვები",     en:"Numbers",       icon:"🔢"},
+  {key:"culture",      ru:"Культура",      ge:"კულტურა",      en:"Culture",       icon:"🎭"},
+  {key:"geography",    ru:"География",     ge:"გეოგრაფია",    en:"Geography",     icon:"🗺️"},
+  {key:"time",         ru:"Время",         ge:"დრო",          en:"Time",          icon:"🕐"},
 ];
+
+// Lookup topic by key
+const TOPIC_MAP = Object.fromEntries(TOPICS.map(t => [t.key, t]));
 
 export default function App() {
   const [uiLang, setUiLang]     = useState("ru");
@@ -60,10 +66,34 @@ export default function App() {
   const [dialect, setDialect]   = useState("all");
   const [cardDialects, setCardDialects] = useState({});
 
+  // Visible topics for filter bar (excluding internal ones shown on cards)
+  const FILTER_TOPICS = TOPICS.filter(t =>
+    !["culture","geography","time"].includes(t.key)
+  );
+
   const alphaList = useMemo(() => {
     const s = new Set();
     DICT.forEach(e => { const ch = firstLetter(e.meg); if (ch) s.add(ch); });
     return ["all", ...GEO_ALPHA.filter(l => s.has(l))];
+  }, []);
+
+  // Build synonyms map: meg -> list of other entries with same ru translation
+  const synonymsMap = useMemo(() => {
+    const byRu = {};
+    DICT.forEach(e => {
+      const key = e.ru.trim();
+      if (!byRu[key]) byRu[key] = [];
+      byRu[key].push(e);
+    });
+    const map = {};
+    DICT.forEach(e => {
+      const key = e.ru.trim();
+      const group = byRu[key];
+      if (group.length > 1) {
+        map[e.meg] = group.filter(x => x.meg !== e.meg);
+      }
+    });
+    return map;
   }, []);
 
   const results = useMemo(() => {
@@ -97,15 +127,23 @@ export default function App() {
   }, [query, searchIn, topic, alpha, dialect]);
 
   const UI = {
-    ru:{title:"Мегрельский словарь",   sub:"Климов & Каджаиа, 2023",  ph:"Поиск слова…",    noR:"Ничего не найдено", tot:"слов в базе", sin:"Искать в:"},
-    en:{title:"Mingrelian Dictionary", sub:"Klimov & Kadjaia, 2023",   ph:"Search a word…",  noR:"Nothing found",     tot:"words",       sin:"Search in:"},
-    ge:{title:"მეგრული ლექსიკონი",    sub:"კლიმოვი & კაჯაია, 2023",  ph:"სიტყვის ძიება…", noR:"ვერ მოიძებნა",      tot:"სიტყვა",      sin:"ძებნა:"},
+    ru:{title:"Мегрельский словарь",   sub:"Климов & Каджаиа, 2023",  ph:"Поиск слова…",    noR:"Ничего не найдено", tot:"слов в базе", sin:"Искать в:", syn:"Синонимы / варианты"},
+    en:{title:"Mingrelian Dictionary", sub:"Klimov & Kadjaia, 2023",   ph:"Search a word…",  noR:"Nothing found",     tot:"words",       sin:"Search in:", syn:"Synonyms / variants"},
+    ge:{title:"მეგრული ლექსიკონი",    sub:"კლიმოვი & კაჯაია, 2023",  ph:"სიტყვის ძიება…", noR:"ვერ მოიძებნა",      tot:"სიტყვა",      sin:"ძებნა:",     syn:"სინონიმები"},
   };
   const t = UI[uiLang];
   const FLAG = {ru:"🇷🇺", en:"🇬🇧", ge:"🇬🇪"};
   const topLabel = tp => uiLang==="ge" ? tp.ge : uiLang==="en" ? tp.en : tp.ru;
   const allLabel = uiLang==="ge" ? "ყველა" : uiLang==="en" ? "All" : "Все";
   const q = query.trim();
+
+  // Get topic label for a card's topic key
+  const getTopicLabel = (topicKey) => {
+    const tp = TOPIC_MAP[topicKey];
+    if (!tp) return null;
+    // For time_place we show both time and geography under same label
+    return tp;
+  };
 
   return (
     <div style={{minHeight:"100vh",background:"#0f1a12",fontFamily:"'Georgia','Noto Serif Georgian',serif",color:"#e8e0cc"}}>
@@ -159,7 +197,7 @@ export default function App() {
         </div>
 
         <div className="sc" style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:3,marginBottom:13}}>
-          {TOPICS.map(tp=>(
+          {FILTER_TOPICS.map(tp=>(
             <button key={tp.key} className="pill" onClick={()=>setTopic(tp.key)} style={{
               whiteSpace:"nowrap",padding:"5px 11px",fontSize:12,
               background:topic===tp.key?"#7dcf7d":"rgba(80,160,80,0.1)",
@@ -217,7 +255,7 @@ export default function App() {
         <div style={{marginBottom:10,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
           <span style={{fontSize:11,color:"rgba(232,224,204,0.35)"}}>{results.length} / {DICT.length} {t.tot}</span>
           {alpha!=="all" && <span style={{fontSize:20,color:"#7dcf7d",fontFamily:"'Noto Serif Georgian',Georgia,serif",background:"rgba(80,160,80,0.12)",borderRadius:6,padding:"0 8px",border:"1px solid rgba(80,160,80,0.18)"}}>{alpha}</span>}
-          {topic!=="all" && <span style={{fontSize:11,color:"rgba(180,220,180,0.5)",background:"rgba(80,160,80,0.07)",borderRadius:6,padding:"1px 7px",border:"1px solid rgba(80,160,80,0.13)"}}>{TOPICS.find(tp=>tp.key===topic)?.icon} {topLabel(TOPICS.find(tp=>tp.key===topic))}</span>}
+          {topic!=="all" && <span style={{fontSize:11,color:"rgba(180,220,180,0.5)",background:"rgba(80,160,80,0.07)",borderRadius:6,padding:"1px 7px",border:"1px solid rgba(80,160,80,0.13)"}}>{FILTER_TOPICS.find(tp=>tp.key===topic)?.icon} {topLabel(FILTER_TOPICS.find(tp=>tp.key===topic))}</span>}
         </div>
 
         {results.length===0 ? (
@@ -238,9 +276,24 @@ export default function App() {
                 : null;
               const displayMeg = hasDialects ? (entry.dialects[activeDial]?.meg || entry.meg) : entry.meg;
               const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr  || entry.tr)  : entry.tr;
+              const syns = synonymsMap[entry.meg] || [];
+              const cardTopic = getTopicLabel(entry.topic);
+
               return (
               <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
-                <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3}}>
+
+                {/* Диалект и тема — правый верхний угол */}
+                <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3,alignItems:"center"}}>
+                  {/* Тема */}
+                  {cardTopic && (
+                    <span style={{
+                      fontSize:9,padding:"2px 6px",borderRadius:6,letterSpacing:.4,
+                      background:"rgba(80,160,80,0.1)",
+                      color:"rgba(180,220,180,0.5)",
+                      border:"1px solid rgba(80,160,80,0.15)",
+                    }}>{cardTopic.icon} {topLabel(cardTopic)}</span>
+                  )}
+                  {/* Диалект */}
                   {hasDialects ? (
                     Object.keys(entry.dialects).map(d=>(
                       <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[ck]:d}))} style={{
@@ -258,12 +311,16 @@ export default function App() {
                     }}>{entry.dialect==="sam"?"сам.":"сен."}</div>
                   ) : null}
                 </div>
-                <div style={{marginBottom:9}}>
+
+                {/* Мегрельское слово */}
+                <div style={{marginBottom:9, paddingRight: cardTopic ? 120 : 60}}>
                   <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
                     <HL text={displayMeg} q={q}/>
                   </div>
                   <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{displayTr}]</div>
                 </div>
+
+                {/* Переводы */}
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
                   {[
                     {lbl:"ქართ.", val:entry.geo, col:"rgba(180,200,255,0.85)"},
@@ -278,6 +335,37 @@ export default function App() {
                     </div>
                   ))}
                 </div>
+
+                {/* Синонимы / варианты */}
+                {syns.length > 0 && (
+                  <div style={{marginTop:9,paddingTop:7,borderTop:"1px solid rgba(80,160,80,0.1)"}}>
+                    <div style={{fontSize:9,color:"rgba(232,224,204,0.28)",letterSpacing:1.2,textTransform:"uppercase",marginBottom:4}}>
+                      {t.syn}
+                    </div>
+                    <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                      {syns.map(s=>(
+                        <span key={s.meg} style={{
+                          display:"inline-flex",alignItems:"center",gap:4,
+                          fontSize:12,
+                          fontFamily:"'Noto Serif Georgian',Georgia,serif",
+                          color:"#7dcf7d",
+                          background:"rgba(80,160,80,0.08)",
+                          border:"1px solid rgba(80,160,80,0.18)",
+                          borderRadius:7,
+                          padding:"2px 8px",
+                        }}>
+                          {s.meg}
+                          {s.dialect && (
+                            <span style={{fontSize:8,color:"rgba(140,180,255,0.7)",fontFamily:"Georgia,serif"}}>
+                              {s.dialect==="sam"?"сам.":"сен."}
+                            </span>
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </div>
               );
             })}
