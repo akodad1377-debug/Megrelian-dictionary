@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 
 const GEO_ALPHA = ["ა","ბ","გ","დ","ე","ვ","ზ","თ","ი","კ","ლ","მ","ნ","ო","პ","ჟ","რ","ს","ტ","უ","ფ","ქ","ღ","ყ","შ","ჩ","ც","ძ","წ","ჭ","ხ","ჯ","ჰ","ჸ"];
 
-
 function firstLetter(meg) {
   for (const ch of meg) if (GEO_ALPHA.includes(ch)) return ch;
   return "";
@@ -48,9 +47,9 @@ const TOPICS = [
   {key:"language",     ru:"Язык",          ge:"ენა",          en:"Language",      icon:"💬"},
   {key:"descriptions", ru:"Описания",      ge:"აღწერა",       en:"Descriptions",  icon:"✨"},
   {key:"home",         ru:"Дом",           ge:"სახლი",        en:"Home",          icon:"🏠"},
-  {key:"body",         ru:"Тело",           ge:"სხეული",       en:"Body",          icon:"🫀"},
+  {key:"body",         ru:"Тело",          ge:"სხეული",       en:"Body",          icon:"🫀"},
   {key:"numbers",      ru:"Числа",         ge:"რიცხვები",     en:"Numbers",       icon:"🔢"},
-  {key:"new",          ru:"Новые",          ge:"ახალი",        en:"New",           icon:"🆕"},
+  {key:"new",          ru:"Новые",         ge:"ახალი",        en:"New",           icon:"🆕"},
 ];
 
 export default function App() {
@@ -84,7 +83,16 @@ export default function App() {
     }
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
-      if (topic !== "all" && e.topic !== topic) return false;
+
+      // ── ИСПРАВЛЕНИЕ: time_place охватывает topic:"time" и topic:"geography" ──
+      if (topic !== "all") {
+        if (topic === "time_place") {
+          if (e.topic !== "time" && e.topic !== "geography") return false;
+        } else {
+          if (e.topic !== topic) return false;
+        }
+      }
+
       if (dialect !== "all" && e.dialect && e.dialect !== dialect) return false;
       if (!q) return true;
       if (searchIn === "all") return (
@@ -116,17 +124,7 @@ export default function App() {
   return (
     <div style={{minHeight:"100vh",background:"#0f1a12",fontFamily:"'Georgia','Noto Serif Georgian',serif",color:"#e8e0cc"}}>
       <div style={{position:"fixed",inset:0,pointerEvents:"none",background:"radial-gradient(ellipse 80% 50% at 50% 0%,rgba(60,140,60,0.1) 0%,transparent 65%)"}}/>
-      <style>{`
-        @keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
-        .fu{animation:fadeUp 0.25s ease-out}
-        input:focus{outline:none}
-        .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s}
-        .pill:hover{transform:scale(1.04)}
-        .card{transition:transform 0.15s,box-shadow 0.15s}
-        .card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.45)}
-        .sc::-webkit-scrollbar{display:none}
-        .sc{-ms-overflow-style:none;scrollbar-width:none}
-      `}</style>
+      <style>{`@keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}} .fu{animation:fadeUp 0.25s ease-out} input:focus{outline:none} .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s} .pill:hover{transform:scale(1.04)} .card{transition:transform 0.15s,box-shadow 0.15s} .card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.45)} .sc::-webkit-scrollbar{display:none} .sc{-ms-overflow-style:none;scrollbar-width:none}`}</style>
 
       <header style={{position:"sticky",top:0,zIndex:100,background:"rgba(8,14,9,0.93)",backdropFilter:"blur(14px)",borderBottom:"1px solid rgba(80,160,80,0.18)",padding:"11px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:9}}>
@@ -188,7 +186,6 @@ export default function App() {
           ))}
         </div>
 
-
         {/* ДИАЛЕКТ */}
         <div style={{marginBottom:13,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
           <span style={{fontSize:10,color:"rgba(232,224,204,0.32)",letterSpacing:1.5,textTransform:"uppercase"}}>
@@ -210,6 +207,7 @@ export default function App() {
             </button>
           ))}
         </div>
+
         <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
           <div style={{position:"relative"}}>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
