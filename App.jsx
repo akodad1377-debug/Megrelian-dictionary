@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 
 const GEO_ALPHA = ["ა","ბ","გ","დ","ე","ვ","ზ","თ","ი","კ","ლ","მ","ნ","ო","პ","ჟ","რ","ს","ტ","უ","ფ","ქ","ღ","ყ","შ","ჩ","ც","ძ","წ","ჭ","ხ","ჯ","ჰ","ჸ"];
 
@@ -8,17 +8,13 @@ function firstLetter(meg) {
 }
 
 function compareGeorgian(a, b) {
-  const aw = a.meg;
-  const bw = b.meg;
+  const aw = a.meg; const bw = b.meg;
   const len = Math.max(aw.length, bw.length);
   for (let i = 0; i < len; i++) {
-    const ac = aw[i] ?? "";
-    const bc = bw[i] ?? "";
+    const ac = aw[i] ?? ""; const bc = bw[i] ?? "";
     if (ac === bc) continue;
-    const ai = GEO_ALPHA.indexOf(ac);
-    const bi = GEO_ALPHA.indexOf(bc);
-    const an = ai === -1 ? 999 : ai;
-    const bn = bi === -1 ? 999 : bi;
+    const ai = GEO_ALPHA.indexOf(ac); const bi = GEO_ALPHA.indexOf(bc);
+    const an = ai === -1 ? 999 : ai; const bn = bi === -1 ? 999 : bi;
     if (an !== bn) return an - bn;
   }
   return 0;
@@ -54,8 +50,15 @@ const TOPICS = [
   {key:"time",         ru:"Время",         ge:"დრო",          en:"Time",          icon:"🕐"},
 ];
 
-// Lookup topic by key
 const TOPIC_MAP = Object.fromEntries(TOPICS.map(t => [t.key, t]));
+
+// Maps an entry's topic key to the filter key used in the bar
+function toFilterKey(topicKey) {
+  if (topicKey === "time" || topicKey === "geography") return "time_place";
+  return topicKey;
+}
+
+const FILTER_TOPICS = TOPICS.filter(t => !["culture","geography","time"].includes(t.key));
 
 export default function App() {
   const [uiLang, setUiLang]     = useState("ru");
@@ -65,11 +68,8 @@ export default function App() {
   const [alpha, setAlpha]       = useState("all");
   const [dialect, setDialect]   = useState("all");
   const [cardDialects, setCardDialects] = useState({});
-
-  // Visible topics for filter bar (excluding internal ones shown on cards)
-  const FILTER_TOPICS = TOPICS.filter(t =>
-    !["culture","geography","time"].includes(t.key)
-  );
+  const [highlightMeg, setHighlightMeg] = useState(null);
+  const highlightRef = useRef(null);
 
   const alphaList = useMemo(() => {
     const s = new Set();
@@ -77,7 +77,6 @@ export default function App() {
     return ["all", ...GEO_ALPHA.filter(l => s.has(l))];
   }, []);
 
-  // Build synonyms map: meg -> list of other entries with same ru translation
   const synonymsMap = useMemo(() => {
     const byRu = {};
     DICT.forEach(e => {
@@ -89,9 +88,7 @@ export default function App() {
     DICT.forEach(e => {
       const key = e.ru.trim();
       const group = byRu[key];
-      if (group.length > 1) {
-        map[e.meg] = group.filter(x => x.meg !== e.meg);
-      }
+      if (group.length > 1) map[e.meg] = group.filter(x => x.meg !== e.meg);
     });
     return map;
   }, []);
@@ -100,7 +97,6 @@ export default function App() {
     const q = query.trim().toLowerCase();
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
-
       if (topic !== "all") {
         if (topic === "time_place") {
           if (e.topic !== "time" && e.topic !== "geography") return false;
@@ -108,7 +104,6 @@ export default function App() {
           if (e.topic !== topic) return false;
         }
       }
-
       if (dialect !== "all" && e.dialect && e.dialect !== dialect) return false;
       if (!q) return true;
       if (searchIn === "all") return (
@@ -119,12 +114,36 @@ export default function App() {
       );
       return e[searchIn]?.toLowerCase().includes(q);
     }).sort((a, b) => {
-      if (a.topic === "numbers" && b.topic === "numbers") {
-        return (a.num ?? 0) - (b.num ?? 0);
-      }
+      if (a.topic === "numbers" && b.topic === "numbers") return (a.num ?? 0) - (b.num ?? 0);
       return compareGeorgian(a, b);
     });
   }, [query, searchIn, topic, alpha, dialect]);
+
+  // Scroll to highlighted card after results update
+  useEffect(() => {
+    if (highlightMeg && highlightRef.current) {
+      setTimeout(() => {
+        highlightRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 80);
+    }
+  }, [highlightMeg, results]);
+
+  // Click synonym: jump to that word
+  function goToSynonym(syn) {
+    setQuery("");
+    setTopic(toFilterKey(syn.topic));
+    setAlpha("all");
+    setHighlightMeg(syn.meg);
+  }
+
+  // Click topic badge on card: jump to that topic filter
+  function goToTopic(topicKey) {
+    const filterKey = toFilterKey(topicKey);
+    setTopic(filterKey);
+    setQuery("");
+    setAlpha("all");
+    setHighlightMeg(null);
+  }
 
   const UI = {
     ru:{title:"Мегрельский словарь",   sub:"Климов & Каджаиа, 2023",  ph:"Поиск слова…",    noR:"Ничего не найдено", tot:"слов в базе", sin:"Искать в:", syn:"Синонимы / варианты"},
@@ -137,18 +156,26 @@ export default function App() {
   const allLabel = uiLang==="ge" ? "ყველა" : uiLang==="en" ? "All" : "Все";
   const q = query.trim();
 
-  // Get topic label for a card's topic key
-  const getTopicLabel = (topicKey) => {
-    const tp = TOPIC_MAP[topicKey];
-    if (!tp) return null;
-    // For time_place we show both time and geography under same label
-    return tp;
-  };
-
   return (
     <div style={{minHeight:"100vh",background:"#0f1a12",fontFamily:"'Georgia','Noto Serif Georgian',serif",color:"#e8e0cc"}}>
       <div style={{position:"fixed",inset:0,pointerEvents:"none",background:"radial-gradient(ellipse 80% 50% at 50% 0%,rgba(60,140,60,0.1) 0%,transparent 65%)"}}/>
-      <style>{`@keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}} .fu{animation:fadeUp 0.25s ease-out} input:focus{outline:none} .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s} .pill:hover{transform:scale(1.04)} .card{transition:transform 0.15s,box-shadow 0.15s} .card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.45)} .sc::-webkit-scrollbar{display:none} .sc{-ms-overflow-style:none;scrollbar-width:none}`}</style>
+      <style>{`
+        @keyframes fadeUp{from{transform:translateY(12px);opacity:0}to{transform:translateY(0);opacity:1}}
+        @keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(125,207,125,0)}50%{box-shadow:0 0 0 4px rgba(125,207,125,0.35)}}
+        .fu{animation:fadeUp 0.25s ease-out}
+        input:focus{outline:none}
+        .pill{border:none;border-radius:20px;font-family:Georgia,serif;cursor:pointer;transition:all 0.15s}
+        .pill:hover{transform:scale(1.04)}
+        .card{transition:transform 0.15s,box-shadow 0.15s}
+        .card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.45)}
+        .card-highlight{animation:glow 1.2s ease-out;border-color:rgba(125,207,125,0.5) !important}
+        .sc::-webkit-scrollbar{display:none}
+        .sc{-ms-overflow-style:none;scrollbar-width:none}
+        .topic-badge{cursor:pointer;transition:all 0.15s}
+        .topic-badge:hover{background:rgba(80,160,80,0.22) !important;color:rgba(180,220,180,0.9) !important}
+        .syn-chip{cursor:pointer;transition:all 0.15s}
+        .syn-chip:hover{background:rgba(80,160,80,0.22) !important;border-color:rgba(125,207,125,0.45) !important;transform:scale(1.04)}
+      `}</style>
 
       <header style={{position:"sticky",top:0,zIndex:100,background:"rgba(8,14,9,0.93)",backdropFilter:"blur(14px)",borderBottom:"1px solid rgba(80,160,80,0.18)",padding:"11px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:9}}>
@@ -174,23 +201,17 @@ export default function App() {
           </div>
           <div className="sc" style={{display:"flex",gap:3,overflowX:"auto",paddingBottom:3}}>
             {alphaList.map(l=>{
-              const isAll = l==="all";
-              const active = alpha===l;
+              const isAll = l==="all"; const active = alpha===l;
               return (
-                <button key={l} className="pill" onClick={()=>setAlpha(l)} style={{
-                  whiteSpace:"nowrap",
-                  minWidth: isAll ? "auto" : 34,
-                  padding: isAll ? "5px 11px" : "3px 5px",
-                  fontSize: isAll ? 12 : 20,
+                <button key={l} className="pill" onClick={()=>{setAlpha(l);setHighlightMeg(null);}} style={{
+                  whiteSpace:"nowrap", minWidth:isAll?"auto":34,
+                  padding:isAll?"5px 11px":"3px 5px", fontSize:isAll?12:20,
                   fontFamily:"'Noto Serif Georgian',Georgia,serif",
-                  background: active ? "#7dcf7d" : "rgba(80,160,80,0.1)",
-                  color: active ? "#0f1a12" : "#b8d8b8",
-                  fontWeight: active ? "bold" : "normal",
-                  border:"1px solid rgba(80,160,80,0.2)",
-                  lineHeight:1.2, textAlign:"center",
-                }}>
-                  {isAll ? allLabel : l}
-                </button>
+                  background:active?"#7dcf7d":"rgba(80,160,80,0.1)",
+                  color:active?"#0f1a12":"#b8d8b8",
+                  fontWeight:active?"bold":"normal",
+                  border:"1px solid rgba(80,160,80,0.2)", lineHeight:1.2, textAlign:"center",
+                }}>{isAll?allLabel:l}</button>
               );
             })}
           </div>
@@ -198,15 +219,13 @@ export default function App() {
 
         <div className="sc" style={{display:"flex",gap:5,overflowX:"auto",paddingBottom:3,marginBottom:13}}>
           {FILTER_TOPICS.map(tp=>(
-            <button key={tp.key} className="pill" onClick={()=>setTopic(tp.key)} style={{
+            <button key={tp.key} className="pill" onClick={()=>{setTopic(tp.key);setHighlightMeg(null);}} style={{
               whiteSpace:"nowrap",padding:"5px 11px",fontSize:12,
               background:topic===tp.key?"#7dcf7d":"rgba(80,160,80,0.1)",
               color:topic===tp.key?"#0f1a12":"#e8e0cc",
               fontWeight:topic===tp.key?"bold":"normal",
               border:"1px solid rgba(80,160,80,0.2)",
-            }}>
-              {tp.icon} {topLabel(tp)}
-            </button>
+            }}>{tp.icon} {topLabel(tp)}</button>
           ))}
         </div>
 
@@ -215,9 +234,9 @@ export default function App() {
             {uiLang==="ru"?"Диалект":uiLang==="en"?"Dialect":"დიალექტი"}
           </span>
           {[
-            {key:"all", ru:"Все",            en:"All",       ge:"ყველა"},
-            {key:"sam", ru:"Самурзакано-Зугдидский", en:"Samurz-Zugdidi", ge:"სამურზ.-ზუგდ."},
-            {key:"sen", ru:"Сенакский",  en:"Senaki", ge:"სენ."},
+            {key:"all",ru:"Все",en:"All",ge:"ყველა"},
+            {key:"sam",ru:"Самурзакано-Зугдидский",en:"Samurz-Zugdidi",ge:"სამურზ.-ზუგდ."},
+            {key:"sen",ru:"Сенакский",en:"Senaki",ge:"სენ."},
           ].map(d=>(
             <button key={d.key} className="pill" onClick={()=>{setDialect(d.key);setCardDialects({});}} style={{
               whiteSpace:"nowrap",padding:"4px 10px",fontSize:11,
@@ -225,16 +244,14 @@ export default function App() {
               color:dialect===d.key?"#0f1a12":"rgba(180,200,255,0.7)",
               fontWeight:dialect===d.key?"bold":"normal",
               border:"1px solid rgba(80,120,180,0.25)",
-            }}>
-              {uiLang==="ru"?d.ru:uiLang==="en"?d.en:d.ge}
-            </button>
+            }}>{uiLang==="ru"?d.ru:uiLang==="en"?d.en:d.ge}</button>
           ))}
         </div>
 
         <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
           <div style={{position:"relative"}}>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
-            <input value={query} onChange={e=>setQuery(e.target.value)} placeholder={t.ph}
+            <input value={query} onChange={e=>{setQuery(e.target.value);setHighlightMeg(null);}} placeholder={t.ph}
               style={{width:"100%",boxSizing:"border-box",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:10,padding:"10px 34px 10px 37px",fontSize:16,color:"#e8e0cc",fontFamily:"Georgia,'Noto Serif Georgian',serif"}}/>
             {query && <button onClick={()=>setQuery("")} style={{position:"absolute",right:9,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"rgba(232,224,204,0.4)",cursor:"pointer",fontSize:18}}>✕</button>}
           </div>
@@ -267,106 +284,116 @@ export default function App() {
             {results.map((entry,i)=>{
               const hasDialects = !!entry.dialects;
               const ck = entry.meg;
+              const isHighlighted = highlightMeg === entry.meg;
               const activeDial = hasDialects
-                ? (cardDialects[ck] !== undefined
-                    ? cardDialects[ck]
-                    : (dialect !== "all" && entry.dialects[dialect]
-                        ? dialect
-                        : Object.keys(entry.dialects)[0]))
+                ? (cardDialects[ck]!==undefined ? cardDialects[ck]
+                    : (dialect!=="all" && entry.dialects[dialect] ? dialect : Object.keys(entry.dialects)[0]))
                 : null;
-              const displayMeg = hasDialects ? (entry.dialects[activeDial]?.meg || entry.meg) : entry.meg;
-              const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr  || entry.tr)  : entry.tr;
+              const displayMeg = hasDialects ? (entry.dialects[activeDial]?.meg||entry.meg) : entry.meg;
+              const displayTr  = hasDialects ? (entry.dialects[activeDial]?.tr ||entry.tr)  : entry.tr;
               const syns = synonymsMap[entry.meg] || [];
-              const cardTopic = getTopicLabel(entry.topic);
+              const cardTopic = TOPIC_MAP[entry.topic];
 
               return (
-              <div key={i} className="card" style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}>
-
-                {/* Диалект и тема — правый верхний угол */}
-                <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3,alignItems:"center"}}>
-                  {/* Тема */}
-                  {cardTopic && (
-                    <span style={{
-                      fontSize:9,padding:"2px 6px",borderRadius:6,letterSpacing:.4,
-                      background:"rgba(80,160,80,0.1)",
-                      color:"rgba(180,220,180,0.5)",
-                      border:"1px solid rgba(80,160,80,0.15)",
-                    }}>{cardTopic.icon} {topLabel(cardTopic)}</span>
-                  )}
-                  {/* Диалект */}
-                  {hasDialects ? (
-                    Object.keys(entry.dialects).map(d=>(
-                      <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[ck]:d}))} style={{
-                        fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,cursor:"pointer",fontFamily:"Georgia,serif",
-                        background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)"):"transparent",
-                        color:activeDial===d?(d==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)"):"rgba(232,224,204,0.2)",
-                        border:activeDial===d?(d==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)"):"1px solid transparent",
-                      }}>{d==="sam"?"сам.":"сен."}</button>
-                    ))
-                  ) : entry.dialect ? (
-                    <div style={{fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,
-                      background:entry.dialect==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)",
-                      color:entry.dialect==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)",
-                      border:entry.dialect==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)",
-                    }}>{entry.dialect==="sam"?"сам.":"сен."}</div>
-                  ) : null}
-                </div>
-
-                {/* Мегрельское слово */}
-                <div style={{marginBottom:9, paddingRight: cardTopic ? 120 : 60}}>
-                  <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
-                    <HL text={displayMeg} q={q}/>
+                <div
+                  key={i}
+                  ref={isHighlighted ? highlightRef : null}
+                  className={"card" + (isHighlighted ? " card-highlight" : "")}
+                  style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}
+                >
+                  {/* Правый верхний угол: тема + диалект */}
+                  <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end",maxWidth:"55%"}}>
+                    {cardTopic && (
+                      <span
+                        className="topic-badge"
+                        onClick={()=>goToTopic(entry.topic)}
+                        title={uiLang==="ru"?"Перейти к теме":"Go to topic"}
+                        style={{
+                          fontSize:9,padding:"2px 7px",borderRadius:6,letterSpacing:.4,
+                          background:"rgba(80,160,80,0.1)",
+                          color:"rgba(180,220,180,0.5)",
+                          border:"1px solid rgba(80,160,80,0.15)",
+                        }}
+                      >{cardTopic.icon} {topLabel(cardTopic)}</span>
+                    )}
+                    {hasDialects ? (
+                      Object.keys(entry.dialects).map(d=>(
+                        <button key={d} onClick={()=>setCardDialects(prev=>({...prev,[ck]:d}))} style={{
+                          fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,cursor:"pointer",fontFamily:"Georgia,serif",
+                          background:activeDial===d?(d==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)"):"transparent",
+                          color:activeDial===d?(d==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)"):"rgba(232,224,204,0.2)",
+                          border:activeDial===d?(d==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)"):"1px solid transparent",
+                        }}>{d==="sam"?"сам.":"сен."}</button>
+                      ))
+                    ) : entry.dialect ? (
+                      <div style={{fontSize:9,padding:"2px 6px",borderRadius:6,fontWeight:"bold",letterSpacing:.5,
+                        background:entry.dialect==="sam"?"rgba(80,140,255,0.15)":"rgba(255,160,80,0.15)",
+                        color:entry.dialect==="sam"?"rgba(140,180,255,0.9)":"rgba(255,190,120,0.9)",
+                        border:entry.dialect==="sam"?"1px solid rgba(80,140,255,0.25)":"1px solid rgba(255,160,80,0.25)",
+                      }}>{entry.dialect==="sam"?"сам.":"сен."}</div>
+                    ) : null}
                   </div>
-                  <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{displayTr}]</div>
-                </div>
 
-                {/* Переводы */}
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
-                  {[
-                    {lbl:"ქართ.", val:entry.geo, col:"rgba(180,200,255,0.85)"},
-                    {lbl:"Рус.",  val:entry.ru,  col:"rgba(232,224,204,0.85)"},
-                    {lbl:"Eng.",  val:entry.en,  col:"rgba(200,222,200,0.85)"},
-                  ].map(({lbl,val,col})=>(
-                    <div key={lbl}>
-                      <div style={{fontSize:9,color:"rgba(232,224,204,0.27)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{lbl}</div>
-                      <div style={{fontSize:13,color:col,fontFamily:lbl==="ქართ."?"'Noto Serif Georgian',Georgia,serif":"inherit",lineHeight:1.35}}>
-                        <HL text={val} q={q}/>
+                  {/* Мегрельское слово */}
+                  <div style={{marginBottom:9,paddingRight:120}}>
+                    <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
+                      <HL text={displayMeg} q={q}/>
+                    </div>
+                    <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{displayTr}]</div>
+                  </div>
+
+                  {/* Переводы */}
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
+                    {[
+                      {lbl:"ქართ.", val:entry.geo, col:"rgba(180,200,255,0.85)"},
+                      {lbl:"Рус.",  val:entry.ru,  col:"rgba(232,224,204,0.85)"},
+                      {lbl:"Eng.",  val:entry.en,  col:"rgba(200,222,200,0.85)"},
+                    ].map(({lbl,val,col})=>(
+                      <div key={lbl}>
+                        <div style={{fontSize:9,color:"rgba(232,224,204,0.27)",letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{lbl}</div>
+                        <div style={{fontSize:13,color:col,fontFamily:lbl==="ქართ."?"'Noto Serif Georgian',Georgia,serif":"inherit",lineHeight:1.35}}>
+                          <HL text={val} q={q}/>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Синонимы */}
+                  {syns.length > 0 && (
+                    <div style={{marginTop:9,paddingTop:7,borderTop:"1px solid rgba(80,160,80,0.1)"}}>
+                      <div style={{fontSize:9,color:"rgba(232,224,204,0.28)",letterSpacing:1.2,textTransform:"uppercase",marginBottom:4}}>
+                        {t.syn}
+                      </div>
+                      <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                        {syns.map(s=>(
+                          <span
+                            key={s.meg}
+                            className="syn-chip"
+                            onClick={()=>goToSynonym(s)}
+                            title={uiLang==="ru"?"Перейти к слову":"Go to word"}
+                            style={{
+                              display:"inline-flex",alignItems:"center",gap:4,
+                              fontSize:13,
+                              fontFamily:"'Noto Serif Georgian',Georgia,serif",
+                              color:"#7dcf7d",
+                              background:"rgba(80,160,80,0.08)",
+                              border:"1px solid rgba(80,160,80,0.18)",
+                              borderRadius:7,
+                              padding:"3px 10px",
+                            }}
+                          >
+                            {s.meg}
+                            {s.dialect && (
+                              <span style={{fontSize:8,color:"rgba(140,180,255,0.7)",fontFamily:"Georgia,serif"}}>
+                                {s.dialect==="sam"?"сам.":"сен."}
+                              </span>
+                            )}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
-
-                {/* Синонимы / варианты */}
-                {syns.length > 0 && (
-                  <div style={{marginTop:9,paddingTop:7,borderTop:"1px solid rgba(80,160,80,0.1)"}}>
-                    <div style={{fontSize:9,color:"rgba(232,224,204,0.28)",letterSpacing:1.2,textTransform:"uppercase",marginBottom:4}}>
-                      {t.syn}
-                    </div>
-                    <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
-                      {syns.map(s=>(
-                        <span key={s.meg} style={{
-                          display:"inline-flex",alignItems:"center",gap:4,
-                          fontSize:12,
-                          fontFamily:"'Noto Serif Georgian',Georgia,serif",
-                          color:"#7dcf7d",
-                          background:"rgba(80,160,80,0.08)",
-                          border:"1px solid rgba(80,160,80,0.18)",
-                          borderRadius:7,
-                          padding:"2px 8px",
-                        }}>
-                          {s.meg}
-                          {s.dialect && (
-                            <span style={{fontSize:8,color:"rgba(140,180,255,0.7)",fontFamily:"Georgia,serif"}}>
-                              {s.dialect==="sam"?"сам.":"сен."}
-                            </span>
-                          )}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-              </div>
               );
             })}
           </div>
