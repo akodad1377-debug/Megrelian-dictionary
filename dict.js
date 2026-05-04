@@ -374,6 +374,67 @@ const DICT = [
 {topic:"numbers", num:100,  meg:"ოში",    tr:"oši",     geo:"ასი",      ru:"сто",      en:"hundred"},
 {topic:"numbers", num:1000, meg:"ანთასი", tr:"antasi",  geo:"ათასი",    ru:"тысяча",   en:"thousand"},
 
-];
+// ── ВСТАВИТЬ В DICT ПЕРЕД ФИНАЛЬНОЙ }); ────────────────────────────────────
+
+// ── ЖИВОТНЫЕ ─────────────────────────────────────────────────────
+{topic:"animals", meg:"ოჩი",             tr:"oči",             geo:"ვაცი",                   ru:"козёл",                          en:"billy goat"},
+{topic:"animals", meg:"ღეჯი",            tr:"ğeǯi",            geo:"ღორი",                   ru:"свинья",                         en:"pig"},
+{topic:"animals", meg:"კიდაჭი",          tr:"ḳidač̣i",          geo:"ბაღლინჯო",               ru:"клоп",                           en:"bedbug",           dialect:"sen"},
+
+// ── ЕДА ──────────────────────────────────────────────────────────
+{topic:"food", meg:"ღვინი",              tr:"ğvini",           geo:"ღვინო",                  ru:"вино",                           en:"wine"},
+{topic:"food", meg:"იშტა",               tr:"išṭa",            geo:"მადა",                   ru:"аппетит",                        en:"appetite"},
+
+// ── ПРИРОДА ──────────────────────────────────────────────────────
+{topic:"nature", meg:"ნინა-დაჩხირი",     tr:"nina-dačxiri",   geo:"ალი",                    ru:"пламя",                          en:"flame"},
+{topic:"nature", meg:"ონწარე",           tr:"onc̣are",          geo:"ჭაობი",                  ru:"болото",                         en:"swamp, marsh"},
+
+// ── ТЕЛО ─────────────────────────────────────────────────────────
+{topic:"body", meg:"ნიკვი",              tr:"niḳvi",           geo:"მუშტი",                  ru:"кулак",                          en:"fist"},
+{topic:"body", meg:"ნიკი",               tr:"niḳi",            geo:"კლიტორი",                ru:"клитор",                         en:"clitoris"},
+{topic:"body", meg:"მიკი",               tr:"miḳi",            geo:"კლიტორი",                ru:"клитор",                         en:"clitoris"},
+{topic:"body", meg:"ციკი",               tr:"ciḳi",            geo:"კლიტორი",                ru:"клитор",                         en:"clitoris"},
+{topic:"body", meg:"ყორყელი",            tr:"q̣orq̣eli",        geo:"ყელი, ხორხი",            ru:"глотка, горло",                  en:"throat, gullet"},
+{topic:"body", meg:"ყანყრატო",           tr:"q̣anq̣raṭo",       geo:"ყელი, ხორხი",            ru:"глотка, горло",                  en:"throat, gullet"},
+{topic:"body", meg:"ღვანწკი",            tr:"ğvanc̣ḳi",         geo:"ლოყა, ღაწვი",            ru:"щека",                           en:"cheek"},
+{topic:"body", meg:"ღვა",                tr:"ğva",             geo:"ლოყა, ღაწვი",            ru:"щека",                           en:"cheek"},
+{topic:"body", meg:"დუჸი",               tr:"duʼi",            geo:"იდაყვი",                 ru:"локоть",                         en:"elbow"},
+{topic:"body", meg:"ხეშქაგური",          tr:"xeškaguri",       geo:"ხელისგული, ნები",        ru:"ладонь",                         en:"palm (of hand)"},
+{topic:"body", meg:"კითი",               tr:"ḳiti",            geo:"თითი",                   ru:"палец",                          en:"finger"},
+{topic:"body", meg:"ძუძუშ კითი",         tr:"ʒuʒuš ḳiti",      geo:"ძუძუს თავი",             ru:"сосок",                          en:"nipple"},
+
+// ── ДОМ ──────────────────────────────────────────────────────────
+{topic:"home", meg:"ჭაბუ",               tr:"č̣abu",            geo:"წებო",                   ru:"клей",                           en:"glue"},
+{topic:"home", meg:"ხამი",               tr:"xami",            geo:"დანა",                   ru:"нож",                            en:"knife"},
+{topic:"home", meg:"ხეშქოსალი",          tr:"xeškosali",       geo:"ხელსახოცი",              ru:"салфетка",                       en:"napkin, handkerchief"},
+{topic:"home", meg:"ორტყაფუ",           tr:"orṭq̣apu",         geo:"სარტყელი",               ru:"пояс",                           en:"belt, sash"},
+{topic:"home", meg:"ღვედი",              tr:"ğvedi",           geo:"ღვედი",                  ru:"ремень",                         en:"belt, strap"},
+{topic:"home", meg:"ონწე",               tr:"onc̣e",            geo:"აკვანი",                 ru:"люлька",                         en:"cradle"},
+{topic:"home", meg:"ბუკართა",            tr:"buḳarṭa",         geo:"ცარცი",                  ru:"мел",                            en:"chalk",            dialect:"sen"},
+
+// ── ОПИСАНИЯ ─────────────────────────────────────────────────────
+{topic:"descriptions", meg:"ჭაბუა",      tr:"č̣abua",           geo:"წებვა",                  ru:"клеить",                         en:"to glue"},
+{topic:"descriptions", meg:"ოშფუთიანი",  tr:"ošputiani",       geo:"ასფუთიანი",              ru:"стопудовый",                     en:"dead certain; very heavy"},
+{topic:"descriptions", meg:"ონჯღორე",    tr:"onǯğore",         geo:"სირცხვილი",              ru:"стыд",                           en:"shame"},
+{topic:"descriptions", meg:"ოლე",        tr:"ole",             geo:"გვერდით",                ru:"рядом",                          en:"beside, nearby"},
+
+// ── ВРЕМЯ ────────────────────────────────────────────────────────
+{topic:"time", meg:"ონჯუას",             tr:"onǯuas",          geo:"საღამო; საღამოს",        ru:"вечер; вечером",                 en:"evening; in the evening"},
+{topic:"time", meg:"ონდღე",              tr:"ondğe",           geo:"შუადღე",                 ru:"полдень",                        en:"noon, midday"},
+
+// ── ГЕОГРАФИЯ ────────────────────────────────────────────────────
+{topic:"geography", meg:"ოსეთი",         tr:"oseti",           geo:"ოსეთი",                  ru:"Осетия",                         en:"Ossetia"},
+
+// ── ОБЩЕСТВО ─────────────────────────────────────────────────────
+{topic:"society", meg:"ოსი",             tr:"osi",             geo:"ოსი",                    ru:"осетин",                         en:"Ossetian"},
+{topic:"society", meg:"ომბოლი",          tr:"omboli",          geo:"ობოლი",                  ru:"сирота",                         en:"orphan"},
+
+// ── КУЛЬТУРА ─────────────────────────────────────────────────────
+{topic:"culture", meg:"ჭარდაკი",         tr:"č̣ardaḳi",         geo:"ჭადრაკი",                ru:"шахматы",                        en:"chess"},
+{topic:"culture", meg:"ხვამა",           tr:"xvama",           geo:"ლოცვა",                  ru:"молитва; молиться",              en:"prayer; to pray"},
+
+// ── СЕМЬЯ ────────────────────────────────────────────────────────
+{topic:"family", meg:"ბიძი",             tr:"biʒi",            geo:"ბიძია",                  ru:"дядя",                           en:"uncle"},
+{topic:"family", meg:"ბიცო",             tr:"bico",            geo:"ბიცოლა",                 ru:"тётя, жена дяди",                en:"aunt (uncle's wife)"},];
 
 export { DICT };
