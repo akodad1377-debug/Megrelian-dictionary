@@ -20,9 +20,16 @@ function compareGeorgian(a, b) {
   return 0;
 }
 
+// Нормализация: е→ё и ё→е чтобы поиск работал в обе стороны
+function normalizeRu(str) {
+  return str.toLowerCase().replace(/ё/g, "е");
+}
+
 function HL({ text, q }) {
   if (!q || !text) return text;
-  const idx = text.toLowerCase().indexOf(q.toLowerCase());
+  const normText = normalizeRu(text);
+  const normQ = normalizeRu(q);
+  const idx = normText.indexOf(normQ);
   if (idx === -1) return text;
   return <>{text.slice(0,idx)}<mark style={{background:"rgba(244,160,35,0.45)",borderRadius:3,color:"inherit"}}>{text.slice(idx,idx+q.length)}</mark>{text.slice(idx+q.length)}</>;
 }
@@ -52,7 +59,6 @@ const TOPICS = [
 
 const TOPIC_MAP = Object.fromEntries(TOPICS.map(t => [t.key, t]));
 
-// Maps an entry's topic key to the filter key used in the bar
 function toFilterKey(topicKey) {
   if (topicKey === "time" || topicKey === "geography") return "time_place";
   return topicKey;
@@ -70,6 +76,7 @@ export default function App() {
   const [cardDialects, setCardDialects] = useState({});
   const [highlightMeg, setHighlightMeg] = useState(null);
   const highlightRef = useRef(null);
+  const inputRef = useRef(null);
 
   const alphaList = useMemo(() => {
     const s = new Set();
@@ -80,13 +87,13 @@ export default function App() {
   const synonymsMap = useMemo(() => {
     const byRu = {};
     DICT.forEach(e => {
-      const key = e.ru.trim();
+      const key = normalizeRu(e.ru);
       if (!byRu[key]) byRu[key] = [];
       byRu[key].push(e);
     });
     const map = {};
     DICT.forEach(e => {
-      const key = e.ru.trim();
+      const key = normalizeRu(e.ru);
       const group = byRu[key];
       if (group.length > 1) map[e.meg] = group.filter(x => x.meg !== e.meg);
     });
@@ -94,7 +101,8 @@ export default function App() {
   }, []);
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = query.trim();
+    const normQ = normalizeRu(q);
     return DICT.filter(e => {
       if (alpha !== "all" && firstLetter(e.meg) !== alpha) return false;
       if (topic !== "all") {
@@ -105,21 +113,21 @@ export default function App() {
         }
       }
       if (dialect !== "all" && e.dialect && e.dialect !== dialect) return false;
-      if (!q) return true;
+      if (!normQ) return true;
       if (searchIn === "all") return (
-        e.meg.toLowerCase().includes(q) ||
-        e.geo.toLowerCase().includes(q) ||
-        e.ru.toLowerCase().includes(q) ||
-        e.en.toLowerCase().includes(q)
+        e.meg.toLowerCase().includes(normQ) ||
+        e.geo.toLowerCase().includes(normQ) ||
+        normalizeRu(e.ru).includes(normQ) ||
+        e.en.toLowerCase().includes(normQ)
       );
-      return e[searchIn]?.toLowerCase().includes(q);
+      if (searchIn === "ru") return normalizeRu(e.ru).includes(normQ);
+      return e[searchIn]?.toLowerCase().includes(normQ);
     }).sort((a, b) => {
       if (a.topic === "numbers" && b.topic === "numbers") return (a.num ?? 0) - (b.num ?? 0);
       return compareGeorgian(a, b);
     });
   }, [query, searchIn, topic, alpha, dialect]);
 
-  // Scroll to highlighted card after results update
   useEffect(() => {
     if (highlightMeg && highlightRef.current) {
       setTimeout(() => {
@@ -128,7 +136,17 @@ export default function App() {
     }
   }, [highlightMeg, results]);
 
-  // Click synonym: jump to that word
+  // Восстанавливаем фокус на поле поиска при возврате на страницу
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible" && query) {
+        setTimeout(() => inputRef.current?.focus(), 100);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [query]);
+
   function goToSynonym(syn) {
     setQuery("");
     setTopic(toFilterKey(syn.topic));
@@ -136,7 +154,6 @@ export default function App() {
     setHighlightMeg(syn.meg);
   }
 
-  // Click topic badge on card: jump to that topic filter
   function goToTopic(topicKey) {
     const filterKey = toFilterKey(topicKey);
     setTopic(filterKey);
@@ -251,8 +268,13 @@ export default function App() {
         <div className="fu" style={{background:"rgba(80,160,80,0.07)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:16,padding:"12px 14px",marginBottom:12}}>
           <div style={{position:"relative"}}>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",fontSize:17,opacity:0.4}}>🔍</span>
-            <input value={query} onChange={e=>{setQuery(e.target.value);setHighlightMeg(null);}} placeholder={t.ph}
-              style={{width:"100%",boxSizing:"border-box",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:10,padding:"10px 34px 10px 37px",fontSize:16,color:"#e8e0cc",fontFamily:"Georgia,'Noto Serif Georgian',serif"}}/>
+            <input
+              ref={inputRef}
+              value={query}
+              onChange={e=>{setQuery(e.target.value);setHighlightMeg(null);}}
+              placeholder={t.ph}
+              style={{width:"100%",boxSizing:"border-box",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(80,160,80,0.26)",borderRadius:10,padding:"10px 34px 10px 37px",fontSize:16,color:"#e8e0cc",fontFamily:"Georgia,'Noto Serif Georgian',serif"}}
+            />
             {query && <button onClick={()=>setQuery("")} style={{position:"absolute",right:9,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"rgba(232,224,204,0.4)",cursor:"pointer",fontSize:18}}>✕</button>}
           </div>
           <div style={{display:"flex",gap:4,marginTop:8,flexWrap:"wrap",alignItems:"center"}}>
@@ -301,19 +323,12 @@ export default function App() {
                   className={"card" + (isHighlighted ? " card-highlight" : "")}
                   style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(80,160,80,0.16)",borderRadius:13,padding:"12px 14px",position:"relative"}}
                 >
-                  {/* Правый верхний угол: тема + диалект */}
                   <div style={{position:"absolute",top:10,right:10,display:"flex",gap:3,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end",maxWidth:"55%"}}>
                     {cardTopic && (
                       <span
                         className="topic-badge"
                         onClick={()=>goToTopic(entry.topic)}
-                        title={uiLang==="ru"?"Перейти к теме":"Go to topic"}
-                        style={{
-                          fontSize:9,padding:"2px 7px",borderRadius:6,letterSpacing:.4,
-                          background:"rgba(80,160,80,0.1)",
-                          color:"rgba(180,220,180,0.5)",
-                          border:"1px solid rgba(80,160,80,0.15)",
-                        }}
+                        style={{fontSize:9,padding:"2px 7px",borderRadius:6,letterSpacing:.4,background:"rgba(80,160,80,0.1)",color:"rgba(180,220,180,0.5)",border:"1px solid rgba(80,160,80,0.15)"}}
                       >{cardTopic.icon} {topLabel(cardTopic)}</span>
                     )}
                     {hasDialects ? (
@@ -334,7 +349,6 @@ export default function App() {
                     ) : null}
                   </div>
 
-                  {/* Мегрельское слово */}
                   <div style={{marginBottom:9,paddingRight:120}}>
                     <div style={{fontSize:27,fontWeight:"bold",color:"#7dcf7d",letterSpacing:.8,fontFamily:"'Noto Serif Georgian',Georgia,serif",lineHeight:1.2}}>
                       <HL text={displayMeg} q={q}/>
@@ -342,7 +356,6 @@ export default function App() {
                     <div style={{fontSize:11,color:"rgba(180,220,180,0.4)",fontStyle:"italic",marginTop:1}}>[{displayTr}]</div>
                   </div>
 
-                  {/* Переводы */}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"5px 10px"}}>
                     {[
                       {lbl:"ქართ.", val:entry.geo, col:"rgba(180,200,255,0.85)"},
@@ -358,36 +371,19 @@ export default function App() {
                     ))}
                   </div>
 
-                  {/* Синонимы */}
                   {syns.length > 0 && (
                     <div style={{marginTop:9,paddingTop:7,borderTop:"1px solid rgba(80,160,80,0.1)"}}>
-                      <div style={{fontSize:9,color:"rgba(232,224,204,0.28)",letterSpacing:1.2,textTransform:"uppercase",marginBottom:4}}>
-                        {t.syn}
-                      </div>
+                      <div style={{fontSize:9,color:"rgba(232,224,204,0.28)",letterSpacing:1.2,textTransform:"uppercase",marginBottom:4}}>{t.syn}</div>
                       <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                         {syns.map(s=>(
-                          <span
-                            key={s.meg}
-                            className="syn-chip"
-                            onClick={()=>goToSynonym(s)}
-                            title={uiLang==="ru"?"Перейти к слову":"Go to word"}
-                            style={{
-                              display:"inline-flex",alignItems:"center",gap:4,
-                              fontSize:13,
-                              fontFamily:"'Noto Serif Georgian',Georgia,serif",
-                              color:"#7dcf7d",
-                              background:"rgba(80,160,80,0.08)",
-                              border:"1px solid rgba(80,160,80,0.18)",
-                              borderRadius:7,
-                              padding:"3px 10px",
-                            }}
-                          >
+                          <span key={s.meg} className="syn-chip" onClick={()=>goToSynonym(s)} style={{
+                            display:"inline-flex",alignItems:"center",gap:4,fontSize:13,
+                            fontFamily:"'Noto Serif Georgian',Georgia,serif",color:"#7dcf7d",
+                            background:"rgba(80,160,80,0.08)",border:"1px solid rgba(80,160,80,0.18)",
+                            borderRadius:7,padding:"3px 10px",
+                          }}>
                             {s.meg}
-                            {s.dialect && (
-                              <span style={{fontSize:8,color:"rgba(140,180,255,0.7)",fontFamily:"Georgia,serif"}}>
-                                {s.dialect==="sam"?"сам.":"сен."}
-                              </span>
-                            )}
+                            {s.dialect && <span style={{fontSize:8,color:"rgba(140,180,255,0.7)",fontFamily:"Georgia,serif"}}>{s.dialect==="sam"?"сам.":"сен."}</span>}
                           </span>
                         ))}
                       </div>
