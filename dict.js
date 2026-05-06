@@ -463,6 +463,102 @@ const DICT = [
 {topic:"numbers", num:100,  meg:"ოში",        tr:"oši",         geo:"ასი",        ru:"сто",           en:"hundred"},
 {topic:"numbers", num:1000, meg:"ანთასი",     tr:"antasi",      geo:"ათასი",      ru:"тысяча",        en:"thousand"},
 
-];
+// ── ВСТАВИТЬ В DICT ПЕРЕД ФИНАЛЬНОЙ ]; ──────────────────────────────────────
+
+// ── ТЕЛО ─────────────────────────────────────────────────────────
+{topic:"body", meg:"ჸვინგი",             tr:"ʼvingi",          geo:"საფეთქელი",               ru:"висок",                          en:"temple (of head)"},
+{topic:"body", meg:"ჸვაჯი",              tr:"ʼvaǯi",           geo:"ყვერი",                   ru:"яичко (мужское)",                en:"testicle"},
+{topic:"body", meg:"ჸვაჯა",              tr:"ʼvaǯa",           geo:"თიაქრიანი, ტრიკა",        ru:"грыжа",                          en:"hernia"},
+{topic:"body", meg:"ჸვერე",              tr:"ʼvere",           geo:"ბრმა",                    ru:"слепой",                         en:"blind"},
+{topic:"body", meg:"ჸვერება",            tr:"ʼvereba",         geo:"დაბრმავება, სიბრმავე",    ru:"слепота; слепнуть",              en:"blindness; to go blind"},
+{topic:"body", meg:"ჸუნგა",              tr:"ʼunga",           geo:"ყრუ",                     ru:"глухой",                         en:"deaf"},
+{topic:"body", meg:"ჸუნგა-მუნჯი",       tr:"ʼunga-munǯi",     geo:"ყრუ-მუნჯი",               ru:"глухонемой",                     en:"deaf-mute"},
+{topic:"body", meg:"შარდა",              tr:"šarda",           geo:"შარდი",                   ru:"моча",                           en:"urine"},
+{topic:"body", meg:"ჯონჯო",              tr:"ǯonǯo",           geo:"დრუნჩი; ცხვირ-პირი",     ru:"рыло, морда",                    en:"snout, muzzle"},
+{topic:"body", meg:"ჯერღვი",             tr:"ǯerğvi",          geo:"ძარღვი",                  ru:"жила, сухожилие",                en:"vein, sinew"},
+{topic:"body", meg:"ბუძღა",              tr:"buʒğa",           geo:"მუნი",                    ru:"чесотка",                        en:"scabies, itch"},
+
+// ── ЖИВОТНЫЕ ─────────────────────────────────────────────────────
+{topic:"animals", meg:"ჸილო",            tr:"ʼilo",            geo:"ვეფხვი; ლომი",            ru:"тигр; лев",                      en:"tiger; lion"},
+{topic:"animals", meg:"ჸორი",            tr:"ʼori",            geo:"დედალი",                  ru:"самка",                          en:"female (animal)"},
+{topic:"animals", meg:"ჸვაჯამი",         tr:"ʼvaǯami",         geo:"ყვერიანი",                ru:"самец (собаки)",                 en:"male dog"},
+{topic:"animals", meg:"ჸვია",            tr:"ʼvia",            geo:"კნავილი",                 ru:"мяуканье",                       en:"meowing"},
+{topic:"animals", meg:"შარდენი",         tr:"šardeni",         geo:"შევარდენი",               ru:"сокол",                          en:"falcon"},
+{topic:"animals", meg:"შურგი",           tr:"šurgi",           dialect:"sen", geo:"ისარი",    ru:"стрела",                         en:"arrow"},
+
+// ── РАСТЕНИЯ ─────────────────────────────────────────────────────
+{topic:"plants", meg:"მჟაველა",          tr:"mžavela",         geo:"მჟაყნა",                  ru:"щавель",                         en:"sorrel"},
+{topic:"plants", meg:"ჯაყრუა",           tr:"ǯaq̣rua",          geo:"ანწლი, დიდგულა",          ru:"бузина",                         en:"elderberry"},
+{topic:"plants", meg:"ჯა",               tr:"ǯa",              geo:"ხე",                      ru:"дерево",                         en:"tree"},
+
+// ── ЕДА ──────────────────────────────────────────────────────────
+{topic:"food", meg:"შინკა",              tr:"šinḳa",           geo:"ნესვი",                   ru:"дыня",                           en:"melon"},
+{topic:"food", meg:"ჯამკაკალი",          tr:"ǯamḳaḳali",       geo:"თუთა (ნაყოფი)",           ru:"тутовая ягода",                  en:"mulberry"},
+{topic:"food", meg:"ჯანჯუხა",           tr:"ǯanǯuxa",         geo:"ჩურჩხელა (თხილისა)",      ru:"чурчхела (из лесного ореха)",    en:"churchkhela (hazelnut)"},
+{topic:"food", meg:"ჯიმუ",              tr:"ǯimu",            geo:"მარილი",                  ru:"соль",                           en:"salt"},
+{topic:"food", meg:"ჯიმოლუა",           tr:"ǯimolua",         geo:"დამარილება",               ru:"солить",                         en:"to salt"},
+{topic:"food", meg:"ხული",              tr:"xuli",            geo:"კოლრაბი, ფხალი",          ru:"кольраби",                       en:"kohlrabi"},
+{topic:"food", meg:"შანქარი",            tr:"šankari",         geo:"შაქარი",                  ru:"сахар",                          en:"sugar"},
+
+// ── ДОМ ──────────────────────────────────────────────────────────
+{topic:"home", meg:"ბუცხი",              tr:"bucxi",           geo:"ფოცხი",                   ru:"грабли",                         en:"rake"},
+{topic:"home", meg:"ბერგი",              tr:"bergi",           geo:"თოხა",                    ru:"мотыга, тяпка",                  en:"hoe, mattock"},
+{topic:"home", meg:"ჯაჭვი",             tr:"ǯač̣vi",           geo:"ჯაჭვი",                   ru:"цепь",                           en:"chain"},
+{topic:"home", meg:"ჯაყვა",             tr:"ǯaq̣va",           geo:"ჯაყვა",                   ru:"нож складной, перочинный нож",   en:"folding knife, penknife"},
+{topic:"home", meg:"ჯაშკვილი",          tr:"ǯašḳvili",        geo:"ხის მშვილდი",             ru:"лук деревянный",                 en:"wooden bow"},
+
+// ── СЕМЬЯ ────────────────────────────────────────────────────────
+{topic:"family", meg:"ჯიმასკუა",        tr:"ǯimasḳua",        geo:"ძმისწული",                ru:"племянник/племянница (брата)",    en:"nephew/niece (brother's side)"},
+{topic:"family", meg:"ჯიმაჩაფირი",      tr:"ǯimačapiri",      geo:"ძმად მიღებული",            ru:"приёмный брат",                  en:"adoptive brother"},
+{topic:"family", meg:"ჯიმაჸონირი",      tr:"ǯimaʼoniri",      geo:"გერი (ვაჟი)",             ru:"пасынок; брат от другого отца",  en:"stepson; half-brother"},
+{topic:"family", meg:"მოჭყუდუ",         tr:"moč̣q̣udu",        dialect:"sen", geo:"პატარძალი", ru:"невеста, новобрачная",           en:"bride"},
+{topic:"family", meg:"მუარხე",           tr:"muarxe",          geo:"მოახლე",                  ru:"слуга, служанка",                en:"servant"},
+
+// ── ОБЩЕСТВО ─────────────────────────────────────────────────────
+{topic:"society", meg:"მოხანდე",         tr:"moxande",         dialect:"sam", geo:"მშრომელი", ru:"труженик, работяга",             en:"hard worker, toiler"},
+{topic:"society", meg:"ბერაღი",          tr:"beraği",          geo:"დროშა",                   ru:"флаг, знамя",                    en:"flag, banner"},
+
+// ── КУЛЬТУРА ─────────────────────────────────────────────────────
+{topic:"culture", meg:"ჯეგე-მარიამი",   tr:"ǯege-mariami",    geo:"წმინდა მარიამი",           ru:"Святая Мария",                   en:"Saint Mary"},
+{topic:"culture", meg:"ჯილითი",         tr:"ǯiliti",          geo:"ჯირითი",                  ru:"джигитовка",                     en:"equestrian game (dzhigit)"},
+{topic:"culture", meg:"ჯაკონია",        tr:"ǯaḳonia",         geo:"კერპი, სათაყვანო",        ru:"идол, кумир",                    en:"idol, object of worship"},
+{topic:"culture", meg:"ჯიხა",           tr:"ǯixa",            geo:"ციხე-დარბაზი, ციხე-სიმაგრე", ru:"замок, крепость",             en:"castle, fortress"},
+{topic:"culture", meg:"ჸოროფა",         tr:"ʼoropa",          geo:"სიყვარული, (შე)ყვარება",  ru:"любовь; любить",                 en:"love; to love"},
+{topic:"culture", meg:"ჸოროფილი",       tr:"ʼoropili",        geo:"საყვარელი, შეყვარებული",  ru:"возлюбленный, влюблённый",       en:"beloved, in love"},
+{topic:"culture", meg:"მორე",           tr:"more",            geo:"გამოცანა",                ru:"загадка",                        en:"riddle"},
+{topic:"culture", meg:"მარდი",          tr:"mardi",           geo:"მადლი; ბარაქა, სიუხვე",  ru:"благодать, милость; достаток",   en:"grace, mercy; abundance"},
+
+// ── ЯЗЫК И ОБЩЕНИЕ ───────────────────────────────────────────────
+{topic:"greetings", meg:"შვიდებით!",    tr:"švidebit",        geo:"მშვიდობით!",              ru:"до свидания!",                   en:"goodbye!"},
+{topic:"language", meg:"მუგვარი",       tr:"mugvari",         geo:"როგორი?",                 ru:"какой?",                         en:"what kind?"},
+{topic:"language", meg:"მუდა",          tr:"muda",            geo:"რამდენი?",                ru:"сколько?",                       en:"how many/much?"},
+{topic:"language", meg:"მუდოს",         tr:"mudos",           geo:"რა დროს?",                ru:"когда?",                         en:"when?"},
+{topic:"language", meg:"მუთა",          tr:"muta",            geo:"არაფერი, ვერაფერი",       ru:"ничто, никто",                   en:"nothing, nobody"},
+{topic:"language", meg:"მუთუ",          tr:"mutu",            geo:"როგორ? რით?",             ru:"как? каким образом?",            en:"how? by what means?"},
+{topic:"language", meg:"მუთუნი ჟანს",  tr:"mutuni žans",     geo:"ერთ დროს, როდისმე",      ru:"когда-то, однажды",              en:"once, at some time"},
+{topic:"language", meg:"მუთუნნერი",     tr:"mutunneri",       geo:"რამენაირი; არავითარი",    ru:"какой-нибудь; никакой",          en:"some kind; no kind"},
+{topic:"language", meg:"მუთუნნერო",     tr:"mutunnero",       geo:"რამენაირად",              ru:"как-нибудь",                     en:"somehow"},
+{topic:"language", meg:"მუდგენი",       tr:"mudgeni",         geo:"რაღაც",                   ru:"что-то",                         en:"something"},
+{topic:"language", meg:"მოჩინა",        tr:"močina",          geo:"შემოთვლა",                ru:"извещение, уведомление",         en:"notification, announcement"},
+
+// ── ОПИСАНИЯ ─────────────────────────────────────────────────────
+{topic:"descriptions", meg:"ბელატი",    tr:"belati",          geo:"მელოტი",                  ru:"лысый",                          en:"bald"},
+{topic:"descriptions", meg:"ჸვინგალი",  tr:"ʼvingali",        geo:"სულელი, შტერი",           ru:"дурак, болван",                  en:"fool, idiot"},
+{topic:"descriptions", meg:"ჸვებერე",   tr:"ʼvebere",         dialect:"sam", geo:"დოყლაპია", ru:"ротозей, разиня",                en:"gawker, scatterbrain"},
+{topic:"descriptions", meg:"ჯვეში",     tr:"ǯveši",           geo:"ძველი",                   ru:"старый, древний",                en:"old, ancient"},
+{topic:"descriptions", meg:"ჯვეშო",     tr:"ǯvešo",           geo:"ძველად",                  ru:"в старину, в древности",         en:"in olden times"},
+{topic:"descriptions", meg:"ჯაში",      tr:"ǯaši",            geo:"ხის(ა)",                  ru:"деревянный",                     en:"wooden"},
+{topic:"descriptions", meg:"ბერთი",     tr:"berti",           geo:"ბელტი",                   ru:"глыба земли",                    en:"clod of earth"},
+{topic:"descriptions", meg:"მუკი",      tr:"muḳi",            geo:"ირგვლივ",                 ru:"кругом, вокруг",                 en:"around, all around"},
+{topic:"descriptions", meg:"ჸოფა",      tr:"ʼopa",            geo:"ყოფნა",                   ru:"быть, находиться",               en:"to be, to exist"},
+{topic:"descriptions", meg:"ჸურე",      tr:"ʼure",            geo:"მხარე, ყურე",             ru:"край, сторона",                  en:"edge, side"},
+
+// ── ПРИРОДА ──────────────────────────────────────────────────────
+{topic:"nature", meg:"შარა",            tr:"šara",            geo:"შარა-გზა",                ru:"большая дорога, шоссе",          en:"highway, main road"},
+{topic:"nature", meg:"მოღია",           tr:"moğia",           geo:"აისი, რიჟრაჟი",           ru:"заря, рассвет",                  en:"dawn, daybreak"},
+{topic:"nature", meg:"მორიალე",         tr:"moriale",         geo:"მორიელი",                 ru:"скорпион",                       en:"scorpion"},
+
+// ── БОЛЕЗНИ / ЗДОРОВЬЕ (тема: описания) ──────────────────────────
+{topic:"descriptions", meg:"შარტე-პატონეფი", tr:"šarte-patonepi", geo:"ჩუტყვავილა, წითურა", ru:"ветрянка, ветряная оспа",      en:"chickenpox"},];
 
 export { DICT };
